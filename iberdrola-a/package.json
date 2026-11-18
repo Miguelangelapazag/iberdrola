@@ -1,0 +1,31 @@
+{
+  "name": "iberdrola-a",
+  "version": "0.9.3",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @iberdrola/web",
+    "build": "npm run build --workspace @iberdrola/web",
+    "start": "npm run start --workspace @iberdrola/web",
+    "typecheck": "npm run typecheck --workspace @iberdrola/web",
+    "lint": "npm run lint --workspace @iberdrola/web",
+    "types:generate": "node scripts/generate-database-types.mjs",
+    "test:db": "node supabase/tests/regression.mjs && node supabase/tests/management.mjs && node supabase/tests/teachers.mjs && node supabase/tests/attendance.mjs && node supabase/tests/grades.mjs && node supabase/tests/schedules.mjs && node supabase/tests/notices.mjs && node supabase/tests/reports.mjs",
+    "test:web": "npm run test --workspace @iberdrola/web",
+    "test": "npm run test:db && npm run test:web",
+    "test:e2e": "playwright test",
+    "format": "prettier --write apps/web/src packages/shared/src scripts tests playwright.config.ts"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.8",
+    "@playwright/test": "1.63.0",
+    "prettier": "3.9.9"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
