@@ -249,8 +249,12 @@
   background: #102247;
   color: white;
   border-bottom: 1px solid #ffffff18;
-  position: relative;
-  z-index: 10;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+html {
+  scroll-padding-top: 96px;
 }
 .public-header > div {
   padding-top: 20px;
@@ -395,6 +399,30 @@
 .photo-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 20px 40px #253e7020;
+}
+.texture-dots {
+  background-color: #e6eefc;
+  background-image:
+    radial-gradient(circle at 12% 18%, #b9d3f7aa, transparent 38%),
+    radial-gradient(circle at 90% 85%, #c9dcf8cc, transparent 40%),
+    radial-gradient(#7aa3dc55 1.2px, transparent 1.4px);
+  background-size:
+    auto,
+    auto,
+    22px 22px;
+  border-top: 1px solid #ffffffb0;
+}
+.texture-lines {
+  background-color: #f1f5fd;
+  background-image:
+    radial-gradient(circle at 85% 20%, #d4e4fbcc, transparent 42%),
+    repeating-linear-gradient(
+      135deg,
+      #9db9e633 0,
+      #9db9e633 1px,
+      transparent 1px,
+      transparent 14px
+    );
 }
 .platform-section {
   background:

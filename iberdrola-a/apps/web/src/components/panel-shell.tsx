@@ -8,7 +8,6 @@ import {
   ClipboardCheck,
   ChartNoAxesCombined,
   CalendarDays,
-  Megaphone,
   ShieldCheck,
   GraduationCap,
   Award,
@@ -31,7 +30,7 @@ import {
 } from "@iberdrola/shared";
 import type { PanelModel } from "@/lib/data/model";
 import { cn } from "@/lib/utils";
-import { panelHref, resolveNav, activeNav, type NavIcon } from "@/lib/navigation";
+import { resolveNav, activeNav, type NavIcon } from "@/lib/navigation";
 const icons: Record<NavIcon, typeof Users> = {
   usuarios: ShieldCheck,
   estudiantes: GraduationCap,
@@ -41,7 +40,6 @@ const icons: Record<NavIcon, typeof Users> = {
   asistencia: ClipboardCheck,
   calificaciones: Award,
   reportes: ChartNoAxesCombined,
-  comunicados: Megaphone,
 };
 export function PanelShell({
   model,
@@ -171,29 +169,10 @@ export function PanelShell({
               Gestión {model.year || "por configurar"}
             </div>
           </div>
-          {model.demo ? (
-            <Link
-              className="flex items-center gap-2 px-3 text-xs text-slate-600"
-              href="/login"
-            >
-              <LogOut size={15} />
-              Salir de la demo
-            </Link>
-          ) : (
-            <form action={logout}>
-              <button
-                type="submit"
-                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-white/70"
-              >
-                <LogOut size={16} />
-                Cerrar sesión
-              </button>
-            </form>
-          )}
         </div>
       </aside>
       <div className="min-w-0">
-        <header className="academic-topbar flex min-h-20 items-center justify-between gap-4 border-b border-border bg-white px-5 lg:px-9">
+        <header className="academic-topbar sticky top-0 z-30 flex min-h-20 items-center justify-between gap-4 border-b border-border bg-white px-5 lg:px-9">
           <div className="flex items-center gap-3">
             <button
               className="rounded p-2 lg:hidden"
@@ -219,13 +198,6 @@ export function PanelShell({
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Link
-              href={panelHref(model, "comunicados")}
-              aria-label="Ver comunicados"
-              className="hidden rounded-full border border-border p-2.5 text-muted-foreground hover:bg-muted sm:block"
-            >
-              <Megaphone size={17} />
-            </Link>
             <div className="flex size-9 items-center justify-center rounded-full bg-secondary text-xs font-bold text-primary">
               {initials}
             </div>
@@ -237,6 +209,27 @@ export function PanelShell({
                 {roleLabels[model.role]}
               </p>
             </div>
+            {model.demo ? (
+              <Link
+                href="/login"
+                className="ml-1 inline-flex items-center gap-2 rounded-full border border-border px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted"
+              >
+                <LogOut size={15} aria-hidden="true" />
+                <span className="hidden sm:inline">Salir de la demo</span>
+                <span className="sr-only sm:hidden">Salir de la demo</span>
+              </Link>
+            ) : (
+              <form action={logout}>
+                <button
+                  type="submit"
+                  className="ml-1 inline-flex items-center gap-2 rounded-full border border-border px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted"
+                >
+                  <LogOut size={15} aria-hidden="true" />
+                  <span className="hidden sm:inline">Cerrar sesión</span>
+                  <span className="sr-only sm:hidden">Cerrar sesión</span>
+                </button>
+              </form>
+            )}
           </div>
         </header>
         {model.demo && (

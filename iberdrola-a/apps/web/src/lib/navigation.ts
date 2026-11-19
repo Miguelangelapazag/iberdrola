@@ -16,8 +16,7 @@ export type NavIcon =
   | "horarios"
   | "asistencia"
   | "calificaciones"
-  | "reportes"
-  | "comunicados";
+  | "reportes";
 export type NavItem = {
   label: string;
   /** Ruta de la sesión real. */
@@ -130,15 +129,6 @@ export const navGroups: NavGroup[] = [
     label: "Reportes Académicos",
     icon: "reportes",
     items: [{ label: "Informes", href: "/panel/informes" }],
-  },
-  {
-    id: "comunicados",
-    label: "Comunicados",
-    icon: "comunicados",
-    items: [
-      { label: "Comunicados", href: "/panel/comunicados", demo: "/demo/comunicados" },
-      { label: "Tablón de comunicados", href: "/panel/comunicados/bandeja" },
-    ],
   },
 ];
 export type ResolvedNavItem = { label: string; href: string; path: string };

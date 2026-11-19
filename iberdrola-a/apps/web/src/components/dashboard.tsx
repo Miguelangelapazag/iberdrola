@@ -6,7 +6,6 @@ import {
   ChartNoAxesCombined,
   ArrowRight,
   CalendarDays,
-  Megaphone,
   ArrowUpRight,
   ShieldCheck,
 } from "lucide-react";
@@ -16,7 +15,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { RecordsTable } from "@/components/records-table";
 import { roleScope, type Module } from "@iberdrola/shared";
-import { displayDate, type PanelModel } from "@/lib/data/model";
+import type { PanelModel } from "@/lib/data/model";
 export function Dashboard({ model }: { model: PanelModel }) {
   const stats = [
     {
@@ -184,40 +183,6 @@ export function Dashboard({ model }: { model: PanelModel }) {
           </div>
         </div>
         <div className="min-w-0 space-y-6">
-          <Card className="p-5">
-            <div className="mb-5 flex items-center justify-between">
-              <h2 className="text-sm font-semibold">Comunicados</h2>
-              <Megaphone className="text-muted-foreground" size={17} />
-            </div>
-            {model.notices.length ? (
-              <div className="space-y-5">
-                {model.notices.slice(0, 2).map((notice) => (
-                  <article key={notice.id}>
-                    <p className="text-[10px] text-muted-foreground">
-                      {displayDate(notice.date)}
-                    </p>
-                    <h3 className="mt-1.5 text-xs font-semibold leading-5">
-                      {notice.title}
-                    </h3>
-                    <p className="mt-2 line-clamp-3 text-[11px] leading-5 text-muted-foreground">
-                      {notice.content}
-                    </p>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <p className="py-4 text-xs leading-6 text-muted-foreground">
-                No hay comunicados publicados disponibles para tu cuenta.
-              </p>
-            )}
-            <Link
-              className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-primary"
-              href={panelHref(model, "comunicados")}
-            >
-              Ver comunicados
-              <ArrowRight size={14} />
-            </Link>
-          </Card>
           <Card className="p-5">
             <h2 className="text-sm font-semibold">Periodos de evaluación</h2>
             <div className="mt-4 space-y-3">

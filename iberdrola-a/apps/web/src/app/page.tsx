@@ -8,17 +8,19 @@ import {
   ArrowRight,
   MapPin,
   Phone,
+  Mail,
   GraduationCap,
   ShieldCheck,
   Clock3,
 } from "lucide-react";
-import { school } from "@/lib/school";
+import { school, socialLinks } from "@/lib/school";
 export const metadata: Metadata = {
   title: "Unidad Educativa Iberdrola A · El Alto",
   description:
     "Conoce la Unidad Educativa Iberdrola A, su historia y ubicación en El Alto. Accede al sistema académico de Primaria.",
 };
 export default function Home() {
+  const socials = socialLinks();
   return (
     <VisualMotion>
       <div className="school-home min-h-screen text-[#102e57]">
@@ -199,135 +201,152 @@ export default function Home() {
           <section
             data-reveal
             id="galeria"
-            className="mx-auto max-w-7xl scroll-mt-8 px-6 py-16 sm:px-10 sm:py-24"
+            className="texture-dots scroll-mt-8"
           >
-            <div className="mb-9 flex flex-wrap items-end justify-between gap-5">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[.2em] text-blue-700">
-                  Nuestra vida escolar
+            <div className="mx-auto max-w-[1400px] px-6 py-16 sm:px-10 sm:py-20">
+              <div className="mb-9 flex flex-wrap items-end justify-between gap-5">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[.2em] text-blue-700">
+                    Nuestra vida escolar
+                  </p>
+                  <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
+                    Una escuela que se vive.
+                  </h2>
+                </div>
+                <p className="max-w-sm text-sm leading-6 text-slate-600">
+                  Encuentros, cultura y espacios que forman parte de nuestra
+                  comunidad. Abre cada fotografía para verla completa.
                 </p>
-                <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
-                  Una escuela que se vive.
-                </h2>
               </div>
-              <p className="max-w-sm text-sm leading-6 text-slate-500">
-                Encuentros, cultura y espacios que forman parte de nuestra
-                comunidad. Abre cada fotografía para verla completa.
-              </p>
-            </div>
-            <div className="grid items-start gap-5 md:grid-cols-3">
-              {[
-                [
-                  "colegio3.jpg",
-                  "Cultura que nos une",
-                  "Encuentro de la comunidad con vestimenta tradicional",
-                  "01",
-                ],
-                [
-                  "colegio4.jpg",
-                  "Momentos para compartir",
-                  "Estudiantes y familias reunidos en el patio",
-                  "02",
-                ],
-                [
-                  "colegio5.jpg",
-                  "Un patio lleno de vida",
-                  "Vista del patio cubierto durante una actividad escolar",
-                  "03",
-                ],
-              ].map(([file, title, alt, number]) => (
-                <a
-                  key={file}
-                  href={`/colegio/${file}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${title}: abrir fotografía completa en otra pestaña`}
-                  className="photo-card group overflow-hidden rounded-2xl border border-slate-200 bg-white transition-shadow hover:shadow-xl"
-                >
-                  <div className="relative aspect-[4/3]">
+              <div className="grid gap-5 md:h-[640px] md:grid-cols-3 md:grid-rows-2">
+                {[
+                  [
+                    "colegio5.jpg",
+                    "Un patio lleno de vida",
+                    "Vista del patio cubierto durante una actividad escolar",
+                    "01",
+                    "md:col-span-2 md:row-span-2",
+                    "(max-width: 768px) 100vw, 66vw",
+                  ],
+                  [
+                    "colegio3.jpg",
+                    "Cultura que nos une",
+                    "Encuentro de la comunidad con vestimenta tradicional",
+                    "02",
+                    "",
+                    "(max-width: 768px) 100vw, 33vw",
+                  ],
+                  [
+                    "colegio4.jpg",
+                    "Momentos para compartir",
+                    "Estudiantes y familias reunidos en el patio",
+                    "03",
+                    "",
+                    "(max-width: 768px) 100vw, 33vw",
+                  ],
+                ].map(([file, title, alt, number, span, sizes]) => (
+                  <a
+                    key={file}
+                    href={`/colegio/${file}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${title}: abrir fotografía completa en otra pestaña`}
+                    className={`photo-card group relative block aspect-[4/3] overflow-hidden bg-slate-200 transition-shadow hover:shadow-xl md:aspect-auto md:h-full ${span}`}
+                  >
                     <Image
                       src={`/colegio/${file}`}
                       alt={alt}
                       fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes={sizes}
                       className="object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
                     />
-                  </div>
-                  <div className="flex items-center justify-between gap-3 p-5">
-                    <div>
-                      <p className="mb-2 text-xs text-blue-600">
-                        {number} / IBERDROLA A
-                      </p>
-                      <h3 className="font-semibold">{title}</h3>
+                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-[#06193d]/90 via-[#06193d]/50 to-transparent p-5 pt-16 text-white sm:p-7 sm:pt-20">
+                      <div>
+                        <p className="mb-1.5 text-xs tracking-wider text-blue-100">
+                          {number} / IBERDROLA A
+                        </p>
+                        <h3 className="text-lg font-semibold sm:text-xl">
+                          {title}
+                        </h3>
+                      </div>
+                      <ArrowUpRight
+                        size={22}
+                        aria-hidden="true"
+                        className="shrink-0"
+                      />
                     </div>
-                    <ArrowUpRight size={20} aria-hidden="true" />
-                  </div>
-                </a>
-              ))}
+                  </a>
+                ))}
+              </div>
             </div>
           </section>
           <section
             data-reveal
             id="historia"
-            className="mx-auto grid max-w-7xl scroll-mt-8 gap-10 px-6 py-16 sm:px-10 sm:py-24 lg:grid-cols-[.8fr_1.2fr]"
+            className="texture-lines scroll-mt-8"
           >
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[.2em] text-[#586b80]">
-                Nuestra historia
-              </p>
-              <h2 className="mt-5 text-4xl font-medium leading-tight tracking-[-.04em] sm:text-5xl">
-                Una comunidad
-                <br />
-                que crece
-                <br />
-                <span className="text-[#2169a3]">con su escuela.</span>
-              </h2>
-            </div>
-            <div>
-              <div className="mb-7 flex items-center gap-5 rounded-2xl border border-blue-100 bg-white p-4">
-                <Image
-                  src="/colegio/edificio.jpg"
-                  alt="Edificio de la unidad educativa con banderas"
-                  width={400}
-                  height={200}
-                  className="w-1/2 rounded-lg object-contain"
-                />
-                <div>
-                  <p className="text-xs uppercase tracking-widest text-blue-700">
-                    Senkata · El Alto
+            <div className="mx-auto grid max-w-[1400px] gap-10 px-6 py-16 sm:px-10 sm:py-24 lg:grid-cols-[.85fr_1.15fr] lg:items-center">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[.2em] text-[#586b80]">
+                  Nuestra historia
+                </p>
+                <h2 className="mt-5 text-4xl font-medium leading-tight tracking-[-.04em] sm:text-5xl">
+                  Una comunidad
+                  <br />
+                  que crece
+                  <br />
+                  <span className="text-[#2169a3]">con su escuela.</span>
+                </h2>
+                <p className="mt-8 text-lg leading-8">
+                  Una reseña publicada en 2023 sitúa el origen de la Unidad
+                  Educativa Iberdrola en Senkata el 1 de marzo de 2002. Describe
+                  su crecimiento y la posterior organización en las secciones A
+                  y B.
+                </p>
+                <p className="mt-5 text-base leading-7 text-[#586b80]">
+                  La misma reseña recuerda la participación de su comunidad en
+                  actividades deportivas, musicales y artísticas.
+                </p>
+                <div className="mt-7 border-l-2 border-[#6b9ac9] pl-5">
+                  <p className="text-xs leading-6 text-[#586b80]">
+                    Referencia histórica del blog sobre Iberdrola B, no una
+                    certificación de la fecha de creación independiente de
+                    Iberdrola A. Los logros específicos de la sección B no se
+                    atribuyen aquí a la sección A.
                   </p>
-                  <p className="mt-2 text-lg font-semibold">
-                    Un lugar en nuestra historia.
-                  </p>
+                  <a
+                    href={school.historyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4"
+                  >
+                    Leer la reseña histórica{" "}
+                    <ArrowUpRight size={16} aria-hidden="true" />
+                  </a>
                 </div>
               </div>
-              <p className="text-lg leading-8">
-                Una reseña publicada en 2023 sitúa el origen de la Unidad
-                Educativa Iberdrola en Senkata el 1 de marzo de 2002. Describe
-                su crecimiento y la posterior organización en las secciones A y
-                B.
-              </p>
-              <p className="mt-5 text-base leading-7 text-[#586b80]">
-                La misma reseña recuerda la participación de su comunidad en
-                actividades deportivas, musicales y artísticas.
-              </p>
-              <div className="mt-7 border-l-2 border-[#6b9ac9] pl-5">
-                <p className="text-xs leading-6 text-[#586b80]">
-                  Referencia histórica del blog sobre Iberdrola B, no una
-                  certificación de la fecha de creación independiente de
-                  Iberdrola A. Los logros específicos de la sección B no se
-                  atribuyen aquí a la sección A.
-                </p>
-                <a
-                  href={school.historyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4"
-                >
-                  Leer la reseña histórica{" "}
-                  <ArrowUpRight size={16} aria-hidden="true" />
-                </a>
-              </div>
+              <figure className="history-photo overflow-hidden rounded-[1.75rem] border border-white bg-white shadow-xl shadow-blue-950/10">
+                <div className="flex items-center justify-center bg-gradient-to-br from-[#dce9fb] to-[#f3f7ff] p-6 sm:p-10">
+                  <Image
+                    src="/colegio/edificio.jpg"
+                    alt="Edificio de la unidad educativa con banderas"
+                    width={400}
+                    height={200}
+                    sizes="(max-width: 1024px) 100vw, 60vw"
+                    className="h-auto w-full max-w-[640px] rounded-xl object-contain"
+                  />
+                </div>
+                <figcaption className="flex items-center justify-between gap-4 px-6 py-5 sm:px-10">
+                  <div>
+                    <p className="text-xs uppercase tracking-widest text-blue-700">
+                      Senkata · El Alto
+                    </p>
+                    <p className="mt-1.5 text-xl font-semibold">
+                      Un lugar en nuestra historia.
+                    </p>
+                  </div>
+                </figcaption>
+              </figure>
             </div>
           </section>
           <section
@@ -400,69 +419,106 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <section
-            data-reveal
-            id="contacto"
-            className="mx-auto grid max-w-7xl scroll-mt-8 gap-10 px-6 py-16 sm:px-10 sm:py-24 lg:grid-cols-2"
-          >
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[.2em] text-[#586b80]">
-                Ubicación y contacto
-              </p>
-              <h2 className="mt-5 text-4xl font-medium tracking-tight">
-                Estamos en El Alto.
-              </h2>
-              <p className="mt-5 max-w-sm text-sm leading-7 text-[#586b80]">
-                Para consultas de inscripción o atención, confirma directamente
-                con la institución la vigencia de estos datos publicados en el
-                directorio.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-[#102e57]/15 bg-white p-6 sm:p-8">
-              <div className="flex gap-4">
-                <MapPin aria-hidden="true" className="shrink-0" />
-                <div>
-                  <h3 className="text-xs uppercase tracking-wider text-[#586b80]">
-                    Dirección publicada
-                  </h3>
-                  <p className="mt-2 text-lg font-medium">{school.address}</p>
-                  <p className="mt-1 text-sm text-[#586b80]">
-                    El Alto, La Paz, Bolivia
-                  </p>
-                  <a
-                    href={school.mapUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4"
-                  >
-                    Buscar la dirección en Maps{" "}
-                    <ArrowUpRight size={15} aria-hidden="true" />
-                  </a>
-                </div>
-              </div>
-              <div className="mt-6 flex gap-4 border-t border-[#102e57]/10 pt-6">
-                <Phone aria-hidden="true" className="shrink-0" />
-                <div>
-                  <h3 className="text-xs uppercase tracking-wider text-[#586b80]">
-                    Teléfono publicado
-                  </h3>
-                  <a
-                    className="mt-2 inline-block text-2xl font-medium hover:underline"
-                    href={`tel:+591${school.phone}`}
-                  >
-                    {school.phone}
-                  </a>
-                  <p className="mt-2 text-xs text-[#586b80]">
-                    No verificado directamente con el colegio.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
         </main>
-        <footer className="border-t border-[#102e57]/15 px-6 py-8 sm:px-10">
+        <footer
+          id="contacto"
+          className="scroll-mt-24 border-t border-[#102e57]/15 px-6 py-12 sm:px-10"
+        >
           <div className="mx-auto max-w-7xl">
-            <div className="flex flex-wrap justify-between gap-4 text-sm">
+            <div className="grid gap-10 pb-10 lg:grid-cols-2">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[.2em] text-[#586b80]">
+                  Ubicación y contacto
+                </p>
+                <h2 className="mt-5 text-4xl font-medium tracking-tight">
+                  Estamos en El Alto.
+                </h2>
+                <p className="mt-5 max-w-sm text-sm leading-7 text-[#586b80]">
+                  Para consultas de inscripción o atención, confirma
+                  directamente con la institución la vigencia de estos datos
+                  publicados en el directorio.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-[#102e57]/15 bg-white p-6 sm:p-8">
+                <div className="flex gap-4">
+                  <MapPin aria-hidden="true" className="shrink-0" />
+                  <div>
+                    <h3 className="text-xs uppercase tracking-wider text-[#586b80]">
+                      Dirección publicada
+                    </h3>
+                    <p className="mt-2 text-lg font-medium">{school.address}</p>
+                    <p className="mt-1 text-sm text-[#586b80]">
+                      El Alto, La Paz, Bolivia
+                    </p>
+                    <a
+                      href={school.mapUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4"
+                    >
+                      Buscar la dirección en Maps{" "}
+                      <ArrowUpRight size={15} aria-hidden="true" />
+                    </a>
+                  </div>
+                </div>
+                <div className="mt-6 flex gap-4 border-t border-[#102e57]/10 pt-6">
+                  <Phone aria-hidden="true" className="shrink-0" />
+                  <div>
+                    <h3 className="text-xs uppercase tracking-wider text-[#586b80]">
+                      Teléfono publicado
+                    </h3>
+                    <a
+                      className="mt-2 inline-block text-2xl font-medium hover:underline"
+                      href={`tel:+591${school.phone}`}
+                    >
+                      {school.phone}
+                    </a>
+                    <p className="mt-2 text-xs text-[#586b80]">
+                      No verificado directamente con el colegio.
+                    </p>
+                  </div>
+                </div>
+                {school.email && (
+                  <div className="mt-6 flex gap-4 border-t border-[#102e57]/10 pt-6">
+                    <Mail aria-hidden="true" className="shrink-0" />
+                    <div>
+                      <h3 className="text-xs uppercase tracking-wider text-[#586b80]">
+                        Correo de comunicación
+                      </h3>
+                      <a
+                        className="mt-2 inline-block break-all text-lg font-medium hover:underline"
+                        href={`mailto:${school.email}`}
+                      >
+                        {school.email}
+                      </a>
+                    </div>
+                  </div>
+                )}
+                {socials.length > 0 && (
+                  <div className="mt-6 border-t border-[#102e57]/10 pt-6">
+                    <h3 className="text-xs uppercase tracking-wider text-[#586b80]">
+                      Redes sociales
+                    </h3>
+                    <ul className="mt-3 flex flex-wrap gap-2">
+                      {socials.map(([name, url]) => (
+                        <li key={name}>
+                          <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 rounded-full border border-[#102e57]/20 px-4 py-2 text-sm font-semibold hover:bg-[#102e57] hover:text-white"
+                          >
+                            {name}
+                            <ArrowUpRight size={14} aria-hidden="true" />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-between gap-4 border-t border-[#102e57]/10 pt-6 text-sm">
               <p className="font-semibold">U.E. Iberdrola A · El Alto</p>
               <Link href="/login" className="underline underline-offset-4">
                 Ingresar con mi cuenta
