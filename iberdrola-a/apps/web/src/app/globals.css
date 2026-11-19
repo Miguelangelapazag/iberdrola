@@ -196,35 +196,56 @@
   border-radius: 24px;
 }
 .auth-layout {
-  padding: 18px;
-  gap: 18px;
+  padding: 0;
+  gap: 0;
   background:
     radial-gradient(ellipse at 80% 0%, #dce7ff, transparent 60%), #f0f4fc;
 }
 .auth-art {
-  border-radius: 30px;
+  border-radius: 0;
   background:
     radial-gradient(circle at 90% 20%, #528bc5aa, transparent 40%),
     radial-gradient(circle at 0% 90%, #316ac7, transparent 50%),
     linear-gradient(145deg, #0d204a, #1d3770);
-  min-height: calc(100vh - 36px);
+  min-height: 100vh;
 }
-.auth-art::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  width: 280px;
-  height: 280px;
-  bottom: -100px;
-  right: -80px;
-  border-radius: 50%;
-  border: 1px solid #ffffff40;
-  box-shadow:
-    0 0 0 35px #ffffff05,
-    0 0 0 70px #ffffff04;
+.auth-logo-box {
+  align-self: flex-start;
+  width: 340px;
+  max-width: 100%;
+  padding: 18px 24px;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 10px 30px #04102e40;
+}
+.auth-logo-box > div {
+  width: 100%;
+}
+.auth-art-copy {
+  padding-bottom: 12px;
+}
+.auth-art-title {
+  font-size: clamp(40px, 4.2vw, 60px);
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.auth-art-title span {
+  color: #b9d9ff;
+}
+.auth-art-lead {
+  margin-top: 28px;
+  max-width: 30rem;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #c6d6ee;
+}
+/* Sin círculos ni líneas decorativas en las bandas azules. */
+.hero-orb-one {
+  display: none;
 }
 .auth-layout > section {
-  min-height: calc(100vh - 36px);
+  min-height: 100vh;
   padding: 30px;
 }
 .auth-card {
@@ -237,9 +258,6 @@
 }
 .auth-card h2 {
   letter-spacing: -0.045em;
-}
-.auth-card > .mb-12 {
-  margin-bottom: 28px;
 }
 .school-home {
   background:
