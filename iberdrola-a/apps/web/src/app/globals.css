@@ -221,8 +221,12 @@
 .auth-logo-box > div {
   width: 100%;
 }
+.auth-art {
+  padding: 36px clamp(24px, 5vw, 72px);
+  gap: clamp(32px, 9vh, 90px);
+}
 .auth-art-copy {
-  padding-bottom: 12px;
+  margin-top: 0;
 }
 .auth-art-title {
   font-size: clamp(40px, 4.2vw, 60px);

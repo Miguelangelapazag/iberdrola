@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { BookOpen, ShieldCheck, Users } from "lucide-react";
 import { Brand } from "@/components/brand";
+import { PublicFooter } from "@/components/public-footer";
 
 /**
  * Ventana de acceso: panel azul a la izquierda con el logo de IberAcad
@@ -8,8 +9,9 @@ import { Brand } from "@/components/brand";
  */
 export function AuthShell({ children }: { children: ReactNode }) {
   return (
-    <div className="school-home auth-page auth-layout grid min-h-screen text-[#102e57] lg:grid-cols-[1.02fr_1fr]">
-      <aside className="auth-art relative flex flex-col justify-between overflow-hidden px-6 py-6 text-white sm:px-9 sm:py-9">
+    <div className="school-home auth-page text-[#102e57]">
+    <div className="auth-layout grid min-h-screen lg:grid-cols-[1.02fr_1fr]">
+      <aside className="auth-art relative flex flex-col overflow-hidden text-white">
         <div className="auth-logo-box">
           <Brand />
         </div>
@@ -51,6 +53,8 @@ export function AuthShell({ children }: { children: ReactNode }) {
           </p>
         </div>
       </section>
+    </div>
+    <PublicFooter compact />
     </div>
   );
 }

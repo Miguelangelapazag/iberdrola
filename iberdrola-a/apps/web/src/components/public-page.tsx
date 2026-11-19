@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { VisualMotion } from "@/components/visual-motion";
 import { PublicHeader } from "@/components/public-header";
 import { PublicFooter } from "@/components/public-footer";
-import { BackHome } from "@/components/back-home";
 
 /** Estructura común de las ventanas públicas: menú, contenido y pie. */
 export function PublicPage({
@@ -31,7 +30,7 @@ export function PublicPage({
   );
 }
 
-/** Banda superior de cada ventana, con el botón para volver a la portada. */
+/** Banda superior de cada ventana, . */
 export function PageHero({
   eyebrow,
   title,
@@ -48,8 +47,7 @@ export function PageHero({
       <div className="hero-orb hero-orb-one" aria-hidden="true" />
       <div className="hero-orb hero-orb-two" aria-hidden="true" />
       <div className="hero-layout mx-auto max-w-7xl px-6 pb-14 pt-8 sm:px-10 sm:pb-20">
-        <BackHome />
-        <p className="hero-eyebrow mt-12">{eyebrow}</p>
+        <p className="hero-eyebrow">{eyebrow}</p>
         <h1 className="max-w-3xl text-4xl font-semibold leading-[1.06] tracking-[-.045em] sm:text-6xl">
           {title}
           {accent && (
