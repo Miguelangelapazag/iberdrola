@@ -292,6 +292,67 @@ html {
 .public-header nav a:hover::after {
   transform: scaleX(1);
 }
+.public-header nav a[aria-current="page"] {
+  color: #fff;
+  font-weight: 600;
+}
+.public-header nav a[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+.page-hero-lead {
+  color: #c6d6ee;
+}
+/* Botón notorio para regresar a la página principal. */
+.back-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 22px;
+  border-radius: 999px;
+  background: #fff;
+  color: #153466;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 8px 28px #0c193845;
+  border: 1px solid #ffffff;
+  transition:
+    transform 0.25s,
+    background 0.25s;
+}
+.back-home-btn:hover {
+  background: #deeeff;
+  transform: translateX(-4px);
+}
+.auth-card .back-home-btn {
+  background: #102e57;
+  color: #fff;
+  border-color: #102e57;
+  box-shadow: 0 8px 22px #102e5740;
+  padding: 11px 18px;
+  font-size: 13px;
+}
+.auth-card .back-home-btn:hover {
+  background: #1c487e;
+}
+.window-card {
+  border: 1px solid #fff;
+  box-shadow: 0 12px 36px #253e7010;
+  transition:
+    transform 0.25s,
+    box-shadow 0.25s;
+}
+.window-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px #253e7022;
+}
+.auth-hero {
+  min-height: calc(100vh - 94px);
+  display: flex;
+  align-items: center;
+}
+.auth-hero > .hero-layout {
+  width: 100%;
+}
 .public-hero {
   background:
     radial-gradient(ellipse at 85% 10%, #81abc877, transparent 45%),
@@ -327,13 +388,13 @@ html {
   background: #fff;
   box-shadow: 0 8px 28px #0c193845;
 }
-.hero-layout a[href="#colegio"] {
+.hero-layout a[href="/el-colegio"] {
   color: #fff;
   background: #ffffff0d;
   border-color: #ffffff35;
   backdrop-filter: blur(12px);
 }
-.hero-layout a[href="#colegio"]:hover {
+.hero-layout a[href="/el-colegio"]:hover {
   background: #ffffff20;
 }
 .hero-photo-frame {

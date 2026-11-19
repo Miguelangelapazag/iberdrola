@@ -1,62 +1,70 @@
 import type { ReactNode } from "react";
-import { BookOpen, ShieldCheck, Users, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import { BookOpen, ShieldCheck, Users } from "lucide-react";
 import { Brand } from "@/components/brand";
+import { PublicHeader } from "@/components/public-header";
+
+/**
+ * Ventana de acceso: extensión de la portada. Conserva el menú público,
+ * el fondo azul y la fotografía enmarcada del colegio.
+ */
 export function AuthShell({ children }: { children: ReactNode }) {
   return (
-    <main className="auth-layout min-h-screen bg-background lg:grid lg:grid-cols-[1fr_1fr]">
-      <aside className="auth-art relative hidden overflow-hidden bg-[#122c36] p-12 text-white lg:flex lg:flex-col lg:justify-between">
-        <div className="absolute -right-32 top-28 size-[520px] rounded-full border border-white/5" />
-        <div className="absolute -right-10 top-52 size-[330px] rounded-full border border-white/5" />
-        <Brand dark />
-        <div className="relative max-w-md">
-          <p className="mb-5 text-xs font-semibold uppercase tracking-[.22em] text-sky-200">
-            Primaria comunitaria vocacional
-          </p>
-          <h1 className="text-5xl font-semibold leading-[1.15] tracking-tight">
-            Cada estudiante.
-            <br />
-            Cada avance.
-            <br />
-            <span className="text-sky-200">Un mismo lugar.</span>
-          </h1>
-          <p className="mt-6 max-w-sm text-base leading-7 text-slate-300">
-            Información académica organizada para acompañar el aprendizaje y
-            acercar a la escuela con las familias.
-          </p>
-          <div className="mt-10 space-y-5">
-            {[
-              [BookOpen, "Calificaciones y asistencia"],
-              [Users, "Escuela y familias conectadas"],
-              [ShieldCheck, "Acceso según tu rol"],
-            ].map(([Icon, label]) => {
-              const I = Icon as typeof BookOpen;
-              return (
-                <div
-                  className="flex items-center gap-3 text-sm text-slate-200"
-                  key={String(label)}
-                >
-                  <I className="text-sky-200" size={19} />
-                  <span>{String(label)}</span>
-                </div>
-              );
-            })}
+    <div className="school-home auth-page min-h-screen text-[#102e57]">
+      <PublicHeader current="/login" />
+      <main className="public-hero auth-hero">
+        <div className="hero-orb hero-orb-one" aria-hidden="true" />
+        <div className="hero-orb hero-orb-two" aria-hidden="true" />
+        <div className="hero-layout mx-auto grid max-w-7xl items-center gap-12 px-6 py-12 sm:px-10 sm:py-16 lg:grid-cols-[1.08fr_1fr]">
+          <div className="auth-photography hidden lg:block">
+            <p className="hero-eyebrow">PRIMARIA COMUNITARIA VOCACIONAL</p>
+            <div className="hero-photo-frame relative aspect-[4/3.4] overflow-hidden rounded-[2rem] bg-slate-200">
+              <Image
+                src="/colegio/colegio3.jpg"
+                alt="Encuentro de la comunidad educativa de Iberdrola A"
+                fill
+                preload
+                sizes="(max-width: 1024px) 0vw, 50vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#082553]/90 via-[#082553]/20 to-transparent" />
+              <div className="absolute inset-x-8 bottom-8 text-white">
+                <p className="text-4xl font-semibold leading-[1.15] tracking-tight">
+                  Cada estudiante.
+                  <br />
+                  Cada avance.
+                  <br />
+                  <span className="text-sky-200">Un mismo lugar.</span>
+                </p>
+              </div>
+            </div>
+            <ul className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm text-slate-200">
+              {[
+                [BookOpen, "Calificaciones y asistencia"],
+                [Users, "Escuela y familias conectadas"],
+                [ShieldCheck, "Acceso según tu rol"],
+              ].map(([Icon, label]) => {
+                const I = Icon as typeof BookOpen;
+                return (
+                  <li className="flex items-center gap-2" key={String(label)}>
+                    <I className="text-sky-200" size={18} aria-hidden="true" />
+                    {String(label)}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div className="auth-card mx-auto w-full">
+            <div className="mb-12">
+              <Brand />
+            </div>
+            {children}
+            <p className="mt-12 text-center text-xs text-muted-foreground">
+              Primaria · 14:00 a 18:05 · La Paz, Bolivia
+            </p>
           </div>
         </div>
-        <p className="relative flex items-center gap-2 text-xs text-slate-400">
-          U.E. Iberdrola A · Turno tarde <ArrowUpRight size={14} />
-        </p>
-      </aside>
-      <section className="flex min-h-screen flex-col justify-center px-6 py-10 sm:px-14">
-        <div className="auth-card mx-auto w-full max-w-md">
-          <div className="mb-12 lg:hidden">
-            <Brand />
-          </div>
-          {children}
-          <p className="mt-12 text-center text-xs text-muted-foreground">
-            Primaria · 14:00 a 18:05 · La Paz, Bolivia
-          </p>
-        </div>
-      </section>
-    </main>
+      </main>
+    </div>
   );
 }
