@@ -168,7 +168,7 @@ export default function Home() {
           <section
             data-reveal
             id="colegio"
-            className="school-facts scroll-mt-6 border-y border-[#102e57]/10 bg-white/60"
+            className="school-facts border-y border-[#102e57]/10 bg-white/60"
           >
             <div className="mx-auto grid max-w-7xl gap-7 px-6 py-10 sm:grid-cols-3 sm:px-10">
               {[
@@ -201,7 +201,7 @@ export default function Home() {
           <section
             data-reveal
             id="galeria"
-            className="texture-dots scroll-mt-8"
+            className="texture-dots"
           >
             <div className="mx-auto max-w-[1400px] px-6 py-16 sm:px-10 sm:py-20">
               <div className="mb-9 flex flex-wrap items-end justify-between gap-5">
@@ -283,7 +283,7 @@ export default function Home() {
           <section
             data-reveal
             id="historia"
-            className="texture-lines scroll-mt-8"
+            className="texture-lines"
           >
             <div className="mx-auto grid max-w-[1400px] gap-10 px-6 py-16 sm:px-10 sm:py-24 lg:grid-cols-[.85fr_1.15fr] lg:items-center">
               <div>
@@ -422,109 +422,107 @@ export default function Home() {
         </main>
         <footer
           id="contacto"
-          className="scroll-mt-24 border-t border-[#102e57]/15 px-6 py-12 sm:px-10"
+          className="bg-[#102247] px-6 pb-8 pt-14 text-white sm:px-10"
         >
           <div className="mx-auto max-w-7xl">
-            <div className="grid gap-10 pb-10 lg:grid-cols-2">
+            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[.2em] text-[#586b80]">
-                  Ubicación y contacto
-                </p>
-                <h2 className="mt-5 text-4xl font-medium tracking-tight">
-                  Estamos en El Alto.
-                </h2>
-                <p className="mt-5 max-w-sm text-sm leading-7 text-[#586b80]">
-                  Para consultas de inscripción o atención, confirma
-                  directamente con la institución la vigencia de estos datos
-                  publicados en el directorio.
+                <div className="flex items-center gap-3">
+                  <Image
+                    src="/colegio/iberdrola_escudo.jpg"
+                    alt="Escudo de la Unidad Educativa Iberdrola A"
+                    width={436}
+                    height={458}
+                    className="h-14 w-14 rounded-lg bg-white object-contain"
+                  />
+                  <div>
+                    <p className="text-lg font-bold tracking-tight">
+                      Iberdrola A.
+                    </p>
+                    <p className="text-[10px] uppercase tracking-[.18em] text-[#b9cbe6]">
+                      Unidad Educativa
+                    </p>
+                  </div>
+                </div>
+                <p className="mt-5 max-w-xs text-sm leading-6 text-[#c7d7eb]">
+                  Primaria · Turno tarde.
+                  <br />
+                  El Alto, La Paz, Bolivia.
                 </p>
               </div>
-              <div className="rounded-2xl border border-[#102e57]/15 bg-white p-6 sm:p-8">
-                <div className="flex gap-4">
-                  <MapPin aria-hidden="true" className="shrink-0" />
-                  <div>
-                    <h3 className="text-xs uppercase tracking-wider text-[#586b80]">
-                      Dirección publicada
-                    </h3>
-                    <p className="mt-2 text-lg font-medium">{school.address}</p>
-                    <p className="mt-1 text-sm text-[#586b80]">
-                      El Alto, La Paz, Bolivia
-                    </p>
-                    <a
-                      href={school.mapUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-3 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4"
-                    >
-                      Buscar la dirección en Maps{" "}
-                      <ArrowUpRight size={15} aria-hidden="true" />
-                    </a>
-                  </div>
-                </div>
-                <div className="mt-6 flex gap-4 border-t border-[#102e57]/10 pt-6">
-                  <Phone aria-hidden="true" className="shrink-0" />
-                  <div>
-                    <h3 className="text-xs uppercase tracking-wider text-[#586b80]">
-                      Teléfono publicado
-                    </h3>
-                    <a
-                      className="mt-2 inline-block text-2xl font-medium hover:underline"
-                      href={`tel:+591${school.phone}`}
-                    >
-                      {school.phone}
-                    </a>
-                    <p className="mt-2 text-xs text-[#586b80]">
-                      No verificado directamente con el colegio.
-                    </p>
-                  </div>
-                </div>
+              <div>
+                <h3 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[.18em] text-[#a8d6ff]">
+                  <MapPin size={15} aria-hidden="true" />
+                  Dirección
+                </h3>
+                <p className="mt-4 text-base font-medium">{school.address}</p>
+                <p className="mt-1 text-sm text-[#c7d7eb]">
+                  El Alto, La Paz, Bolivia
+                </p>
+                <a
+                  href={school.mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4"
+                >
+                  Ver en Maps <ArrowUpRight size={15} aria-hidden="true" />
+                </a>
+              </div>
+              <div>
+                <h3 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[.18em] text-[#a8d6ff]">
+                  <Phone size={15} aria-hidden="true" />
+                  Comunicación
+                </h3>
+                <a
+                  className="mt-4 inline-block text-2xl font-medium hover:underline"
+                  href={`tel:+591${school.phone}`}
+                >
+                  {school.phone}
+                </a>
                 {school.email && (
-                  <div className="mt-6 flex gap-4 border-t border-[#102e57]/10 pt-6">
-                    <Mail aria-hidden="true" className="shrink-0" />
-                    <div>
-                      <h3 className="text-xs uppercase tracking-wider text-[#586b80]">
-                        Correo de comunicación
-                      </h3>
-                      <a
-                        className="mt-2 inline-block break-all text-lg font-medium hover:underline"
-                        href={`mailto:${school.email}`}
-                      >
-                        {school.email}
-                      </a>
-                    </div>
-                  </div>
+                  <a
+                    className="mt-3 flex items-center gap-2 break-all text-sm hover:underline"
+                    href={`mailto:${school.email}`}
+                  >
+                    <Mail size={15} aria-hidden="true" className="shrink-0" />
+                    {school.email}
+                  </a>
                 )}
-                {socials.length > 0 && (
-                  <div className="mt-6 border-t border-[#102e57]/10 pt-6">
-                    <h3 className="text-xs uppercase tracking-wider text-[#586b80]">
-                      Redes sociales
-                    </h3>
-                    <ul className="mt-3 flex flex-wrap gap-2">
-                      {socials.map(([name, url]) => (
-                        <li key={name}>
-                          <a
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 rounded-full border border-[#102e57]/20 px-4 py-2 text-sm font-semibold hover:bg-[#102e57] hover:text-white"
-                          >
-                            {name}
-                            <ArrowUpRight size={14} aria-hidden="true" />
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                <p className="mt-3 max-w-xs text-xs leading-5 text-[#b9cbe6]">
+                  Datos del directorio, no verificados directamente con el
+                  colegio. Confirma su vigencia al comunicarte.
+                </p>
               </div>
+              {socials.length > 0 && (
+                <div>
+                  <h3 className="text-xs font-semibold uppercase tracking-[.18em] text-[#a8d6ff]">
+                    Redes sociales
+                  </h3>
+                  <ul className="mt-4 flex flex-wrap gap-2">
+                    {socials.map(([name, url]) => (
+                      <li key={name}>
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 rounded-full border border-white/30 px-4 py-2 text-sm font-semibold hover:bg-white hover:text-[#102247]"
+                        >
+                          {name}
+                          <ArrowUpRight size={14} aria-hidden="true" />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
-            <div className="flex flex-wrap justify-between gap-4 border-t border-[#102e57]/10 pt-6 text-sm">
+            <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-white/15 pt-6 text-sm">
               <p className="font-semibold">U.E. Iberdrola A · El Alto</p>
               <Link href="/login" className="underline underline-offset-4">
                 Ingresar con mi cuenta
               </Link>
             </div>
-            <details className="mt-6 text-xs leading-6 text-[#586b80]">
+            <details className="mt-5 text-xs leading-6 text-[#b9cbe6]">
               <summary className="cursor-pointer font-medium">
                 Fuentes de información y alcance
               </summary>
@@ -540,7 +538,7 @@ export default function Home() {
                     href={school.directoryUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="underline"
+                    className="underline underline-offset-2"
                   >
                     UnidadEducativa.net: ficha de Iberdrola A
                   </a>{" "}
@@ -551,7 +549,7 @@ export default function Home() {
                     href={school.historyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="underline"
+                    className="underline underline-offset-2"
                   >
                     Blog: Historia de la Unidad Educativa Iberdrola
                   </a>{" "}

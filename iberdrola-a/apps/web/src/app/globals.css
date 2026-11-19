@@ -253,8 +253,14 @@
   top: 0;
   z-index: 50;
 }
+/* Altura de la barra fija de la portada: cada sección queda justo debajo, sin franja de la anterior. */
 html {
-  scroll-padding-top: 96px;
+  scroll-padding-top: 94px;
+}
+@media (max-width: 639px) {
+  html {
+    scroll-padding-top: 118px;
+  }
 }
 .public-header > div {
   padding-top: 20px;
