@@ -207,7 +207,7 @@
     radial-gradient(circle at 90% 20%, #528bc5aa, transparent 40%),
     radial-gradient(circle at 0% 90%, #316ac7, transparent 50%),
     linear-gradient(145deg, #0d204a, #1d3770);
-  min-height: 100vh;
+  min-height: calc(100vh - 94px);
 }
 .auth-logo-box {
   align-self: flex-start;
@@ -249,7 +249,7 @@
   display: none;
 }
 .auth-layout > section {
-  min-height: 100vh;
+  min-height: calc(100vh - 94px);
   padding: 30px;
 }
 .auth-card {
