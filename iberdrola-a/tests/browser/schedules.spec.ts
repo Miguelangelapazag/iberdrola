@@ -187,7 +187,7 @@ test("horarios: conflicto entre pestañas conserva selección y vista móvil no 
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(`/panel/horarios/semana?curso=${c}`);
   await expect(
-    page.getByRole("heading", { name: "Horario semanal.", exact: true }),
+    page.getByRole("heading", { name: "Consultar horario.", exact: true }),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Añadir bloque", exact: true }),
@@ -206,7 +206,7 @@ test("horarios: conflicto entre pestañas conserva selección y vista móvil no 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
   await expect(
-    page.getByRole("heading", { name: "Horario semanal.", exact: true }),
+    page.getByRole("heading", { name: "Consultar horario.", exact: true }),
   ).toBeVisible();
   await page
     .getByRole("button", { name: "Añadir bloque", exact: true })

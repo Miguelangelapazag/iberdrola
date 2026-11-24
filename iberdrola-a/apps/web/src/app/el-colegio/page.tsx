@@ -15,9 +15,7 @@ export default function ElColegio() {
   return (
     <PublicPage current="/el-colegio">
       <PageHero
-        eyebrow="CONOCE TU COLEGIO"
         title="El colegio"
-        accent="y su comunidad."
         lead="Una unidad educativa fiscal de El Alto, pensada para aprender, crecer y mantener cerca a las familias."
       />
       <section className="school-facts border-y border-[#102e57]/10 bg-white/60">

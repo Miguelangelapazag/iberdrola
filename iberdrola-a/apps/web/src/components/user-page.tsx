@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { PageTitle } from "@/components/page-title";
 import { requireProfile } from "@/lib/auth";
 import { loadPanel } from "@/lib/data/live";
 import { PanelShell } from "@/components/panel-shell";
@@ -20,10 +21,7 @@ export async function UserPage({
     <PanelShell model={model}>
       <div className="mb-7">
         <p className="mb-2 text-xs text-muted-foreground">Gestión de usuarios</p>
-        <h1 className="text-3xl font-semibold tracking-tight">
-          {title}
-          <span className="text-primary">.</span>
-        </h1>
+        <PageTitle fallback={title} />
         <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">{lead}</p>
       </div>
       {profile.rol !== "DIRECTOR" ? (

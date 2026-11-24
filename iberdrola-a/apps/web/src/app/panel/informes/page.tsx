@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageTitle } from "@/components/page-title";
 import { requireProfile } from "@/lib/auth";
 import { loadPanel } from "@/lib/data/live";
 import { loadScheduleCourses } from "@/lib/data/schedule";
@@ -33,9 +34,7 @@ export default async function ReportsPage({
         <p className="mb-2 text-xs text-muted-foreground">
           Consulta y exportación
         </p>
-        <h1 className="text-3xl font-semibold tracking-tight">
-          Informes académicos<span className="text-primary">.</span>
-        </h1>
+        <PageTitle fallback="Informes académicos" />
         <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
           Consulta calificaciones publicadas o asistencia por curso. Descarga
           los resultados o prepara una copia para imprimir.

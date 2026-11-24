@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageTitle } from "@/components/page-title";
 import { requireProfile } from "@/lib/auth";
 import { loadPanel } from "@/lib/data/live";
 import { loadGradeOptions, loadGradeSheet } from "@/lib/data/grades";
@@ -62,9 +63,7 @@ export default async function GradeRegister({
           <p className="mb-2 text-xs text-muted-foreground">
             Evaluación trimestral · Dirección y docentes
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight">
-            Registro de calificaciones<span className="text-primary">.</span>
-          </h1>
+          <PageTitle fallback="Registro de calificaciones" />
           <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
             Configura las actividades de cada materia. Guarda las notas por
             estudiante y publícalas cuando estén completas.

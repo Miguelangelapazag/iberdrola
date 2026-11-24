@@ -34,6 +34,7 @@ import {
 import type { PanelModel } from "@/lib/data/model";
 import { cn } from "@/lib/utils";
 import { resolveNav, activeNav, type NavIcon } from "@/lib/navigation";
+import { ActiveNavLabel } from "@/components/page-title";
 const icons: Record<NavIcon, typeof Users> = {
   inicio: House,
   cuenta: KeyRound,
@@ -97,6 +98,26 @@ export function PanelShell({
             const isActiveGroup = active?.group.id === group.id;
             const expanded = toggled[group.id] ?? isActiveGroup;
             const panelId = `submenu-${group.id}`;
+            if (group.direct) {
+              const item = group.items[0];
+              return (
+                <Link
+                  key={group.id}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  aria-current={isActiveGroup ? "page" : undefined}
+                  className={cn(
+                    "flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm transition-colors",
+                    isActiveGroup
+                      ? "bg-white font-semibold text-blue-800 shadow-sm"
+                      : "text-slate-600 hover:bg-white/70",
+                  )}
+                >
+                  <Icon size={18} className="shrink-0" />
+                  <span className="min-w-0 flex-1">{group.label}</span>
+                </Link>
+              );
+            }
             return (
               <div key={group.id}>
                 <button
@@ -188,7 +209,9 @@ export function PanelShell({
               <ChevronRight size={12} />
               <span className="font-medium text-foreground">
                 {active
-                  ? `${active.group.label} · ${active.item.label}`
+                  ? active.group.direct
+                    ? active.group.label
+                    : `${active.group.label} · ${active.item.label}`
                   : current === "informes"
                     ? "Informes"
                     : current === "gestion"
@@ -264,7 +287,11 @@ export function PanelShell({
           </div>
         )}
         <main className="academic-content mx-auto max-w-[1460px] px-5 py-7 lg:px-9 lg:py-9">
-          {children}
+          <ActiveNavLabel.Provider
+            value={active && !active.group.direct ? active.item.label : null}
+          >
+            {children}
+          </ActiveNavLabel.Provider>
         </main>
         <footer className="flex flex-wrap justify-between gap-2 px-5 pb-6 text-[10px] text-muted-foreground lg:px-9">
           <p>U.E. Iberdrola A · Primaria</p>

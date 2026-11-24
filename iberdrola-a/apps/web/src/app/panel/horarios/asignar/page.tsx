@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageTitle } from "@/components/page-title";
 import { CalendarPlus, ClipboardList } from "lucide-react";
 import { requireProfile } from "@/lib/auth";
 import { loadPanel } from "@/lib/data/live";
@@ -21,7 +22,7 @@ export default async function AsignarCurso() {
             Solo Dirección y Secretaría pueden asignar horarios a los cursos.
           </p>
           <Button asChild className="mt-5">
-            <Link href="/panel/horarios">Ver registros de horarios</Link>
+            <Link href="/panel/horarios">Ver asignación de horarios</Link>
           </Button>
         </Card>
       </PanelShell>
@@ -33,9 +34,7 @@ export default async function AsignarCurso() {
         <p className="mb-2 text-xs text-muted-foreground">
           Control de horarios · Dirección y Secretaría
         </p>
-        <h1 className="text-3xl font-semibold tracking-tight">
-          Asignar curso<span className="text-primary">.</span>
-        </h1>
+        <PageTitle fallback="Asignación de cursos" />
         <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
           Elige un curso para ubicar sus materias en el horario semanal. Si
           todavía no tiene materias con docente, asígnalas primero.

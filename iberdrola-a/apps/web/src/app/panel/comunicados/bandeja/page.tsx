@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageTitle } from "@/components/page-title";
 import { requireProfile } from "@/lib/auth";
 import { loadPanel } from "@/lib/data/live";
 import { loadScheduleCourses } from "@/lib/data/schedule";
@@ -48,9 +49,7 @@ export default async function NoticePage({
           <p className="mb-2 text-xs text-muted-foreground">
             Comunidad educativa
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight">
-            Tablón de comunicados<span className="text-primary">.</span>
-          </h1>
+          <PageTitle fallback="Tablón de comunicados" />
           <p className="mt-3 text-sm text-muted-foreground">
             Avisos institucionales y de tus cursos, en un solo lugar.
           </p>

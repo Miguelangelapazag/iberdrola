@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageTitle } from "@/components/page-title";
 import { notFound } from "next/navigation";
 import {
   Plus,
@@ -380,12 +381,14 @@ export default async function ManagementPage({
           <p className="mb-2 text-xs text-muted-foreground">
             Gestión académica · Dirección y Secretaría
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight">
-            {editing
-              ? `${id ? "Editar" : "Registrar"} ${managementSingular[seccion]}`
-              : managementLabels[seccion]}
-            <span className="text-primary">.</span>
-          </h1>
+          {editing ? (
+            <h1 className="text-3xl font-semibold tracking-tight">
+              {`${id ? "Editar" : "Registrar"} ${managementSingular[seccion]}`}
+              <span className="text-primary">.</span>
+            </h1>
+          ) : (
+            <PageTitle fallback={managementLabels[seccion]} />
+          )}
           <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
             {editing
               ? "Completa la ficha y guarda los cambios. Los campos con * son obligatorios."

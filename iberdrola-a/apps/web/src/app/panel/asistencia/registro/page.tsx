@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageTitle } from "@/components/page-title";
 import { requireProfile } from "@/lib/auth";
 import {
   canRecordAttendance,
@@ -62,9 +63,7 @@ export default async function AttendanceRegister({
           <p className="mb-2 text-xs text-muted-foreground">
             Asistencia diaria · Dirección y docentes
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight">
-            Registro de asistencia<span className="text-primary">.</span>
-          </h1>
+          <PageTitle fallback="Registro de asistencia" />
           <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
             Selecciona un curso y una fecha. Revisa las marcas antes de publicar
             la jornada.

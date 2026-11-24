@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageTitle } from "@/components/page-title";
 import { requireProfile } from "@/lib/auth";
 import { loadPanel } from "@/lib/data/live";
 import {
@@ -47,9 +48,7 @@ export default async function SchedulePage({
           <p className="mb-2 text-xs text-muted-foreground">
             Organización semanal · Primaria
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight">
-            Horario semanal<span className="text-primary">.</span>
-          </h1>
+          <PageTitle fallback="Consultar horario" />
           <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
             Consulta las clases del curso de lunes a viernes. Dirección y
             Secretaría administran periodos y asignaciones.
@@ -62,7 +61,7 @@ export default async function SchedulePage({
           )}
         </div>
         <Button asChild variant="outline">
-          <Link href="/panel/horarios">Ver registros</Link>
+          <Link href="/panel/horarios">Asignación de horarios</Link>
         </Button>
       </div>
       <Card className="mb-6 p-5">

@@ -1,4 +1,5 @@
 import { PanelShell } from "@/components/panel-shell";
+import { PageTitle } from "@/components/page-title";
 import { Card } from "@/components/ui/card";
 import { RecordsTable } from "@/components/records-table";
 import type { Module } from "@iberdrola/shared";
@@ -20,10 +21,7 @@ export function ModulePage({
     <PanelShell model={model} current={module}>
       <div className="mb-7">
         <p className="mb-2 text-xs text-muted-foreground">Consulta académica</p>
-        <h1 className="text-3xl font-semibold tracking-tight">
-          {listing.title}
-          <span className="text-primary">.</span>
-        </h1>
+        <PageTitle fallback={listing.title} />
         <p className="mt-3 text-sm leading-6 text-muted-foreground">
           {listing.description}
         </p>
@@ -71,7 +69,7 @@ export function ModulePage({
         )}
       {!model.demo && module === "horarios" && (
         <Button asChild className="mt-5">
-          <Link href="/panel/horarios/semana">Ver horario semanal</Link>
+          <Link href="/panel/horarios/semana">Consultar horario</Link>
         </Button>
       )}
       {!model.demo && module === "comunicados" && (

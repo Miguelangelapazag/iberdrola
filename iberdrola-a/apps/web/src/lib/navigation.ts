@@ -39,6 +39,8 @@ export type NavGroup = {
   sprint?: number;
   label: string;
   icon: NavIcon;
+  /** Enlace directo: se muestra sin submenú y lleva a su único elemento. */
+  direct?: boolean;
   items: NavItem[];
 };
 export const navGroups: NavGroup[] = [
@@ -46,7 +48,8 @@ export const navGroups: NavGroup[] = [
     id: "inicio",
     label: "Inicio",
     icon: "inicio",
-    items: [{ label: "Resumen", href: "/panel", demo: "/demo" }],
+    direct: true,
+    items: [{ label: "Inicio", href: "/panel", demo: "/demo" }],
   },
   {
     id: "usuarios",
@@ -103,9 +106,9 @@ export const navGroups: NavGroup[] = [
     label: "Control de Horarios",
     icon: "horarios",
     items: [
-      { label: "Registros de horarios", href: "/panel/horarios", demo: "/demo/horarios" },
-      { label: "Horario semanal", href: "/panel/horarios/semana" },
-      { label: "Asignar curso", href: "/panel/horarios/asignar", manage: true },
+      { label: "Asignación de horarios", href: "/panel/horarios", demo: "/demo/horarios" },
+      { label: "Consultar horario", href: "/panel/horarios/semana" },
+      { label: "Asignación de cursos", href: "/panel/horarios/asignar", manage: true },
     ],
   },
   {
