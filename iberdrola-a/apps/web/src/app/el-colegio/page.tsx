@@ -15,7 +15,11 @@ export default function ElColegio() {
   return (
     <PublicPage current="/el-colegio">
       <PageHero
+<<<<<<< HEAD
         eyebrow="CONOCE TU COLEGIO"
+=======
+        eyebrow="CONOCE IBERDROLA A"
+>>>>>>> ceb08fde8e53c9ee59e8d35db1a60c60467443b6
         title="El colegio"
         accent="y su comunidad."
         lead="Una unidad educativa fiscal de El Alto, pensada para aprender, crecer y mantener cerca a las familias."

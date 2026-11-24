@@ -56,7 +56,11 @@ export function AuthShell({ children }: { children: ReactNode }) {
         </div>
       </section>
     </div>
+<<<<<<< HEAD
     <PublicFooter />
+=======
+    <PublicFooter compact />
+>>>>>>> ceb08fde8e53c9ee59e8d35db1a60c60467443b6
     </div>
   );
 }
