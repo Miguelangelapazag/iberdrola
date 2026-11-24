@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { requireProfile } from "@/lib/auth";
 import { loadPanel } from "@/lib/data/live";
-import { loadScheduleCourses, loadScheduleSheet } from "@/lib/data/schedule";
+import {
+  loadInstitutionSchedule,
+  loadScheduleCourses,
+  loadScheduleSheet,
+} from "@/lib/data/schedule";
 import { canManage, uuidPattern } from "@/lib/management-validation";
 import { weekdays } from "@/lib/schedule-validation";
 import { PanelShell } from "@/components/panel-shell";
@@ -20,6 +24,7 @@ export default async function SchedulePage({
   const { profile } = await requireProfile(),
     model = await loadPanel(),
     courses = await loadScheduleCourses(),
+    institution = await loadInstitutionSchedule(),
     params = await searchParams;
   const course = typeof params.curso === "string" ? params.curso : "",
     id = typeof params.bloque === "string" ? params.bloque : "";
@@ -49,6 +54,12 @@ export default async function SchedulePage({
             Consulta las clases del curso de lunes a viernes. Dirección y
             Secretaría administran periodos y asignaciones.
           </p>
+          {institution && (
+            <p className="mt-2 text-sm text-muted-foreground">
+              {institution.turno} · {institution.ingreso} a {institution.salida}{" "}
+              · seis periodos de 40 minutos
+            </p>
+          )}
         </div>
         <Button asChild variant="outline">
           <Link href="/panel/horarios">Ver registros</Link>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AuthShell } from "@/components/auth-shell";
 import { AuthForm } from "@/components/auth-form";
+import { BackHome } from "@/components/back-home";
 import { getSupabaseConfig, demoEnabled } from "@/lib/env";
 export const dynamic = "force-dynamic";
 export default async function Login({
@@ -12,17 +13,12 @@ export default async function Login({
   const configured = !!getSupabaseConfig();
   return (
     <AuthShell>
-      <Link
-        href="/"
-        className="mb-7 inline-block text-sm font-medium text-primary hover:underline"
-      >
-        ← Volver a la página principal
-      </Link>
+      <BackHome className="mb-7" />
       <p className="mb-3 text-xs font-bold uppercase tracking-[.18em] text-primary">
-        Bienvenido a tu escuela
+        Conoce tu colegio
       </p>
       <h2 className="text-3xl font-semibold tracking-tight">
-        Todo listo para aprender.
+        Bienvenidos a IberAcad
       </h2>
       <p className="mt-3 text-sm leading-6 text-muted-foreground">
         Ingresa con la cuenta asignada por la institución.

@@ -1,29 +1,36 @@
 import type { ReactNode } from "react";
-import { BookOpen, ShieldCheck, Users, ArrowUpRight } from "lucide-react";
+import { BookOpen, ShieldCheck, Users } from "lucide-react";
 import { Brand } from "@/components/brand";
+import { PublicHeader } from "@/components/public-header";
+import { PublicFooter } from "@/components/public-footer";
+
+/**
+ * Ventana de acceso: panel azul a la izquierda con el logo de IberAcad
+ * (grande, arriba a la izquierda) y la tarjeta de ingreso a la derecha.
+ */
 export function AuthShell({ children }: { children: ReactNode }) {
   return (
-    <main className="auth-layout min-h-screen bg-background lg:grid lg:grid-cols-[1fr_1fr]">
-      <aside className="auth-art relative hidden overflow-hidden bg-[#122c36] p-12 text-white lg:flex lg:flex-col lg:justify-between">
-        <div className="absolute -right-32 top-28 size-[520px] rounded-full border border-white/5" />
-        <div className="absolute -right-10 top-52 size-[330px] rounded-full border border-white/5" />
-        <Brand dark />
-        <div className="relative max-w-md">
-          <p className="mb-5 text-xs font-semibold uppercase tracking-[.22em] text-sky-200">
-            Primaria comunitaria vocacional
-          </p>
-          <h1 className="text-5xl font-semibold leading-[1.15] tracking-tight">
+    <div className="school-home auth-page text-[#102e57]">
+      <PublicHeader current="/login" />
+    <div className="auth-layout grid lg:grid-cols-[1.02fr_1fr]">
+      <aside className="auth-art relative flex flex-col overflow-hidden text-white">
+        <div className="auth-logo-box">
+          <Brand />
+        </div>
+        <div className="auth-art-copy hidden lg:block">
+          <p className="hero-eyebrow">PRIMARIA COMUNITARIA VOCACIONAL</p>
+          <p className="auth-art-title">
             Cada estudiante.
             <br />
             Cada avance.
             <br />
-            <span className="text-sky-200">Un mismo lugar.</span>
-          </h1>
-          <p className="mt-6 max-w-sm text-base leading-7 text-slate-300">
+            <span>Un mismo lugar.</span>
+          </p>
+          <p className="auth-art-lead">
             Información académica organizada para acompañar el aprendizaje y
             acercar a la escuela con las familias.
           </p>
-          <div className="mt-10 space-y-5">
+          <ul className="mt-8 grid gap-3 text-sm text-slate-200">
             {[
               [BookOpen, "Calificaciones y asistencia"],
               [Users, "Escuela y familias conectadas"],
@@ -31,32 +38,25 @@ export function AuthShell({ children }: { children: ReactNode }) {
             ].map(([Icon, label]) => {
               const I = Icon as typeof BookOpen;
               return (
-                <div
-                  className="flex items-center gap-3 text-sm text-slate-200"
-                  key={String(label)}
-                >
-                  <I className="text-sky-200" size={19} />
-                  <span>{String(label)}</span>
-                </div>
+                <li className="flex items-center gap-3" key={String(label)}>
+                  <I className="text-sky-200" size={18} aria-hidden="true" />
+                  {String(label)}
+                </li>
               );
             })}
-          </div>
+          </ul>
         </div>
-        <p className="relative flex items-center gap-2 text-xs text-slate-400">
-          U.E. Iberdrola A · Turno tarde <ArrowUpRight size={14} />
-        </p>
       </aside>
-      <section className="flex min-h-screen flex-col justify-center px-6 py-10 sm:px-14">
-        <div className="auth-card mx-auto w-full max-w-md">
-          <div className="mb-12 lg:hidden">
-            <Brand />
-          </div>
+      <section className="flex items-center justify-center">
+        <div className="auth-card w-full">
           {children}
           <p className="mt-12 text-center text-xs text-muted-foreground">
             Primaria · 14:00 a 18:05 · La Paz, Bolivia
           </p>
         </div>
       </section>
-    </main>
+    </div>
+    <PublicFooter />
+    </div>
   );
 }

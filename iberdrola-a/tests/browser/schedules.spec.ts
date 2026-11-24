@@ -251,3 +251,12 @@ test("horarios: docente consulta sin botones administrativos", async ({
     page.getByText("Configurar horas de los periodos", { exact: true }),
   ).toHaveCount(0);
 });
+test("el horario semanal muestra el turno y los periodos de la institución", async ({
+  page,
+}) => {
+  await login(page);
+  await page.goto("/panel/horarios/semana");
+  await expect(
+    page.getByText("Turno tarde · 14:00 a 18:05 · seis periodos de 40 minutos"),
+  ).toBeVisible();
+});

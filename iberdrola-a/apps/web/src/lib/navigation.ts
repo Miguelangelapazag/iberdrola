@@ -9,6 +9,9 @@ export function panelHref(
 }
 
 export type NavIcon =
+  | "inicio"
+  | "cuenta"
+  | "comunicados"
   | "usuarios"
   | "estudiantes"
   | "docentes"
@@ -40,13 +43,21 @@ export type NavGroup = {
 };
 export const navGroups: NavGroup[] = [
   {
+    id: "inicio",
+    label: "Inicio",
+    icon: "inicio",
+    items: [{ label: "Resumen", href: "/panel", demo: "/demo" }],
+  },
+  {
     id: "usuarios",
     sprint: 1,
     label: "Gestión de Usuarios",
     icon: "usuarios",
     items: [
-      { label: "Resumen", href: "/panel", demo: "/demo" },
-      { label: "Tutores y responsables", href: "/panel/gestion/tutores", manage: true },
+      { label: "Crear usuario", href: "/panel/usuarios/nuevo", roles: ["DIRECTOR"] },
+      { label: "Buscar usuarios", href: "/panel/usuarios", roles: ["DIRECTOR"] },
+      { label: "Editar usuario", href: "/panel/usuarios/editar", roles: ["DIRECTOR"] },
+      { label: "Desactivar usuarios", href: "/panel/usuarios/desactivar", roles: ["DIRECTOR"] },
     ],
   },
   {
@@ -62,6 +73,7 @@ export const navGroups: NavGroup[] = [
         roleLabels: { PADRE: "Mis hijos", ESTUDIANTE: "Mi ficha" },
       },
       { label: "Fichas de estudiantes", href: "/panel/gestion/estudiantes", manage: true },
+      { label: "Tutores y responsables", href: "/panel/gestion/tutores", manage: true },
       { label: "Cursos", href: "/panel/cursos", demo: "/demo/cursos" },
       { label: "Administrar cursos", href: "/panel/gestion/cursos", manage: true },
       { label: "Matrículas", href: "/panel/gestion/matriculas", manage: true },
@@ -93,6 +105,7 @@ export const navGroups: NavGroup[] = [
     items: [
       { label: "Registros de horarios", href: "/panel/horarios", demo: "/demo/horarios" },
       { label: "Horario semanal", href: "/panel/horarios/semana" },
+      { label: "Asignar curso", href: "/panel/horarios/asignar", manage: true },
     ],
   },
   {
@@ -129,6 +142,21 @@ export const navGroups: NavGroup[] = [
     label: "Reportes Académicos",
     icon: "reportes",
     items: [{ label: "Informes", href: "/panel/informes" }],
+  },
+  {
+    id: "comunicados",
+    label: "Comunicados",
+    icon: "comunicados",
+    items: [
+      { label: "Tablón de avisos", href: "/panel/comunicados/bandeja" },
+      { label: "Consultar comunicados", href: "/panel/comunicados", demo: "/demo/comunicados" },
+    ],
+  },
+  {
+    id: "cuenta",
+    label: "Mi cuenta",
+    icon: "cuenta",
+    items: [{ label: "Cambiar contraseña", href: "/panel/cuenta/clave" }],
   },
 ];
 export type ResolvedNavItem = { label: string; href: string; path: string };

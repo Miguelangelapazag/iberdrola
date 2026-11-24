@@ -144,6 +144,7 @@ test("menú y tabla funcionan en pantalla móvil sin desbordar la página", asyn
     .getByRole("button", { name: "Control de Asistencia", exact: true })
     .click();
   await page
+    .getByRole("navigation")
     .getByRole("link", { name: "Consultar asistencia", exact: true })
     .click();
   await expect(

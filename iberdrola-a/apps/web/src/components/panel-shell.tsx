@@ -18,6 +18,9 @@ import {
   ChevronRight,
   FlaskConical,
   ArrowUpRight,
+  House,
+  KeyRound,
+  Megaphone,
 } from "lucide-react";
 import { Brand } from "@/components/brand";
 import { logout } from "@/app/actions";
@@ -32,6 +35,9 @@ import type { PanelModel } from "@/lib/data/model";
 import { cn } from "@/lib/utils";
 import { resolveNav, activeNav, type NavIcon } from "@/lib/navigation";
 const icons: Record<NavIcon, typeof Users> = {
+  inicio: House,
+  cuenta: KeyRound,
+  comunicados: Megaphone,
   usuarios: ShieldCheck,
   estudiantes: GraduationCap,
   docentes: Users,

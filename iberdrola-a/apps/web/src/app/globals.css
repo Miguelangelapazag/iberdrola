@@ -196,35 +196,60 @@
   border-radius: 24px;
 }
 .auth-layout {
-  padding: 18px;
-  gap: 18px;
+  padding: 0;
+  gap: 0;
   background:
     radial-gradient(ellipse at 80% 0%, #dce7ff, transparent 60%), #f0f4fc;
 }
 .auth-art {
-  border-radius: 30px;
+  border-radius: 0;
   background:
     radial-gradient(circle at 90% 20%, #528bc5aa, transparent 40%),
     radial-gradient(circle at 0% 90%, #316ac7, transparent 50%),
     linear-gradient(145deg, #0d204a, #1d3770);
-  min-height: calc(100vh - 36px);
+  min-height: calc(100vh - 94px);
 }
-.auth-art::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  width: 280px;
-  height: 280px;
-  bottom: -100px;
-  right: -80px;
-  border-radius: 50%;
-  border: 1px solid #ffffff40;
-  box-shadow:
-    0 0 0 35px #ffffff05,
-    0 0 0 70px #ffffff04;
+.auth-logo-box {
+  align-self: flex-start;
+  width: 340px;
+  max-width: 100%;
+  padding: 18px 24px;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 10px 30px #04102e40;
+}
+.auth-logo-box > div {
+  width: 100%;
+}
+.auth-art {
+  padding: 36px clamp(24px, 5vw, 72px);
+  gap: clamp(32px, 9vh, 90px);
+}
+.auth-art-copy {
+  margin-top: 0;
+}
+.auth-art-title {
+  font-size: clamp(40px, 4.2vw, 60px);
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.auth-art-title span {
+  color: #b9d9ff;
+}
+.auth-art-lead {
+  margin-top: 28px;
+  max-width: 30rem;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #c6d6ee;
+}
+/* Sin círculos ni líneas decorativas en las bandas azules. */
+.hero-orb-one {
+  display: none;
 }
 .auth-layout > section {
-  min-height: calc(100vh - 36px);
+  min-height: calc(100vh - 94px);
   padding: 30px;
 }
 .auth-card {
@@ -237,9 +262,6 @@
 }
 .auth-card h2 {
   letter-spacing: -0.045em;
-}
-.auth-card > .mb-12 {
-  margin-bottom: 28px;
 }
 .school-home {
   background:
@@ -292,6 +314,67 @@ html {
 .public-header nav a:hover::after {
   transform: scaleX(1);
 }
+.public-header nav a[aria-current="page"] {
+  color: #fff;
+  font-weight: 600;
+}
+.public-header nav a[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+.page-hero-lead {
+  color: #c6d6ee;
+}
+/* Botón notorio para regresar a la página principal. */
+.back-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 22px;
+  border-radius: 999px;
+  background: #fff;
+  color: #153466;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 8px 28px #0c193845;
+  border: 1px solid #ffffff;
+  transition:
+    transform 0.25s,
+    background 0.25s;
+}
+.back-home-btn:hover {
+  background: #deeeff;
+  transform: translateX(-4px);
+}
+.auth-card .back-home-btn {
+  background: #102e57;
+  color: #fff;
+  border-color: #102e57;
+  box-shadow: 0 8px 22px #102e5740;
+  padding: 11px 18px;
+  font-size: 13px;
+}
+.auth-card .back-home-btn:hover {
+  background: #1c487e;
+}
+.window-card {
+  border: 1px solid #fff;
+  box-shadow: 0 12px 36px #253e7010;
+  transition:
+    transform 0.25s,
+    box-shadow 0.25s;
+}
+.window-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px #253e7022;
+}
+.auth-hero {
+  min-height: calc(100vh - 94px);
+  display: flex;
+  align-items: center;
+}
+.auth-hero > .hero-layout {
+  width: 100%;
+}
 .public-hero {
   background:
     radial-gradient(ellipse at 85% 10%, #81abc877, transparent 45%),
@@ -327,13 +410,13 @@ html {
   background: #fff;
   box-shadow: 0 8px 28px #0c193845;
 }
-.hero-layout a[href="#colegio"] {
+.hero-layout a[href="/el-colegio"] {
   color: #fff;
   background: #ffffff0d;
   border-color: #ffffff35;
   backdrop-filter: blur(12px);
 }
-.hero-layout a[href="#colegio"]:hover {
+.hero-layout a[href="/el-colegio"]:hover {
   background: #ffffff20;
 }
 .hero-photo-frame {

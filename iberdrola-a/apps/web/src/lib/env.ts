@@ -64,3 +64,19 @@ export function demoEnabled(): boolean {
       process.env.ENABLE_DEMO !== "false")
   );
 }
+/** Clave de servicio (solo servidor). Permite invitar usuarios y gestionar sus cuentas. */
+export function getAdminConfig(): SupabaseConfig | null {
+  const base = getSupabaseConfig();
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+  if (!base || !key) return null;
+  if (key.startsWith("sb_secret_") && key.length > 10)
+    return { url: base.url, key };
+  try {
+    const claims = JSON.parse(
+      atob(key.split(".")[1]?.replace(/-/g, "+").replace(/_/g, "/") ?? ""),
+    ) as { role?: string };
+    return claims.role === "service_role" ? { url: base.url, key } : null;
+  } catch {
+    return null;
+  }
+}

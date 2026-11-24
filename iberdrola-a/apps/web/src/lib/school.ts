@@ -9,6 +9,9 @@ export const school = {
     "https://unidadeducativa.net/cerca-de-mi-ubicacion/unidades-educativas/el-alto/fiscales/iberdrola-a/RUE/40730423/",
   mapUrl:
     "https://www.google.com/maps/search/?api=1&query=Unidad+Educativa+Iberdrola+A+Plaza+16+de+Febrero+El+Alto+Bolivia",
+  /** Mapa incrustado de Google Maps (no requiere clave). */
+  mapEmbedUrl:
+    "https://www.google.com/maps?q=Unidad+Educativa+Iberdrola+A+Plaza+16+de+Febrero+El+Alto+Bolivia&hl=es&z=16&output=embed",
   /** Correo directo de comunicación. Se muestra en la portada solo si tiene valor. */
   email: "",
   /** Direcciones completas (https://...) de las redes oficiales. Las vacías no se muestran. */

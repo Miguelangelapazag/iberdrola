@@ -1,5 +1,9 @@
 import { test, expect } from "@playwright/test";
-test("portada pública con fuentes, navegación y acceso al login sin consultar datos privados", async ({
+
+const menu = (page: import("@playwright/test").Page) =>
+  page.getByRole("navigation", { name: "Navegación pública" });
+
+test("portada: cada opción del menú abre su propia ventana con botón para volver", async ({
   page,
 }) => {
   const calls: string[] = [];
@@ -9,87 +13,52 @@ test("portada pública con fuentes, navegación y acceso al login sin consultar 
   await page.setViewportSize({ width: 1440, height: 1000 });
   const response = await page.goto("/");
   expect(response?.status()).toBe(200);
-  await expect(page).toHaveURL(/\/$/);
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "Iberdrola A",
   );
-  await expect(page.getByRole("main")).toContainText("40730423");
-  await expect(page.getByRole("main")).toContainText("Plaza 16 de Febrero");
-  await expect(page.getByRole("main")).toContainText("Inicial y Primaria");
-  await expect(page.getByRole("main")).not.toContainText("385");
-  await expect(
-    page.getByRole("link", { name: "72576322", exact: true }),
-  ).toHaveAttribute("href", "tel:+59172576322");
-  await page
-    .getByText("Fuentes de información y alcance", { exact: true })
-    .click();
-  await expect(
-    page.getByRole("link", {
-      name: "UnidadEducativa.net: ficha de Iberdrola A",
-    }),
-  ).toHaveAttribute("href", /40730423/);
-  await expect(
-    page.getByRole("link", { name: "Leer la reseña histórica" }),
-  ).toHaveAttribute("href", /blogspot/);
-  expect(calls).toEqual([]);
-  const images = page.locator("main img, header img");
-  await expect(images).toHaveCount(8);
-  for (const img of await images.all()) {
-    await img.scrollIntoViewIfNeeded();
-    await expect
-      .poll(() =>
-        img.evaluate(
-          (element: HTMLImageElement) =>
-            element.complete && element.naturalWidth > 0,
-        ),
-      )
-      .toBe(true);
+  const windows: [string, RegExp, string][] = [
+    ["El colegio", /\/el-colegio$/, "40730423"],
+    ["Galería", /\/galeria$/, "Una escuela"],
+    ["Historia", /\/historia$/, "Senkata"],
+    ["Contacto", /\/contacto$/, "Plaza 16 de Febrero"],
+  ];
+  for (const [label, url, text] of windows) {
+    await menu(page).getByRole("link", { name: label, exact: true }).click();
+    await expect(page).toHaveURL(url);
+    await expect(page.getByRole("main")).toContainText(text);
+    // El menú sigue visible y la página actual queda marcada.
+    await expect(
+      menu(page).getByRole("link", { name: label, exact: true }),
+    ).toHaveAttribute("aria-current", "page");
+    await page.goto("/");
   }
-  await page
-    .getByText("Fuentes de información y alcance", { exact: true })
-    .click();
-  await page.evaluate(async () => {
-    await document.fonts.ready;
-    window.scrollTo(0, 0);
-  });
-  await page.screenshot({
-    path: "docs/preview/portada-escritorio.png",
-    fullPage: true,
-    style: "nextjs-portal { display:none; }",
-  });
+  expect(calls).toEqual([]);
+});
+
+test("login: menú, pie de página y botón de volver", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/");
   await page.getByRole("link", { name: "Iniciar sesión", exact: true }).click();
   await expect(page).toHaveURL(/\/login$/);
+  await expect(menu(page)).toBeVisible();
+  await expect(page.getByRole("contentinfo")).toBeVisible();
   await page
-    .getByRole("link", { name: "Volver a la página principal", exact: false })
+    .getByRole("link", { name: "Volver a la página principal" })
     .click();
   await expect(page).toHaveURL(/\/$/);
 });
-test("portada móvil sin desbordamiento, anclas y enlaces utilizables", async ({
+
+test("portada móvil sin desbordamiento y con enlaces utilizables", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   await expect(page.locator("body")).toHaveJSProperty("scrollWidth", 390);
-  await page
-    .getByRole("navigation", { name: "Navegación pública" })
-    .getByRole("link", { name: "Contacto", exact: true })
-    .click();
-  await expect(page).toHaveURL(/#contacto$/);
-  await expect(
-    page.getByRole("heading", { name: "Estamos en El Alto." }),
-  ).toBeInViewport();
-  await page.evaluate(async () => {
-    await document.fonts.ready;
-    window.scrollTo(0, 0);
-    await new Promise((r) =>
-      requestAnimationFrame(() => requestAnimationFrame(r)),
-    );
-  });
-  await page.screenshot({
-    path: "docs/preview/portada-movil.png",
-    fullPage: true,
-    style: "nextjs-portal { display:none; }",
-  });
+  await menu(page).getByRole("link", { name: "Contacto", exact: true }).click();
+  await expect(page).toHaveURL(/\/contacto$/);
+  await page.goto("/");
   await page
     .getByRole("link", { name: "Ingresar al sistema", exact: true })
     .click();

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AuthLinkHandler } from "@/components/auth-link-handler";
 export const metadata: Metadata = {
   title: {
     default: "Iberdrola A · Gestión académica",
@@ -16,7 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" data-scroll-behavior="smooth">
-      <body>{children}</body>
+      <body>
+        <AuthLinkHandler />
+        {children}
+      </body>
     </html>
   );
 }

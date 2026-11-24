@@ -6,7 +6,7 @@ test("diseño: portada, login y panel adaptables con movimiento reducido", async
   await page.emulateMedia({ reducedMotion: "reduce" });
   for (const width of [1440, 390, 320]) {
     await page.setViewportSize({ width, height: 1000 });
-    for (const route of ["/", "/login", "/demo"]) {
+    for (const route of ["/", "/el-colegio", "/galeria", "/historia", "/contacto", "/login", "/demo"]) {
       await page.goto(route);
       await expect(page.locator("main")).toBeVisible();
       await expect
@@ -27,16 +27,11 @@ test("diseño: portada, login y panel adaptables con movimiento reducido", async
   }
 });
 
-test("diseño: las secciones aparecen al desplazarse y los enlaces siguen funcionando", async ({
+test("diseño: las ventanas públicas cargan y los enlaces siguen funcionando", async ({
   page,
 }) => {
-  await page.goto("/");
-  const gallery = page.locator("#galeria");
-  await gallery.scrollIntoViewIfNeeded();
-  await expect(gallery).toHaveCSS("opacity", "1");
-  await expect(gallery.getByRole("link")).toHaveCount(3);
-  await page.locator("#contacto").scrollIntoViewIfNeeded();
-  await expect(page.locator("#contacto")).toHaveCSS("opacity", "1");
+  await page.goto("/galeria");
+  await expect(page.locator("main section.texture-dots").getByRole("link")).toHaveCount(3);
   await page.getByRole("link", { name: "Ingresar con mi cuenta" }).click();
   await expect(page).toHaveURL(/\/login$/);
 });
