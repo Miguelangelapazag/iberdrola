@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { SocialIcon } from "@/components/social-icon";
 import Image from "next/image";
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
@@ -101,9 +100,6 @@ export function PublicFooter() {
         </div>
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/15 pt-3 text-xs">
           <p className="font-semibold">U.E. Iberdrola A · El Alto</p>
-          <Link href="/login" className="underline underline-offset-4">
-            Ingresar con mi cuenta
-          </Link>
         </div>
         <details className="mt-5 text-xs leading-6 text-[#b9cbe6]">
           <summary className="cursor-pointer font-medium">

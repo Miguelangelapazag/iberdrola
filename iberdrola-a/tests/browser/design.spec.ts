@@ -42,6 +42,9 @@ test("diseño: las ventanas públicas cargan y los enlaces siguen funcionando", 
   await expect(
     page.locator("main section.texture-dots").getByRole("link"),
   ).toHaveCount(3);
-  await page.getByRole("link", { name: "Ingresar con mi cuenta" }).click();
+  await page
+    .getByRole("banner")
+    .getByRole("link", { name: "Iniciar sesión" })
+    .click();
   await expect(page).toHaveURL(/\/login$/);
 });
