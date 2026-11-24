@@ -45,22 +45,31 @@ export type NavGroup = {
 };
 export const navGroups: NavGroup[] = [
   {
-    id: "inicio",
-    label: "Inicio",
-    icon: "inicio",
-    direct: true,
-    items: [{ label: "Inicio", href: "/panel", demo: "/demo" }],
-  },
-  {
     id: "usuarios",
     sprint: 1,
     label: "Gestión de Usuarios",
     icon: "usuarios",
     items: [
-      { label: "Crear usuario", href: "/panel/usuarios/nuevo", roles: ["DIRECTOR"] },
-      { label: "Buscar usuarios", href: "/panel/usuarios", roles: ["DIRECTOR"] },
-      { label: "Editar usuario", href: "/panel/usuarios/editar", roles: ["DIRECTOR"] },
-      { label: "Desactivar usuarios", href: "/panel/usuarios/desactivar", roles: ["DIRECTOR"] },
+      {
+        label: "Crear usuario",
+        href: "/panel/usuarios/nuevo",
+        roles: ["DIRECTOR"],
+      },
+      {
+        label: "Buscar usuarios",
+        href: "/panel/usuarios",
+        roles: ["DIRECTOR"],
+      },
+      {
+        label: "Editar usuario",
+        href: "/panel/usuarios/editar",
+        roles: ["DIRECTOR"],
+      },
+      {
+        label: "Desactivar usuarios",
+        href: "/panel/usuarios/desactivar",
+        roles: ["DIRECTOR"],
+      },
     ],
   },
   {
@@ -75,10 +84,22 @@ export const navGroups: NavGroup[] = [
         demo: "/demo/estudiantes",
         roleLabels: { PADRE: "Mis hijos", ESTUDIANTE: "Mi ficha" },
       },
-      { label: "Fichas de estudiantes", href: "/panel/gestion/estudiantes", manage: true },
-      { label: "Tutores y responsables", href: "/panel/gestion/tutores", manage: true },
+      {
+        label: "Fichas de estudiantes",
+        href: "/panel/gestion/estudiantes",
+        manage: true,
+      },
+      {
+        label: "Tutores y responsables",
+        href: "/panel/gestion/tutores",
+        manage: true,
+      },
       { label: "Cursos", href: "/panel/cursos", demo: "/demo/cursos" },
-      { label: "Administrar cursos", href: "/panel/gestion/cursos", manage: true },
+      {
+        label: "Administrar cursos",
+        href: "/panel/gestion/cursos",
+        manage: true,
+      },
       { label: "Matrículas", href: "/panel/gestion/matriculas", manage: true },
     ],
   },
@@ -88,7 +109,11 @@ export const navGroups: NavGroup[] = [
     label: "Gestión de Docentes",
     icon: "docentes",
     items: [
-      { label: "Fichas de docentes", href: "/panel/gestion/docentes", manage: true },
+      {
+        label: "Fichas de docentes",
+        href: "/panel/gestion/docentes",
+        manage: true,
+      },
     ],
   },
   {
@@ -97,7 +122,11 @@ export const navGroups: NavGroup[] = [
     label: "Administrar Asignaturas",
     icon: "asignaturas",
     items: [
-      { label: "Asignación de materias", href: "/panel/gestion/asignaciones", manage: true },
+      {
+        label: "Asignación de materias",
+        href: "/panel/gestion/asignaciones",
+        manage: true,
+      },
     ],
   },
   {
@@ -106,9 +135,17 @@ export const navGroups: NavGroup[] = [
     label: "Control de Horarios",
     icon: "horarios",
     items: [
-      { label: "Asignación de horarios", href: "/panel/horarios", demo: "/demo/horarios" },
+      {
+        label: "Asignación de horarios",
+        href: "/panel/horarios",
+        demo: "/demo/horarios",
+      },
       { label: "Consultar horario", href: "/panel/horarios/semana" },
-      { label: "Asignación de cursos", href: "/panel/horarios/asignar", manage: true },
+      {
+        label: "Asignación de cursos",
+        href: "/panel/horarios/asignar",
+        manage: true,
+      },
     ],
   },
   {
@@ -117,7 +154,11 @@ export const navGroups: NavGroup[] = [
     label: "Control de Asistencia",
     icon: "asistencia",
     items: [
-      { label: "Consultar asistencia", href: "/panel/asistencia", demo: "/demo/asistencia" },
+      {
+        label: "Consultar asistencia",
+        href: "/panel/asistencia",
+        demo: "/demo/asistencia",
+      },
       {
         label: "Pasar lista",
         href: "/panel/asistencia/registro",
@@ -131,7 +172,11 @@ export const navGroups: NavGroup[] = [
     label: "Gestión de Calificaciones",
     icon: "calificaciones",
     items: [
-      { label: "Consultar calificaciones", href: "/panel/calificaciones", demo: "/demo/calificaciones" },
+      {
+        label: "Consultar calificaciones",
+        href: "/panel/calificaciones",
+        demo: "/demo/calificaciones",
+      },
       {
         label: "Registrar notas",
         href: "/panel/calificaciones/registro",
@@ -145,21 +190,6 @@ export const navGroups: NavGroup[] = [
     label: "Reportes Académicos",
     icon: "reportes",
     items: [{ label: "Informes", href: "/panel/informes" }],
-  },
-  {
-    id: "comunicados",
-    label: "Comunicados",
-    icon: "comunicados",
-    items: [
-      { label: "Tablón de avisos", href: "/panel/comunicados/bandeja" },
-      { label: "Consultar comunicados", href: "/panel/comunicados", demo: "/demo/comunicados" },
-    ],
-  },
-  {
-    id: "cuenta",
-    label: "Mi cuenta",
-    icon: "cuenta",
-    items: [{ label: "Cambiar contraseña", href: "/panel/cuenta/clave" }],
   },
 ];
 export type ResolvedNavItem = { label: string; href: string; path: string };

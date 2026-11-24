@@ -33,7 +33,12 @@ import {
 } from "@iberdrola/shared";
 import type { PanelModel } from "@/lib/data/model";
 import { cn } from "@/lib/utils";
-import { resolveNav, activeNav, type NavIcon } from "@/lib/navigation";
+import {
+  resolveNav,
+  activeNav,
+  panelHref,
+  type NavIcon,
+} from "@/lib/navigation";
 import { ActiveNavLabel } from "@/components/page-title";
 const icons: Record<NavIcon, typeof Users> = {
   inicio: House,
@@ -80,7 +85,13 @@ export function PanelShell({
         )}
       >
         <div className="flex items-center justify-between px-1 pt-3">
-          <Brand />
+          <Link
+            href={panelHref(model)}
+            onClick={() => setOpen(false)}
+            aria-label="IberAcad, ir al inicio del panel"
+          >
+            <Brand />
+          </Link>
           <button
             className="rounded p-1 text-slate-600 lg:hidden"
             onClick={() => setOpen(false)}
@@ -218,11 +229,49 @@ export function PanelShell({
                       ? "Gestión académica"
                       : current
                         ? moduleLabels[current]
-                        : "Resumen"}
+                        : pathname.startsWith("/panel/cuenta")
+                          ? "Mi cuenta · Cambiar contraseña"
+                          : "Inicio"}
               </span>
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <nav
+              aria-label="Accesos rápidos"
+              className="flex items-center gap-1"
+            >
+              <Link
+                href={
+                  model.demo
+                    ? panelHref(model, "comunicados")
+                    : "/panel/comunicados/bandeja"
+                }
+                title="Comunicados"
+                aria-current={
+                  pathname.startsWith("/panel/comunicados") ||
+                  pathname.startsWith("/demo/comunicados")
+                    ? "page"
+                    : undefined
+                }
+                className="topbar-icon"
+              >
+                <Megaphone size={17} aria-hidden="true" />
+                <span className="sr-only">Comunicados</span>
+              </Link>
+              {!model.demo && (
+                <Link
+                  href="/panel/cuenta/clave"
+                  title="Mi cuenta · Cambiar contraseña"
+                  aria-current={
+                    pathname.startsWith("/panel/cuenta") ? "page" : undefined
+                  }
+                  className="topbar-icon"
+                >
+                  <KeyRound size={17} aria-hidden="true" />
+                  <span className="sr-only">Mi cuenta: cambiar contraseña</span>
+                </Link>
+              )}
+            </nav>
             <div className="hidden sm:block">
               <p className="max-w-[190px] truncate text-xs font-semibold">
                 {model.name}

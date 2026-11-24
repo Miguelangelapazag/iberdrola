@@ -796,3 +796,23 @@ html {
     height: 42px;
   }
 }
+
+/* Accesos rápidos de la barra superior del panel (Comunicados, Mi cuenta). */
+.topbar-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  color: #475569;
+  transition: background-color 0.15s, color 0.15s;
+}
+.topbar-icon:hover {
+  background: #eef2fb;
+  color: #1e40af;
+}
+.topbar-icon[aria-current="page"] {
+  background: #2563eb1a;
+  color: #1e40af;
+}

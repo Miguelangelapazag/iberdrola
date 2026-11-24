@@ -54,13 +54,18 @@ export default async function NoticePage({
             Avisos institucionales y de tus cursos, en un solo lugar.
           </p>
         </div>
-        {write && (
-          <Button asChild>
-            <Link href="/panel/comunicados/bandeja?nuevo=1">
-              Nuevo comunicado
-            </Link>
+        <div className="flex flex-wrap gap-2">
+          <Button asChild variant="outline">
+            <Link href="/panel/comunicados">Consultar comunicados</Link>
           </Button>
-        )}
+          {write && (
+            <Button asChild>
+              <Link href="/panel/comunicados/bandeja?nuevo=1">
+                Nuevo comunicado
+              </Link>
+            </Button>
+          )}
+        </div>
       </div>
       {typeof params.resultado === "string" && messages[params.resultado] && (
         <p role="status" className="mb-5 rounded-xl bg-primary/10 p-4 text-sm">
