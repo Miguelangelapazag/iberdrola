@@ -236,42 +236,6 @@ export function PanelShell({
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <nav
-              aria-label="Accesos rápidos"
-              className="flex items-center gap-1"
-            >
-              <Link
-                href={
-                  model.demo
-                    ? panelHref(model, "comunicados")
-                    : "/panel/comunicados/bandeja"
-                }
-                title="Comunicados"
-                aria-current={
-                  pathname.startsWith("/panel/comunicados") ||
-                  pathname.startsWith("/demo/comunicados")
-                    ? "page"
-                    : undefined
-                }
-                className="topbar-icon"
-              >
-                <Megaphone size={17} aria-hidden="true" />
-                <span className="sr-only">Comunicados</span>
-              </Link>
-              {!model.demo && (
-                <Link
-                  href="/panel/cuenta/clave"
-                  title="Mi cuenta · Cambiar contraseña"
-                  aria-current={
-                    pathname.startsWith("/panel/cuenta") ? "page" : undefined
-                  }
-                  className="topbar-icon"
-                >
-                  <KeyRound size={17} aria-hidden="true" />
-                  <span className="sr-only">Mi cuenta: cambiar contraseña</span>
-                </Link>
-              )}
-            </nav>
             <div className="hidden sm:block">
               <p className="max-w-[190px] truncate text-xs font-semibold">
                 {model.name}
