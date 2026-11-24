@@ -5,7 +5,6 @@ import {
   ChartNoAxesCombined,
   ClipboardCheck,
   GraduationCap,
-  Megaphone,
 } from "lucide-react";
 import { Brand } from "@/components/brand";
 import { PublicHeader } from "@/components/public-header";
@@ -18,7 +17,6 @@ const features: [typeof GraduationCap, string, string][] = [
   [ClipboardCheck, "Asistencia", "Pasar lista y consultar faltas."],
   [Award, "Calificaciones", "Notas por materia y trimestre."],
   [ChartNoAxesCombined, "Informes", "Reportes para imprimir o descargar."],
-  [Megaphone, "Comunicados", "Avisos para toda la comunidad."],
 ];
 
 /**
@@ -48,7 +46,9 @@ export function AuthShell({ children }: { children: ReactNode }) {
               <ul className="auth-features">
                 {features.map(([Icon, title, body]) => (
                   <li key={title}>
-                    <Icon size={18} aria-hidden="true" />
+                    <span className="auth-feature-icon">
+                      <Icon size={20} aria-hidden="true" />
+                    </span>
                     <div>
                       <p className="font-semibold text-white">{title}</p>
                       <p>{body}</p>
