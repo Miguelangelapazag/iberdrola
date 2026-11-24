@@ -53,21 +53,14 @@ export default async function Login({
           Olvidé mi contraseña
         </Link>
       </div>
-      <div className="mt-5 border-t border-border pt-4">
-        <p className="text-center text-xs leading-5 text-muted-foreground">
-          ¿Todavía no tienes acceso? Contacta a Secretaría.
-          <br />
-          La institución administra las cuentas.
-        </p>
-        {demoEnabled() && (
-          <Link
-            className="mt-3 block text-center text-sm font-semibold text-primary hover:underline"
-            href="/demo"
-          >
-            Explorar demostración visual →
-          </Link>
-        )}
-      </div>
+      {demoEnabled() && (
+        <Link
+          className="mt-3 block text-center text-sm font-semibold text-primary hover:underline"
+          href="/demo"
+        >
+          Explorar demostración visual →
+        </Link>
+      )}
     </AuthShell>
   );
 }
