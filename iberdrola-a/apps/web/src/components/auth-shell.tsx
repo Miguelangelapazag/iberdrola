@@ -1,8 +1,25 @@
 import type { ReactNode } from "react";
-import { BookOpen, ShieldCheck, Users } from "lucide-react";
+import {
+  Award,
+  CalendarDays,
+  ChartNoAxesCombined,
+  ClipboardCheck,
+  GraduationCap,
+  Megaphone,
+} from "lucide-react";
 import { Brand } from "@/components/brand";
 import { PublicHeader } from "@/components/public-header";
 import { PublicFooter } from "@/components/public-footer";
+
+/** Lo que hace el sistema, módulo por módulo. */
+const features: [typeof GraduationCap, string, string][] = [
+  [GraduationCap, "Estudiantes y cursos", "Fichas, tutores y matrículas."],
+  [CalendarDays, "Horarios", "Periodos y clases de cada curso."],
+  [ClipboardCheck, "Asistencia", "Pasar lista y consultar faltas."],
+  [Award, "Calificaciones", "Notas por materia y trimestre."],
+  [ChartNoAxesCombined, "Informes", "Reportes para imprimir o descargar."],
+  [Megaphone, "Comunicados", "Avisos para toda la comunidad."],
+];
 
 /**
  * Ventana de acceso: panel azul a la izquierda con el logo de IberAcad
@@ -19,36 +36,25 @@ export function AuthShell({ children }: { children: ReactNode }) {
               <Brand />
             </div>
             <div className="auth-art-copy hidden lg:block">
-              <p className="hero-eyebrow">PRIMARIA COMUNITARIA VOCACIONAL</p>
+              <p className="hero-eyebrow">SISTEMA DE GESTIÓN ACADÉMICA</p>
               <p className="auth-art-title">
-                Cada estudiante.
-                <br />
-                Cada avance.
-                <br />
-                <span>Un mismo lugar.</span>
+                Inicio de <span>sesión.</span>
               </p>
               <p className="auth-art-lead">
-                Información académica organizada para acompañar el aprendizaje y
-                acercar a la escuela con las familias.
+                IberAcad organiza el trabajo diario de la escuela: Dirección y
+                Secretaría administran, los docentes registran, y las familias y
+                estudiantes consultan lo que les corresponde.
               </p>
-              <ul className="mt-8 grid gap-3 text-sm text-slate-200">
-                {[
-                  [BookOpen, "Calificaciones y asistencia"],
-                  [Users, "Escuela y familias conectadas"],
-                  [ShieldCheck, "Acceso según tu rol"],
-                ].map(([Icon, label]) => {
-                  const I = Icon as typeof BookOpen;
-                  return (
-                    <li className="flex items-center gap-3" key={String(label)}>
-                      <I
-                        className="text-sky-200"
-                        size={18}
-                        aria-hidden="true"
-                      />
-                      {String(label)}
-                    </li>
-                  );
-                })}
+              <ul className="auth-features">
+                {features.map(([Icon, title, body]) => (
+                  <li key={title}>
+                    <Icon size={18} aria-hidden="true" />
+                    <div>
+                      <p className="font-semibold text-white">{title}</p>
+                      <p>{body}</p>
+                    </div>
+                  </li>
+                ))}
               </ul>
             </div>
           </aside>
