@@ -1,5 +1,6 @@
 "use server";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { requireProfile } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { siteOrigin } from "@/lib/env";
@@ -159,10 +160,7 @@ export async function createUser(
     return fail("No se pudo completar el alta. No se creó ningún usuario.");
   }
   revalidatePath("/panel/usuarios");
-  return {
-    success: `Usuario creado. Enviamos una invitación a ${raw.email} para que defina su contraseña.`,
-    attempt,
-  };
+  redirect("/panel/usuarios?creado=1");
 }
 
 /** Edita datos personales, rol y correo de un usuario. */
@@ -206,8 +204,7 @@ export async function updateUser(
       .eq("rol", "DIRECTOR")
       .eq("activo", true)
       .neq("id", id);
-    if (!others.count)
-      return fail("Debe quedar al menos un Director activo.");
+    if (!others.count) return fail("Debe quedar al menos un Director activo.");
   }
   const persona = await supabase
     .from("personas")
@@ -258,7 +255,7 @@ export async function updateUser(
     }
   }
   revalidatePath("/panel/usuarios");
-  return { success: "Cambios guardados.", values, attempt };
+  redirect("/panel/usuarios/editar?guardado=1");
 }
 
 /** Desactiva o reactiva una cuenta (no borra ningún registro). */
@@ -273,7 +270,8 @@ export async function setUserActive(
   if (!uuidRe.test(id)) return { error: "El usuario no es válido." };
   const { supabase, user } = ctx;
   if (!active) {
-    if (id === user.id) return { error: "No puedes desactivar tu propia cuenta." };
+    if (id === user.id)
+      return { error: "No puedes desactivar tu propia cuenta." };
     const target = await supabase
       .from("perfiles")
       .select("rol")
@@ -290,7 +288,10 @@ export async function setUserActive(
         return { error: "Debe quedar al menos un Director activo." };
     }
   }
-  const res = await supabase.from("perfiles").update({ activo: active }).eq("id", id);
+  const res = await supabase
+    .from("perfiles")
+    .update({ activo: active })
+    .eq("id", id);
   if (res.error) return { error: dbMessage(res.error) };
   // Además se bloquea/desbloquea el inicio de sesión (si hay clave de servicio).
   const admin = createAdminClient();

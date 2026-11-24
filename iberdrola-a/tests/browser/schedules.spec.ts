@@ -38,13 +38,15 @@ async function setup(page: Page, parallel: string) {
   await page.getByLabel("Paralelo *", { exact: true }).fill(parallel);
   await page.getByRole("button", { name: "Registrar", exact: true }).click();
   await saved(page);
-  const c = new URL(page.url()).searchParams.get("id")!;
+  const c = new URL(page.url()).searchParams.get("registro")!;
+  await page.goto(`${new URL(page.url()).pathname}?id=${c}`);
   await page.goto(`/panel/gestion/asignaciones?nuevo=1&curso=${c}`);
   await pick(page, "Docente", "Cuenta", "Cuenta ficticia Prueba");
   await pick(page, "Materia", "Matemática", "Matemática");
   await page.getByRole("button", { name: "Registrar", exact: true }).click();
   await saved(page);
-  const a = new URL(page.url()).searchParams.get("id")!;
+  const a = new URL(page.url()).searchParams.get("registro")!;
+  await page.goto(`${new URL(page.url()).pathname}?id=${a}`);
   await page.goto(`/panel/horarios/semana?curso=${c}`);
   return { c, a };
 }

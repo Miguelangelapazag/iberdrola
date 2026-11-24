@@ -161,11 +161,13 @@ export async function saveRecord(
     );
   }
   revalidatePath("/panel", "layout");
-  const target =
-    section === "vinculos"
-      ? `/panel/gestion/estudiantes?id=${values.estudiante_id}`
-      : `/panel/gestion/${section}?id=${result.data}`;
-  redirect(`${target}&guardado=1`);
+  // Tras guardar se vuelve a la lista de la sección. Los vínculos con tutores
+  // se editan dentro de la ficha del estudiante, así que se regresa a ella.
+  if (section === "vinculos")
+    redirect(
+      `/panel/gestion/estudiantes?id=${values.estudiante_id}&guardado=1`,
+    );
+  redirect(`/panel/gestion/${section}?guardado=1&registro=${result.data}`);
 }
 
 export async function findOptions(kind: OptionKind, query: string) {

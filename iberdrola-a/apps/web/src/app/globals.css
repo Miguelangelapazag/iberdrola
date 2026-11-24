@@ -430,14 +430,14 @@ html {
   background: #fff;
   box-shadow: 0 8px 28px #0c193845;
 }
+/* Único botón de la portada: blanco y destacado. */
 .hero-layout a[href="/el-colegio"] {
-  color: #fff;
-  background: #ffffff0d;
-  border-color: #ffffff35;
-  backdrop-filter: blur(12px);
+  color: #153466;
+  background: #fff;
+  box-shadow: 0 8px 28px #0c193845;
 }
 .hero-layout a[href="/el-colegio"]:hover {
-  background: #ffffff20;
+  background: #eaf2ff;
 }
 .hero-photo-frame {
   border: 1px solid #ffffff55;

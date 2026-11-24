@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SocialIcon } from "@/components/social-icon";
 import Image from "next/image";
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import { school, socialLinks } from "@/lib/school";
@@ -76,8 +77,9 @@ export function PublicFooter() {
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 rounded-full border border-white/30 px-3 py-1 text-xs font-semibold hover:bg-white hover:text-[#102247]"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/30 px-3 py-1 text-xs font-semibold hover:bg-white hover:text-[#102247]"
                     >
+                      <SocialIcon name={name} size={13} />
                       {name}
                       <ArrowUpRight size={12} aria-hidden="true" />
                     </a>

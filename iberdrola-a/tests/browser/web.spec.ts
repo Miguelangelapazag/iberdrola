@@ -52,9 +52,9 @@ test("credenciales inválidas muestran error sin abrir el panel", async ({
   await page
     .getByRole("button", { name: "Iniciar sesión", exact: true })
     .click();
-  await expect(page.getByRole("alert").filter({hasText:"No pudimos iniciar sesión"})).toContainText(
-    "No pudimos iniciar sesión",
-  );
+  await expect(
+    page.getByRole("alert").filter({ hasText: "No pudimos iniciar sesión" }),
+  ).toContainText("No pudimos iniciar sesión");
   await expect(page).toHaveURL(/\/login$/);
 });
 test("login con sesión simulada abre un dashboard vacío y logout cierra el acceso", async ({
@@ -137,7 +137,11 @@ test("menú y tabla funcionan en pantalla móvil sin desbordar la página", asyn
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/demo");
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
   await page.getByRole("button", { name: "Abrir menú" }).click();
   await expect(page.getByRole("navigation")).toBeVisible();
   await page

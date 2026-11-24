@@ -1,6 +1,5 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowRight, Clock3, GraduationCap, ShieldCheck } from "lucide-react";
+import { Clock3, GraduationCap, ShieldCheck } from "lucide-react";
 import { Brand } from "@/components/brand";
 import { PublicPage, PageHero } from "@/components/public-page";
 import { school } from "@/lib/school";
@@ -64,12 +63,6 @@ export default function ElColegio() {
               horarios. Cada cuenta consulta únicamente la información que le
               corresponde.
             </p>
-            <Link
-              href="/login"
-              className="mt-7 inline-flex items-center gap-3 rounded-full bg-[#deeeff] px-6 py-4 text-sm font-semibold text-[#102e57]"
-            >
-              Acceso a la plataforma <ArrowRight size={18} aria-hidden="true" />
-            </Link>
           </div>
           <div className="space-y-6 lg:pt-4">
             {[

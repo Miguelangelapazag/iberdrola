@@ -66,7 +66,8 @@ test("portada móvil sin desbordamiento y con enlaces utilizables", async ({
   await expect(page).toHaveURL(/\/contacto$/);
   await page.goto("/");
   await page
-    .getByRole("link", { name: "Ingresar al sistema", exact: true })
+    .getByRole("banner")
+    .getByRole("link", { name: "Iniciar sesión" })
     .click();
   await expect(page).toHaveURL(/\/login$/);
 });

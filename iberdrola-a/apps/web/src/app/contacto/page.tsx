@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import { SocialIcon } from "@/components/social-icon";
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import { PublicPage, PageHero } from "@/components/public-page";
 import { school, socialLinks } from "@/lib/school";
 
 export const metadata: Metadata = {
   title: "Contacto",
-  description: "Dirección, teléfono y redes de la Unidad Educativa Iberdrola A.",
+  description:
+    "Dirección, teléfono y redes de la Unidad Educativa Iberdrola A.",
 };
 
 export default function Contacto() {
@@ -23,7 +25,9 @@ export default function Contacto() {
               <MapPin size={16} aria-hidden="true" /> Dirección
             </h2>
             <p className="mt-5 text-xl font-semibold">{school.address}</p>
-            <p className="mt-1 text-sm text-[#586b80]">El Alto, La Paz, Bolivia</p>
+            <p className="mt-1 text-sm text-[#586b80]">
+              El Alto, La Paz, Bolivia
+            </p>
             <a
               href={school.mapUrl}
               target="_blank"
@@ -69,8 +73,9 @@ export default function Contacto() {
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-full border border-[#102e57]/25 px-4 py-2 text-sm font-semibold hover:bg-[#102e57] hover:text-white"
+                      className="inline-flex items-center gap-2 rounded-full border border-[#102e57]/25 px-4 py-2 text-sm font-semibold hover:bg-[#102e57] hover:text-white"
                     >
+                      <SocialIcon name={name} size={16} />
                       {name} <ArrowUpRight size={14} aria-hidden="true" />
                     </a>
                   </li>

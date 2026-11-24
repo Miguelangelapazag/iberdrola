@@ -20,7 +20,10 @@ const createStudent = async (page: Page, name: string, rude: string) => {
   await expect(
     page.getByRole("status").filter({ hasText: "Registro guardado" }),
   ).toBeVisible();
-  return new URL(page.url()).searchParams.get("id")!;
+  const savedUrl = new URL(page.url());
+  const id = savedUrl.searchParams.get("registro")!;
+  await page.goto(`${savedUrl.pathname}?id=${id}`);
+  return id;
 };
 const createCourse = async (page: Page, parallel: string) => {
   await page.goto("/panel/gestion/cursos?nuevo=1");
@@ -30,7 +33,10 @@ const createCourse = async (page: Page, parallel: string) => {
   await expect(
     page.getByRole("status").filter({ hasText: "Registro guardado" }),
   ).toBeVisible();
-  return new URL(page.url()).searchParams.get("id")!;
+  const savedUrl = new URL(page.url());
+  const id = savedUrl.searchParams.get("registro")!;
+  await page.goto(`${savedUrl.pathname}?id=${id}`);
+  return id;
 };
 
 test("Secretaría registra y edita estudiantes; la búsqueda consulta toda la lista", async ({
@@ -86,7 +92,8 @@ test("tutor vinculado y matrícula sobreviven a una recarga; el retiro conserva 
   await expect(
     page.getByRole("status").filter({ hasText: "Registro guardado" }),
   ).toBeVisible();
-  const tutor = new URL(page.url()).searchParams.get("id")!;
+  const tutor = new URL(page.url()).searchParams.get("registro")!;
+  await page.goto(`${new URL(page.url()).pathname}?id=${tutor}`);
   const student = await createStudent(
     page,
     "Estudiante vinculado",
@@ -121,6 +128,8 @@ test("tutor vinculado y matrícula sobreviven a una recarga; el retiro conserva 
   await expect(
     page.getByRole("status").filter({ hasText: "Registro guardado" }),
   ).toBeVisible();
+  const enrollment = new URL(page.url()).searchParams.get("registro")!;
+  await page.goto(`/panel/gestion/matriculas?id=${enrollment}`);
   await page.getByLabel("Estado de matrícula").selectOption("RETIRADA");
   await page.getByLabel("Fecha de salida").fill("2026-05-01");
   await page
