@@ -4,6 +4,7 @@ import { requireIdentity } from "@/lib/auth";
 import { logout } from "@/app/actions";
 export const dynamic = "force-dynamic";
 export default async function Pending() {
+  
   await requireIdentity();
   return (
     <AuthShell>
