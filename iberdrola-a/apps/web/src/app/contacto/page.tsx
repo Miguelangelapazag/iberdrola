@@ -11,11 +11,7 @@ export const metadata: Metadata = {
 export default function Contacto() {
   const socials = socialLinks();
   return (
-<<<<<<< HEAD
     <PublicPage current="/contacto">
-=======
-    <PublicPage current="/contacto" compactFooter>
->>>>>>> ceb08fde8e53c9ee59e8d35db1a60c60467443b6
       <PageHero
         eyebrow="ESTAMOS CERCA"
         title="Contacto"

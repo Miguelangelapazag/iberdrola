@@ -4,10 +4,7 @@ import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import { school, socialLinks } from "@/lib/school";
 import { publicNav } from "@/components/public-header";
 
-<<<<<<< HEAD
 /** Pie común de todas las ventanas públicas: contacto, redes y mapa de Google. */
-=======
->>>>>>> ceb08fde8e53c9ee59e8d35db1a60c60467443b6
 export function PublicFooter({ compact = false }: { compact?: boolean }) {
   const socials = socialLinks();
   return (
@@ -128,7 +125,6 @@ export function PublicFooter({ compact = false }: { compact?: boolean }) {
             </>
           )}
         </div>
-<<<<<<< HEAD
         <section aria-labelledby="footer-map" className="mt-12">
           <h3
             id="footer-map"
@@ -157,9 +153,6 @@ export function PublicFooter({ compact = false }: { compact?: boolean }) {
           </a>
         </section>
         <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-white/15 pt-6 text-sm">
-=======
-        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-white/15 pt-6 text-sm">
->>>>>>> ceb08fde8e53c9ee59e8d35db1a60c60467443b6
           <p className="font-semibold">U.E. Iberdrola A · El Alto</p>
           <Link href="/login" className="underline underline-offset-4">
             Ingresar con mi cuenta
