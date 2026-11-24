@@ -18,7 +18,7 @@ test("portada: cada opción del menú abre su propia ventana con botón para vol
   );
   const windows: [string, RegExp, string][] = [
     ["El colegio", /\/el-colegio$/, "40730423"],
-    ["Galería", /\/galeria$/, "Una escuela"],
+    ["Galería", /\/galeria$/, "Abre cada fotografía"],
     ["Historia", /\/historia$/, "Senkata"],
     ["Contacto", /\/contacto$/, "Plaza 16 de Febrero"],
   ];
@@ -35,19 +35,25 @@ test("portada: cada opción del menú abre su propia ventana con botón para vol
   expect(calls).toEqual([]);
 });
 
-test("login: menú, pie de página y botón de volver", async ({
+test("login: menú público, sin botón de volver y sin deslizar la página", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   await page.getByRole("link", { name: "Iniciar sesión", exact: true }).click();
   await expect(page).toHaveURL(/\/login$/);
   await expect(menu(page)).toBeVisible();
-  await expect(page.getByRole("contentinfo")).toBeVisible();
-  await page
-    .getByRole("link", { name: "Volver a la página principal" })
-    .click();
-  await expect(page).toHaveURL(/\/$/);
+  await expect(
+    page.getByRole("heading", { name: "Bienvenidos a IberAcad" }),
+  ).toBeVisible();
+  await expect(page.getByText("Conoce tu colegio")).toHaveCount(0);
+  await expect(
+    page.getByRole("link", { name: "Volver a la página principal" }),
+  ).toHaveCount(0);
+  const overflow = await page.evaluate(
+    () => document.documentElement.scrollHeight - window.innerHeight,
+  );
+  expect(overflow).toBeLessThanOrEqual(0);
 });
 
 test("portada móvil sin desbordamiento y con enlaces utilizables", async ({

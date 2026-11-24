@@ -39,9 +39,7 @@ export default function Galeria() {
   return (
     <PublicPage current="/galeria">
       <PageHero
-        eyebrow="NUESTRA VIDA ESCOLAR"
-        title="Una escuela"
-        accent="que se vive."
+        title="Galería"
         lead="Encuentros, cultura y espacios que forman parte de nuestra comunidad. Abre cada fotografía para verla completa."
       />
       <section className="texture-dots">

@@ -13,9 +13,7 @@ export default function Contacto() {
   return (
     <PublicPage current="/contacto">
       <PageHero
-        eyebrow="ESTAMOS CERCA"
         title="Contacto"
-        accent="con la escuela."
         lead="Encuentra dónde estamos y cómo comunicarte con la unidad educativa."
       />
       <section className="texture-dots">

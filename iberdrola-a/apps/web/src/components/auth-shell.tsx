@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { BookOpen, ShieldCheck, Users } from "lucide-react";
 import { Brand } from "@/components/brand";
 import { PublicHeader } from "@/components/public-header";
-import { PublicFooter } from "@/components/public-footer";
 
 /**
  * Ventana de acceso: panel azul a la izquierda con el logo de IberAcad
@@ -50,13 +49,12 @@ export function AuthShell({ children }: { children: ReactNode }) {
       <section className="flex items-center justify-center">
         <div className="auth-card w-full">
           {children}
-          <p className="mt-12 text-center text-xs text-muted-foreground">
+          <p className="auth-card-foot mt-6 text-center text-xs text-muted-foreground">
             Primaria · 14:00 a 18:05 · La Paz, Bolivia
           </p>
         </div>
       </section>
     </div>
-    <PublicFooter />
     </div>
   );
 }

@@ -13,7 +13,7 @@ export const school = {
   mapEmbedUrl:
     "https://www.google.com/maps?q=Unidad+Educativa+Iberdrola+A+Plaza+16+de+Febrero+El+Alto+Bolivia&hl=es&z=16&output=embed",
   /** Correo directo de comunicación. Se muestra en la portada solo si tiene valor. */
-  email: "",
+  email: "unidadeducativaiberdrolaa@gmail.com",
   /** Direcciones completas (https://...) de las redes oficiales. Las vacías no se muestran. */
   social: {
     Facebook: "https://www.facebook.com/share/1Crjpxf1SL/",

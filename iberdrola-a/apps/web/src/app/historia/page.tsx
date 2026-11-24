@@ -13,9 +13,7 @@ export default function Historia() {
   return (
     <PublicPage current="/historia">
       <PageHero
-        eyebrow="NUESTRA HISTORIA"
-        title="Una comunidad que crece"
-        accent="con su escuela."
+        title="Historia"
         lead="Un recorrido por los orígenes de la unidad educativa en Senkata, El Alto."
       />
       <section className="texture-lines">

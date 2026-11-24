@@ -6,11 +6,9 @@ import { PublicFooter } from "@/components/public-footer";
 /** Estructura común de las ventanas públicas: menú, contenido y pie. */
 export function PublicPage({
   current,
-  compactFooter = false,
   children,
 }: {
   current?: string;
-  compactFooter?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -24,7 +22,7 @@ export function PublicPage({
         </a>
         <PublicHeader current={current} />
         <main id="contenido">{children}</main>
-        <PublicFooter compact={compactFooter} />
+        <PublicFooter />
       </div>
     </VisualMotion>
   );
@@ -37,7 +35,7 @@ export function PageHero({
   accent,
   lead,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   accent?: string;
   lead: string;
@@ -47,7 +45,7 @@ export function PageHero({
       <div className="hero-orb hero-orb-one" aria-hidden="true" />
       <div className="hero-orb hero-orb-two" aria-hidden="true" />
       <div className="hero-layout mx-auto max-w-7xl px-6 pb-14 pt-8 sm:px-10 sm:pb-20">
-        <p className="hero-eyebrow">{eyebrow}</p>
+        {eyebrow && <p className="hero-eyebrow">{eyebrow}</p>}
         <h1 className="max-w-3xl text-4xl font-semibold leading-[1.06] tracking-[-.045em] sm:text-6xl">
           {title}
           {accent && (

@@ -693,3 +693,43 @@ html {
     border: 0;
   }
 }
+
+/* Ventana de acceso: cabe completa en la pantalla, sin deslizar la página. */
+@media (min-width: 1024px) {
+  .auth-page {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+  }
+  .auth-page .auth-layout {
+    flex: 1;
+    min-height: 0;
+  }
+  .auth-page .auth-art {
+    min-height: 0;
+    padding-top: 28px;
+    padding-bottom: 28px;
+    gap: clamp(20px, 5vh, 56px);
+  }
+  .auth-page .auth-layout > section {
+    min-height: 0;
+    padding: 16px 30px;
+    overflow-y: auto;
+    align-items: safe center;
+  }
+  .auth-page .auth-card {
+    padding: 28px 36px;
+  }
+}
+@media (min-width: 1024px) and (max-height: 860px) {
+  .auth-page .auth-card {
+    padding: 18px 32px;
+  }
+  .auth-page .auth-card-foot {
+    display: none;
+  }
+  .auth-page .auth-card h2 {
+    font-size: 26px;
+  }
+}

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { AuthShell } from "@/components/auth-shell";
 import { AuthForm } from "@/components/auth-form";
-import { BackHome } from "@/components/back-home";
 import { getSupabaseConfig, demoEnabled } from "@/lib/env";
 export const dynamic = "force-dynamic";
 export default async function Login({
@@ -13,10 +12,6 @@ export default async function Login({
   const configured = !!getSupabaseConfig();
   return (
     <AuthShell>
-      <BackHome className="mb-7" />
-      <p className="mb-3 text-xs font-bold uppercase tracking-[.18em] text-primary">
-        Conoce tu colegio
-      </p>
       <h2 className="text-3xl font-semibold tracking-tight">
         Bienvenidos a IberAcad
       </h2>
@@ -50,7 +45,7 @@ export default async function Login({
         </p>
       )}
       <AuthForm mode="login" configured={configured} />
-      <div className="mt-5 text-right">
+      <div className="mt-4 text-right">
         <Link
           className="text-sm font-medium text-primary hover:underline"
           href="/recuperar-clave"
@@ -58,7 +53,7 @@ export default async function Login({
           Olvidé mi contraseña
         </Link>
       </div>
-      <div className="mt-8 border-t border-border pt-6">
+      <div className="mt-5 border-t border-border pt-4">
         <p className="text-center text-xs leading-5 text-muted-foreground">
           ¿Todavía no tienes acceso? Contacta a Secretaría.
           <br />
@@ -66,7 +61,7 @@ export default async function Login({
         </p>
         {demoEnabled() && (
           <Link
-            className="mt-5 block text-center text-sm font-semibold text-primary hover:underline"
+            className="mt-3 block text-center text-sm font-semibold text-primary hover:underline"
             href="/demo"
           >
             Explorar demostración visual →

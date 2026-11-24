@@ -36,7 +36,7 @@ export function AuthForm({
   );
   const [show, setShow] = useState(false);
   return (
-    <form action={action} className="mt-8 space-y-5">
+    <form action={action} className="mt-6 space-y-4">
       {mode !== "update" && (
         <div>
           <label htmlFor="email" className="mb-2 block text-sm font-medium">

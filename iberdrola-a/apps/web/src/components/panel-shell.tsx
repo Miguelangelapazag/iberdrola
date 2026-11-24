@@ -62,11 +62,7 @@ export function PanelShell({
   const groups = resolveNav(model);
   const active = activeNav(groups, pathname);
   const [toggled, setToggled] = useState<Record<string, boolean>>({});
-  const initials = model.name
-    .split(" ")
-    .slice(0, 2)
-    .map((n) => n.charAt(0))
-    .join("");
+
   return (
     <div className="academic-shell min-h-screen lg:grid lg:grid-cols-[242px_minmax(0,1fr)]">
       {open && (
@@ -204,9 +200,6 @@ export function PanelShell({
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex size-9 items-center justify-center rounded-full bg-secondary text-xs font-bold text-primary">
-              {initials}
-            </div>
             <div className="hidden sm:block">
               <p className="max-w-[190px] truncate text-xs font-semibold">
                 {model.name}
