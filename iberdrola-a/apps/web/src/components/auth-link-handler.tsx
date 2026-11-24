@@ -5,9 +5,10 @@ import { createClient } from "@/lib/supabase/client";
 import { getSupabaseConfig } from "@/lib/env";
 
 /**
- * Enlaces de recuperación que llegan con los datos en el fragmento (#...):
- * el servidor no los ve, así que se resuelven aquí y se envía a la persona
- * a la ventana para elegir su nueva contraseña (o a pedir otro enlace).
+ * Enlaces de invitación y de recuperación que llegan con los datos en el
+ * fragmento (#...): el servidor no los ve, así que se resuelven aquí y se
+ * envía a la persona a la ventana para elegir su contraseña (o a pedir otro
+ * enlace).
  */
 export function AuthLinkHandler() {
   const router = useRouter();
@@ -22,7 +23,11 @@ export function AuthLinkHandler() {
     }
     const access = params.get("access_token");
     const refresh = params.get("refresh_token");
-    if (params.get("type") !== "recovery" || !access || !refresh) return;
+    // Invitación (cuenta nueva) y recuperación: en ambos casos la persona
+    // debe elegir su contraseña.
+    const type = params.get("type");
+    if ((type !== "recovery" && type !== "invite") || !access || !refresh)
+      return;
     if (!getSupabaseConfig()) return;
     window.history.replaceState(null, "", window.location.pathname);
     createClient()
