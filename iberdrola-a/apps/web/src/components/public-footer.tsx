@@ -3,6 +3,72 @@ import Image from "next/image";
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import { school, socialLinks } from "@/lib/school";
 
+/**
+ * Pie en una sola franja para la ventana de acceso: los datos de contacto
+ * esenciales sin mapa, para que la página entre completa sin deslizar.
+ */
+export function CompactFooter() {
+  const socials = socialLinks();
+  const item = "inline-flex items-center gap-1.5 hover:underline";
+  return (
+    <footer className="compact-footer bg-[#102247] px-6 py-3 text-xs text-[#c7d7eb] sm:px-10">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-2">
+        <div className="flex items-center gap-2.5 text-white">
+          <Image
+            src="/colegio/iberdrola_escudo.jpg"
+            alt=""
+            width={436}
+            height={458}
+            className="h-7 w-7 rounded-md bg-white object-contain"
+          />
+          <span className="font-semibold">U.E. Iberdrola A · El Alto</span>
+        </div>
+        <ul className="flex flex-wrap items-center gap-x-5 gap-y-1">
+          <li>
+            <a
+              href={school.mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={item}
+            >
+              <MapPin size={13} aria-hidden="true" className="text-[#a8d6ff]" />
+              {school.address}
+              <span className="sr-only"> (abrir en Google Maps)</span>
+            </a>
+          </li>
+          <li>
+            <a href={`tel:+591${school.phone}`} className={item}>
+              <Phone size={13} aria-hidden="true" className="text-[#a8d6ff]" />
+              {school.phone}
+            </a>
+          </li>
+          {school.email && (
+            <li>
+              <a href={`mailto:${school.email}`} className={item}>
+                <Mail size={13} aria-hidden="true" className="text-[#a8d6ff]" />
+                {school.email}
+              </a>
+            </li>
+          )}
+          {socials.map(([name, url]) => (
+            <li key={name}>
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={item}
+              >
+                {name}
+                <ArrowUpRight size={12} aria-hidden="true" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </footer>
+  );
+}
+
 /** Pie común de todas las ventanas públicas: contacto, redes y mapa de Google. */
 export function PublicFooter() {
   const socials = socialLinks();
