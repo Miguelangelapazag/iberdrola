@@ -104,7 +104,13 @@ function Fields({ v, emailHint }: { v: Partial<UserRow>; emailHint?: string }) {
   );
 }
 
-export function CreateUserForm({ keyReady }: { keyReady: boolean }) {
+export function CreateUserForm({
+  keyReady,
+  keyStatus = "missing",
+}: {
+  keyReady: boolean;
+  keyStatus?: "ok" | "missing" | "invalid";
+}) {
   const [state, action, pending] = useActionState(createUser, {} as UserFormState);
   const v = (state.values ?? {}) as Partial<UserRow>;
   return (
@@ -120,8 +126,25 @@ export function CreateUserForm({ keyReady }: { keyReady: boolean }) {
       <Feedback state={state} />
       {!keyReady && (
         <p className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
-          Falta configurar <code>SUPABASE_SERVICE_ROLE_KEY</code> en el servidor
-          para poder crear usuarios.
+          {keyStatus === "invalid" ? (
+            <>
+              La variable <code>SUPABASE_SERVICE_ROLE_KEY</code> llegó al
+              servidor, pero su valor no es una clave secreta válida. Debe
+              empezar con <code>sb_secret_</code> (no{" "}
+              <code>sb_publishable_</code>).
+            </>
+          ) : keyStatus === "ok" ? (
+            <>
+              La clave secreta es válida, pero falta configurar{" "}
+              <code>NEXT_PUBLIC_SUPABASE_URL</code> o la clave pública.
+            </>
+          ) : (
+            <>
+              El servidor no recibe <code>SUPABASE_SERVICE_ROLE_KEY</code>.
+              Revisa que la variable exista en este entorno (Production) y
+              vuelve a desplegar.
+            </>
+          )}
         </p>
       )}
       <Button disabled={pending || !keyReady}>
