@@ -5,9 +5,6 @@ import {
   validateManagement,
   validDate,
   searchTerm,
-  parseFilters,
-  filtersToParams,
-  emptyValues,
 } from "./management-validation";
 const id = "00000000-0000-4000-8000-000000000001";
 const values = (entries: Record<string, string>) => {
@@ -139,24 +136,54 @@ describe("Gestión académica", () => {
   });
 });
 
-describe("Filtros de las listas de gestión", () => {
-  it("ignora valores inválidos y aplica el estado por defecto de cada modo", () => {
-    const f = parseFilters(
-      { q: "  ana ", estado: "x", curso: "no-uuid", grado: "9", genero: "Z" },
-      "estudiantes",
-      "buscar",
-    );
-    expect(f).toMatchObject({ estado: "", curso: "", grado: "", genero: "" });
-    expect(parseFilters({}, "cursos", "desactivar").estado).toBe("activos");
-    expect(parseFilters({}, "matriculas", "desactivar").estado).toBe("");
+describe("asignaturas", () => {
+  const base = Object.fromEntries(
+    [
+      "id",
+      "version",
+      "persona_version",
+      "nombres",
+      "apellido_paterno",
+      "apellido_materno",
+      "ci",
+      "telefono",
+      "direccion",
+      "rude",
+      "genero",
+      "fecha_nacimiento",
+      "activo",
+      "gestion_id",
+      "grado_id",
+      "paralelo",
+      "estudiante_id",
+      "tutor_id",
+      "parentesco",
+      "autorizado_consulta",
+      "contacto_principal",
+      "curso_id",
+      "fecha_ingreso",
+      "fecha_salida",
+      "estado",
+      "persona_modo",
+      "persona_id",
+      "especialidad",
+      "docente_id",
+      "asignatura_id",
+      "nombre",
+      "descripcion",
+    ].map((k) => [k, ""]),
+  );
+  it("exige nombre y limita la descripción", () => {
+    expect(validateManagement("asignaturas", base)).toMatch(/nombre/);
     expect(
-      parseFilters({ estado: "RETIRADA" }, "matriculas", "buscar").estado,
-    ).toBe("RETIRADA");
-    expect(parseFilters({ estado: "activos" }, "matriculas", "buscar").estado).toBe("");
-  });
-  it("conserva solo los filtros con valor y acepta uuid y grados válidos", () => {
-    const f = parseFilters({ curso: id, grado: "3", genero: "F" }, "estudiantes", "buscar");
-    expect(filtersToParams(f).toString()).toBe(`curso=${id}&grado=3&genero=F`);
-    expect(emptyValues().nombres).toBe("");
+      validateManagement("asignaturas", { ...base, nombre: "Música" }),
+    ).toBeNull();
+    expect(
+      validateManagement("asignaturas", {
+        ...base,
+        nombre: "Música",
+        descripcion: "x".repeat(501),
+      }),
+    ).toMatch(/500/);
   });
 });

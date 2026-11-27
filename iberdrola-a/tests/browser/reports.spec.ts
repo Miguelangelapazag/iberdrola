@@ -94,7 +94,7 @@ async function setup(
   await page.goto(`${new URL(page.url()).pathname}?id=${a}`);
   await page.goto(`/panel/calificaciones/registro?asignacion=${a}`);
   await expect(
-    page.getByRole("heading", { name: "Registrar notas." }),
+    page.getByRole("heading", { name: "Registrar calificaciones." }),
   ).toBeVisible();
   for (const d of ["SER", "SABER", "HACER"]) {
     const details = page.locator("details");
@@ -145,6 +145,7 @@ async function completeGrade(page: Page) {
 test("informe publicado, CSV completo, impresión y acceso familiar", async ({
   page,
 }) => {
+  test.setTimeout(90_000); // recorrido largo: varias cuentas y descargas
   await setup(page, "RP", "Informe ficticio", true);
   await completeGrade(page);
   await draftGrade(page);
@@ -197,7 +198,9 @@ test("informe publicado, CSV completo, impresión y acceso familiar", async ({
   });
   await page.emulateMedia({ media: "screen" });
   await page.getByRole("link", { name: "Volver al informe" }).click();
-  await expect(page.getByRole("heading", { name: "Informes." })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Generar informe/reporte." }),
+  ).toBeVisible();
   const url = page.url();
   await page.setViewportSize({ width: 390, height: 844 });
   await page.screenshot({

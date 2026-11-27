@@ -80,7 +80,7 @@ async function student(
 async function sheet(page: Page, id: string) {
   await page.goto(`/panel/asistencia/registro?curso=${id}&fecha=${date}`);
   await expect(
-    page.getByRole("heading", { name: "Pasar lista." }),
+    page.getByRole("heading", { name: "Registrar asistencia." }),
   ).toBeVisible();
 }
 async function draft(page: Page) {
@@ -162,6 +162,7 @@ test("docente asignado publica y Padre consulta solamente marcas publicadas", as
   await login(page, "docente@example.invalid");
   await page.goto("/panel/asistencia");
   await page
+    .getByRole("main")
     .getByRole("link", { name: "Registrar asistencia", exact: true })
     .click();
   await sheet(page, c);

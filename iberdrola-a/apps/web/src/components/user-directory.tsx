@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Search, Pencil } from "lucide-react";
-import { roles, roleLabels } from "@iberdrola/shared";
+import { roles, roleLabels, type Role } from "@iberdrola/shared";
 import { searchUsers, type UserSearch } from "@/lib/data/users";
 import { ActiveToggle } from "@/components/user-forms";
 import { Card } from "@/components/ui/card";
@@ -42,7 +42,10 @@ export async function UserDirectory({
   selfId,
   fixedRole,
   path,
+  allowed = roles,
 }: {
+  /** Roles que la cuenta puede administrar (filtro de rol). */
+  allowed?: readonly Role[];
   mode: DirectoryMode;
   search: UserSearch;
   selfId: string;
@@ -89,7 +92,7 @@ export async function UserDirectory({
                 className={selectClass}
               >
                 <option value="">Todos</option>
-                {roles.map((r) => (
+                {allowed.map((r) => (
                   <option key={r} value={r}>
                     {roleLabels[r]}
                   </option>
@@ -157,14 +160,19 @@ export async function UserDirectory({
                 </td>
                 <td className="px-5 py-3">
                   <div className="flex justify-end gap-2">
-                    {mode !== "desactivar" && (
+                    {!allowed.includes(u.rol) ? (
+                      <span className="text-xs text-muted-foreground">
+                        Solo Dirección
+                      </span>
+                    ) : null}
+                    {allowed.includes(u.rol) && mode !== "desactivar" && (
                       <Button asChild size="sm" variant="outline">
                         <Link href={`/panel/usuarios/editar?id=${u.id}`}>
                           <Pencil size={14} /> Editar
                         </Link>
                       </Button>
                     )}
-                    {mode !== "editar" && (
+                    {allowed.includes(u.rol) && mode !== "editar" && (
                       <ActiveToggle user={u} self={u.id === selfId} compact />
                     )}
                   </div>

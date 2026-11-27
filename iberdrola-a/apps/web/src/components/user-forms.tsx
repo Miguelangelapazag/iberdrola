@@ -1,7 +1,7 @@
 "use client";
 import { useActionState, useState } from "react";
 import { LoaderCircle, UserPlus, Save, UserX, UserCheck } from "lucide-react";
-import { roles, roleLabels } from "@iberdrola/shared";
+import { roles, roleLabels, type Role } from "@iberdrola/shared";
 import {
   createUser,
   updateUser,
@@ -75,7 +75,15 @@ function Feedback({ state }: { state: UserFormState }) {
   );
 }
 
-function Fields({ v, emailHint }: { v: Partial<UserRow>; emailHint?: string }) {
+function Fields({
+  v,
+  emailHint,
+  allowed = roles,
+}: {
+  v: Partial<UserRow>;
+  emailHint?: string;
+  allowed?: readonly Role[];
+}) {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       <Field
@@ -125,7 +133,7 @@ function Fields({ v, emailHint }: { v: Partial<UserRow>; emailHint?: string }) {
           className={selectClass}
         >
           <option value="">Selecciona un rol</option>
-          {roles.map((r) => (
+          {allowed.map((r) => (
             <option key={r} value={r}>
               {roleLabels[r]}
             </option>
@@ -151,10 +159,12 @@ export function CreateUserForm({
   keyReady,
   keyStatus = "missing",
   people = [],
+  allowed = roles,
 }: {
   keyReady: boolean;
   keyStatus?: "ok" | "missing" | "invalid";
   people?: UnlinkedPerson[];
+  allowed?: readonly Role[];
 }) {
   const [state, action, pending] = useActionState(
     createUser,
@@ -257,11 +267,13 @@ export function CreateUserForm({
               className={selectClass}
             >
               <option value="">Selecciona un rol</option>
-              {(person ? person.kinds : roles).map((r) => (
-                <option key={r} value={r}>
-                  {roleLabels[r]}
-                </option>
-              ))}
+              {(person ? person.kinds : allowed)
+                .filter((r) => allowed.includes(r))
+                .map((r) => (
+                  <option key={r} value={r}>
+                    {roleLabels[r]}
+                  </option>
+                ))}
             </select>
           </div>
         </div>
@@ -269,6 +281,7 @@ export function CreateUserForm({
         <Fields
           v={state.success ? {} : v}
           emailHint="Recibirá una invitación para crear su propia contraseña."
+          allowed={allowed}
         />
       )}
       <Feedback state={state} />
@@ -310,9 +323,11 @@ export function CreateUserForm({
 export function EditUserForm({
   user,
   emailsAvailable,
+  allowed = roles,
 }: {
   user: UserRow;
   emailsAvailable: boolean;
+  allowed?: readonly Role[];
 }) {
   const [state, action, pending] = useActionState(
     updateUser,
@@ -325,6 +340,7 @@ export function EditUserForm({
       <input type="hidden" name="version" value={user.version} />
       <Fields
         v={v}
+        allowed={allowed}
         emailHint={
           emailsAvailable
             ? "Si cambias el correo, el usuario deberá entrar con el nuevo."

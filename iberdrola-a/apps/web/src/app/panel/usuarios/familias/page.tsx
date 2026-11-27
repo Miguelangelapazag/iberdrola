@@ -13,7 +13,7 @@ export default async function Familias({
       title="Accesos de familias"
       lead="Cuentas de padres, madres y tutores. Cada cuenta ve solo a los estudiantes vinculados a su ficha de tutor con consulta autorizada."
     >
-      {({ selfId }) => (
+      {({ selfId, roles }) => (
         <>
           <div className="mb-5 flex flex-wrap gap-3">
             <Button asChild>
@@ -24,6 +24,7 @@ export default async function Familias({
             </Button>
           </div>
           <UserDirectory
+            allowed={roles}
             mode="buscar"
             search={parseSearch(params, "buscar")}
             selfId={selfId}

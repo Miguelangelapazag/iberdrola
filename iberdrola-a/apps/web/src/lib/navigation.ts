@@ -53,22 +53,32 @@ export const navGroups: NavGroup[] = [
       {
         label: "Crear usuario",
         href: "/panel/usuarios/nuevo",
-        roles: ["DIRECTOR"],
+        roles: ["DIRECTOR", "SECRETARIA"],
       },
       {
         label: "Buscar usuarios",
         href: "/panel/usuarios",
-        roles: ["DIRECTOR"],
+        roles: ["DIRECTOR", "SECRETARIA"],
       },
       {
         label: "Editar usuario",
         href: "/panel/usuarios/editar",
-        roles: ["DIRECTOR"],
+        roles: ["DIRECTOR", "SECRETARIA"],
       },
       {
         label: "Desactivar usuarios",
         href: "/panel/usuarios/desactivar",
+        roles: ["DIRECTOR", "SECRETARIA"],
+      },
+      {
+        label: "Personal administrativo",
+        href: "/panel/usuarios/personal",
         roles: ["DIRECTOR"],
+      },
+      {
+        label: "Accesos de familias",
+        href: "/panel/usuarios/familias",
+        roles: ["DIRECTOR", "SECRETARIA"],
       },
     ],
   },
@@ -85,7 +95,7 @@ export const navGroups: NavGroup[] = [
         roleLabels: { PADRE: "Mis hijos", ESTUDIANTE: "Mi ficha" },
       },
       {
-        label: "Registro de estudiantes",
+        label: "Fichas de estudiantes",
         href: "/panel/gestion/estudiantes",
         manage: true,
       },
@@ -110,7 +120,7 @@ export const navGroups: NavGroup[] = [
     icon: "docentes",
     items: [
       {
-        label: "Gestión de docentes",
+        label: "Fichas de docentes",
         href: "/panel/gestion/docentes",
         manage: true,
       },
@@ -122,7 +132,12 @@ export const navGroups: NavGroup[] = [
     label: "Administrar Asignaturas",
     icon: "asignaturas",
     items: [
-      { label: "Asignaturas", href: "/panel/asignaturas" },
+      { label: "Consultar asignaturas", href: "/panel/asignaturas" },
+      {
+        label: "Gestionar asignaturas",
+        href: "/panel/gestion/asignaturas",
+        manage: true,
+      },
       {
         label: "Asignación de materias",
         href: "/panel/gestion/asignaciones",
@@ -156,13 +171,23 @@ export const navGroups: NavGroup[] = [
     icon: "asistencia",
     items: [
       {
+        label: "Registrar asistencia",
+        href: "/panel/asistencia/registro",
+        roles: ["DIRECTOR", "DOCENTE"],
+      },
+      {
         label: "Consultar asistencia",
         href: "/panel/asistencia",
         demo: "/demo/asistencia",
       },
       {
-        label: "Pasar lista",
-        href: "/panel/asistencia/registro",
+        label: "Editar asistencia",
+        href: "/panel/asistencia/editar",
+        roles: ["DIRECTOR", "DOCENTE"],
+      },
+      {
+        label: "Eliminar asistencia",
+        href: "/panel/asistencia/borradores",
         roles: ["DIRECTOR", "DOCENTE"],
       },
     ],
@@ -174,13 +199,23 @@ export const navGroups: NavGroup[] = [
     icon: "calificaciones",
     items: [
       {
+        label: "Registrar calificaciones",
+        href: "/panel/calificaciones/registro",
+        roles: ["DIRECTOR", "DOCENTE"],
+      },
+      {
         label: "Consultar calificaciones",
         href: "/panel/calificaciones",
         demo: "/demo/calificaciones",
       },
       {
-        label: "Registrar notas",
-        href: "/panel/calificaciones/registro",
+        label: "Editar calificaciones",
+        href: "/panel/calificaciones/editar",
+        roles: ["DIRECTOR", "DOCENTE"],
+      },
+      {
+        label: "Eliminar calificaciones",
+        href: "/panel/calificaciones/borradores",
         roles: ["DIRECTOR", "DOCENTE"],
       },
     ],
@@ -190,7 +225,15 @@ export const navGroups: NavGroup[] = [
     sprint: 8,
     label: "Reportes Académicos",
     icon: "reportes",
-    items: [{ label: "Informes", href: "/panel/informes" }],
+    items: [
+      { label: "Generar informe/reporte", href: "/panel/informes" },
+      {
+        label: "Consultar informes/reportes",
+        href: "/panel/informes/guardados",
+      },
+      { label: "Editar parámetros", href: "/panel/informes/editar" },
+      { label: "Eliminar reporte", href: "/panel/informes/eliminar" },
+    ],
   },
 ];
 export type ResolvedNavItem = { label: string; href: string; path: string };

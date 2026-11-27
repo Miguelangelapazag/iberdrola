@@ -134,7 +134,7 @@ const present = (value: unknown) =>
   Array.isArray(value) ? value.length > 0 : Boolean(value);
 export async function loadUnlinkedPeople(): Promise<UnlinkedPerson[]> {
   const { supabase, profile } = await requireProfile();
-  if (profile.rol !== "DIRECTOR") return [];
+  if (profile.rol !== "DIRECTOR" && profile.rol !== "SECRETARIA") return [];
   const { data, error } = await supabase
     .from("personas")
     .select(

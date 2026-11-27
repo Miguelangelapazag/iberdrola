@@ -7,6 +7,7 @@ export const managementSections = [
   "matriculas",
   "docentes",
   "asignaciones",
+  "asignaturas",
 ] as const;
 export type ManagementSection = (typeof managementSections)[number];
 export type OptionKind =
@@ -23,6 +24,7 @@ export const managementSingular: Record<ManagementSection, string> = {
   matriculas: "matrícula",
   docentes: "docente",
   asignaciones: "asignación",
+  asignaturas: "materia",
 };
 export const managementNewLabel: Record<ManagementSection, string> = {
   estudiantes: "Nuevo estudiante",
@@ -31,6 +33,7 @@ export const managementNewLabel: Record<ManagementSection, string> = {
   matriculas: "Nueva matrícula",
   docentes: "Nuevo docente",
   asignaciones: "Nueva asignación",
+  asignaturas: "Nueva materia",
 };
 export const isManagementSection = (
   value: string,
@@ -38,7 +41,6 @@ export const isManagementSection = (
 export const canManage = (role: Role) =>
   role === "DIRECTOR" || role === "SECRETARIA";
 export type ManagementState = {
-  success?: string;
   error?: string;
   values?: Record<string, string>;
   attempt?: number;
@@ -97,9 +99,9 @@ const fields = [
   "especialidad",
   "docente_id",
   "asignatura_id",
+  "nombre",
+  "descripcion",
 ];
-export const emptyValues = (): Record<string, string> =>
-  Object.fromEntries(fields.map((key) => [key, ""]));
 export function formValues(form: FormData) {
   return Object.fromEntries(
     fields.map((key) => [
@@ -159,6 +161,11 @@ export function validateManagement(
       !/^[A-Z]{1,2}$/.test(v.paralelo.toUpperCase())
     )
       return "Selecciona gestión, grado y un paralelo de una o dos letras.";
+  } else if (kind === "asignaturas") {
+    if (!v.nombre || v.nombre.length > 120)
+      return "Ingresa el nombre de la materia (hasta 120 caracteres).";
+    if (v.descripcion.length > 500)
+      return "La descripción admite hasta 500 caracteres.";
   } else if (kind === "asignaciones") {
     if (
       !uuidPattern.test(v.docente_id) ||
@@ -194,61 +201,4 @@ export function validateManagement(
       return "Una matrícula activa debe conservar la salida vacía.";
   }
   return null;
-}
-
-/** Modos de trabajo de cada sección, iguales a los de Gestión de usuarios. */
-export const managementModes = ["buscar", "editar", "desactivar"] as const;
-export type ManagementMode = (typeof managementModes)[number];
-export const modeLabels: Record<ManagementMode | "crear", string> = {
-  buscar: "Buscar",
-  crear: "Crear",
-  editar: "Editar",
-  desactivar: "Desactivar",
-};
-export type ManagementFilters = {
-  q: string;
-  estado: string;
-  curso: string;
-  docente: string;
-  gestion: string;
-  grado: string;
-  materia: string;
-  genero: string;
-};
-type RawQuery = Record<string, string | string[] | undefined>;
-const text = (v: string | string[] | undefined) => (typeof v === "string" ? v : "");
-/** Lee y sanea los filtros de la dirección; un valor inválido se ignora. */
-export function parseFilters(
-  query: RawQuery,
-  section: ManagementSection,
-  mode: ManagementMode,
-): ManagementFilters {
-  const uuid = (v: string) => (uuidPattern.test(v) ? v : "");
-  const estados =
-    section === "matriculas"
-      ? ["ACTIVA", "RETIRADA", "FINALIZADA"]
-      : ["activos", "inactivos"];
-  const estado = text(query.estado);
-  return {
-    q: text(query.q).slice(0, 100),
-    estado: estados.includes(estado)
-      ? estado
-      : mode === "desactivar" && section !== "matriculas"
-        ? "activos"
-        : "",
-    curso: uuid(text(query.curso)),
-    docente: uuid(text(query.docente)),
-    gestion: uuid(text(query.gestion)),
-    grado: /^[1-6]$/.test(text(query.grado)) ? text(query.grado) : "",
-    materia: uuid(text(query.materia)),
-    genero: ["M", "F", "NO_ESPECIFICADO"].includes(text(query.genero))
-      ? text(query.genero)
-      : "",
-  };
-}
-/** Conserva los filtros en los enlaces de paginación y de regreso. */
-export function filtersToParams(f: ManagementFilters) {
-  const params = new URLSearchParams();
-  for (const [key, value] of Object.entries(f)) if (value) params.set(key, value);
-  return params;
 }

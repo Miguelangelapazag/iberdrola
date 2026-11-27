@@ -1,4 +1,5 @@
--- IberAcad · Ampliación de módulos (informes guardados y eliminación de borradores).
+-- IberAcad · Ampliación de módulos (informes guardados, eliminación de borradores
+-- y gestión de cuentas no administrativas por Secretaría).
 -- Se puede ejecutar UNA o VARIAS veces: no borra datos ni duplica objetos.
 -- Es compatible con bases que ya tengan la actualización 0.10 de IberAcadX.
 -- No archiva ni modifica comunicados.
@@ -59,5 +60,19 @@ begin
 end $$;
 revoke all on function public.eliminar_registro_academico(text, uuid) from public, anon;
 grant execute on function public.eliminar_registro_academico(text, uuid) to authenticated;
+
+-- 3. Secretaría administra cuentas de estudiantes, docentes y familias.
+--    Nunca ve, crea ni modifica cuentas de Dirección o Secretaría, ni puede
+--    asignar esos roles. Las políticas de Dirección no cambian.
+drop policy if exists perfiles_secretaria_select on public.perfiles;
+drop policy if exists perfiles_secretaria_insert on public.perfiles;
+drop policy if exists perfiles_secretaria_update on public.perfiles;
+create policy perfiles_secretaria_select on public.perfiles for select to authenticated
+  using (private.admin() and rol in ('ESTUDIANTE','DOCENTE','PADRE'));
+create policy perfiles_secretaria_insert on public.perfiles for insert to authenticated
+  with check (private.admin() and rol in ('ESTUDIANTE','DOCENTE','PADRE'));
+create policy perfiles_secretaria_update on public.perfiles for update to authenticated
+  using (private.admin() and rol in ('ESTUDIANTE','DOCENTE','PADRE'))
+  with check (private.admin() and rol in ('ESTUDIANTE','DOCENTE','PADRE'));
 
 commit;

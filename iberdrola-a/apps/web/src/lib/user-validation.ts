@@ -58,3 +58,6 @@ export function validateUser(
 /** Texto en minúsculas sin tildes para búsquedas. */
 export const fold = (s: string) =>
   s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+/** Roles de las cuentas que Secretaría puede crear, editar y desactivar. */
+export const managedBySecretary = ["ESTUDIANTE", "DOCENTE", "PADRE"] as const;

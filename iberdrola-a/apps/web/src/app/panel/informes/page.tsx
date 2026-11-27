@@ -8,12 +8,8 @@ import { PanelShell } from "@/components/panel-shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ReportTable } from "@/components/report-table";
-import {
-  SaveCurrentReport,
-  SavedReportList,
-  type SavedReport,
-} from "@/components/saved-reports";
-import { displayDate } from "@/lib/data/model";
+import { SaveCurrentReport } from "@/components/saved-reports";
+import { loadSavedReports } from "@/lib/data/saved-reports";
 const field =
   "mt-2 h-12 w-full rounded-lg border border-input bg-background px-3 text-sm";
 export default async function ReportsPage({
@@ -34,39 +30,8 @@ export default async function ReportsPage({
     .limit(501);
   const optionsError = !!terms.error || (terms.data?.length || 0) > 500;
   const result = params.has("curso") ? await loadReport(params) : null;
-  // Informes guardados de la cuenta (solo filtros, nunca datos).
-  const saved = await supabase
-    .from("reportes_guardados")
-    .select("id,nombre,parametros,updated_at")
-    .order("updated_at", { ascending: false })
-    .limit(200);
-  const savedAvailable = !saved.error;
-  const courseLabel = new Map(courses.map((c) => [c.id, c.label]));
-  const termLabel = new Map(
-    (terms.data || []).map((t) => [
-      t.id,
-      `Trimestre ${t.numero} · ${t.gestiones?.anio ?? ""}`,
-    ]),
-  );
-  const savedReports: SavedReport[] = (saved.data || []).map((r) => {
-    const p = new URLSearchParams(r.parametros);
-    const tipo = p.get("tipo") || "calificaciones";
-    return {
-      id: r.id,
-      nombre: r.nombre,
-      parametros: r.parametros,
-      fecha: displayDate(r.updated_at),
-      detalle: [
-        tipo === "asistencia" ? "Asistencia" : "Calificaciones",
-        courseLabel.get(p.get("curso") || "") || "Curso no disponible",
-        tipo === "asistencia"
-          ? `${p.get("desde")} a ${p.get("hasta")}`
-          : termLabel.get(p.get("trimestre") || "") || "",
-      ]
-        .filter(Boolean)
-        .join(" · "),
-    };
-  });
+  const { available: savedAvailable, reports: savedReports } =
+    await loadSavedReports();
   const openId = params.get("guardado") || "";
   const openReport = savedReports.find((r) => r.id === openId);
   const reportQuery = new URLSearchParams(params);
@@ -77,7 +42,7 @@ export default async function ReportsPage({
         <p className="mb-2 text-xs text-muted-foreground">
           Consulta y exportación
         </p>
-        <PageTitle fallback="Informes académicos" />
+        <PageTitle fallback="Generar informe/reporte" />
         <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
           Consulta calificaciones publicadas o asistencia por curso. Descarga
           los resultados o prepara una copia para imprimir.
@@ -95,6 +60,9 @@ export default async function ReportsPage({
             method="get"
             className="grid items-end gap-4 sm:grid-cols-2 lg:grid-cols-3"
           >
+            {openReport && (
+              <input type="hidden" name="guardado" value={openReport.id} />
+            )}
             <label className="text-sm">
               Tipo de informe
               <select
@@ -206,12 +174,6 @@ export default async function ReportsPage({
             reflejar publicaciones o retiros posteriores a esta vista. Se
             exportan todas las filas del informe, hasta 5000, sin truncarlas.
           </p>
-        </Card>
-      )}
-      {savedAvailable && (
-        <Card className="mt-6 p-5">
-          <h2 className="mb-4 text-lg font-semibold">Informes guardados</h2>
-          <SavedReportList reports={savedReports} />
         </Card>
       )}
       {!result && (

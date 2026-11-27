@@ -11,7 +11,7 @@ export default async function Buscar({
       title="Buscar usuarios"
       lead="Encuentra cuentas por nombre, CI o correo. Filtra por rol y estado."
     >
-      {({ selfId }) => (
+      {({ selfId, roles }) => (
         <>
           {params.creado === "1" && (
             <p
@@ -23,6 +23,7 @@ export default async function Buscar({
             </p>
           )}
           <UserDirectory
+            allowed={roles}
             mode="buscar"
             search={parseSearch(params, "buscar")}
             selfId={selfId}

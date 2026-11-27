@@ -2,10 +2,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireProfile } from "@/lib/auth";
-import { loadRecord } from "@/lib/data/management";
 import {
   canManage,
-  emptyValues,
   formValues,
   validateManagement,
   isManagementSection,
@@ -22,7 +20,9 @@ function errorMessage(
   if (error.code === "PGRST202" || error.code === "42883")
     return `Falta instalar la migración ${section === "docentes" || section === "asignaciones" ? "202610060002_docentes_asignaciones.sql" : "202610060001_gestion_academica.sql"} en Supabase.`;
   if (error.code === "23505")
-    if (section === "asignaciones")
+    if (section === "asignaturas")
+      return "Ya existe una materia con ese nombre. Búscala para editarla o reactivarla.";
+    else if (section === "asignaciones")
       return "Ese curso ya tiene una asignación para esta materia. Busca la existente para editarla o reactivarla.";
     else if (section === "docentes")
       return "Ya existe ese CI o esa persona ya tiene ficha de docente. Busca la ficha existente o reutiliza sus datos personales.";
@@ -58,95 +58,6 @@ function errorMessage(
   return "No se pudo guardar. Comprueba la conexión e inténtalo de nuevo.";
 }
 
-type Db = Awaited<ReturnType<typeof requireProfile>>["supabase"];
-/** Guarda una ficha con el procedimiento de la base que le corresponde. */
-async function persist(
-  supabase: Db,
-  section: ManagementSection | "vinculos",
-  values: Record<string, string>,
-) {
-  let result;
-  if (section === "estudiantes" || section === "tutores") {
-    result = await supabase.rpc("guardar_ficha_academica", {
-      p_tipo: section,
-      p_id: values.id || null,
-      p_version: values.version || null,
-      p_persona_version: values.persona_version || null,
-      p_persona: {
-        nombres: values.nombres,
-        apellido_paterno: values.apellido_paterno,
-        apellido_materno: values.apellido_materno,
-        ci: values.ci,
-        telefono: values.telefono,
-        direccion: values.direccion,
-      },
-      p_ficha: {
-        rude: values.rude,
-        genero: values.genero,
-        fecha_nacimiento: values.fecha_nacimiento,
-        activo: values.activo === "on",
-      },
-    });
-  } else if (section === "docentes") {
-    result = await supabase.rpc("guardar_docente_academico", {
-      p_id: values.id || null,
-      p_persona_id:
-        !values.id && values.persona_modo === "existente"
-          ? values.persona_id
-          : null,
-      p_persona: {
-        nombres: values.nombres,
-        apellido_paterno: values.apellido_paterno,
-        apellido_materno: values.apellido_materno,
-        ci: values.ci,
-        telefono: values.telefono,
-        direccion: values.direccion,
-      },
-      p_especialidad: values.especialidad,
-      p_activo: values.activo === "on",
-      p_version: values.version || null,
-      p_persona_version: values.persona_version || null,
-    });
-  } else if (section === "asignaciones") {
-    result = await supabase.rpc("guardar_asignacion_academica", {
-      p_id: values.id || null,
-      p_docente: values.docente_id,
-      p_curso: values.curso_id,
-      p_asignatura: values.asignatura_id,
-      p_activo: values.activo === "on",
-      p_version: values.version || null,
-    });
-  } else if (section === "cursos") {
-    result = await supabase.rpc("guardar_curso_academico", {
-      p_id: values.id || null,
-      p_gestion: values.gestion_id,
-      p_grado: Number(values.grado_id),
-      p_paralelo: values.paralelo.toUpperCase(),
-      p_activo: values.activo === "on",
-      p_version: values.version || null,
-    });
-  } else if (section === "vinculos") {
-    result = await supabase.rpc("vincular_tutor_academico", {
-      p_estudiante: values.estudiante_id,
-      p_tutor: values.tutor_id,
-      p_parentesco: values.parentesco,
-      p_autorizado: values.autorizado_consulta === "on",
-      p_principal: values.contacto_principal === "on",
-    });
-  } else {
-    result = await supabase.rpc("guardar_matricula_academica", {
-      p_id: values.id || null,
-      p_estudiante: values.estudiante_id,
-      p_curso: values.curso_id,
-      p_ingreso: values.fecha_ingreso,
-      p_salida: values.fecha_salida || null,
-      p_estado: values.estado,
-      p_version: values.version || null,
-    });
-  }
-  return result;
-}
-
 export async function saveRecord(
   section: ManagementSection | "vinculos",
   previous: ManagementState,
@@ -167,7 +78,121 @@ export async function saveRecord(
   if (validation) return fail(validation);
   let result;
   try {
-    result = await persist(supabase, section, values);
+    if (section === "estudiantes" || section === "tutores") {
+      result = await supabase.rpc("guardar_ficha_academica", {
+        p_tipo: section,
+        p_id: values.id || null,
+        p_version: values.version || null,
+        p_persona_version: values.persona_version || null,
+        p_persona: {
+          nombres: values.nombres,
+          apellido_paterno: values.apellido_paterno,
+          apellido_materno: values.apellido_materno,
+          ci: values.ci,
+          telefono: values.telefono,
+          direccion: values.direccion,
+        },
+        p_ficha: {
+          rude: values.rude,
+          genero: values.genero,
+          fecha_nacimiento: values.fecha_nacimiento,
+          activo: values.activo === "on",
+        },
+      });
+    } else if (section === "docentes") {
+      result = await supabase.rpc("guardar_docente_academico", {
+        p_id: values.id || null,
+        p_persona_id:
+          !values.id && values.persona_modo === "existente"
+            ? values.persona_id
+            : null,
+        p_persona: {
+          nombres: values.nombres,
+          apellido_paterno: values.apellido_paterno,
+          apellido_materno: values.apellido_materno,
+          ci: values.ci,
+          telefono: values.telefono,
+          direccion: values.direccion,
+        },
+        p_especialidad: values.especialidad,
+        p_activo: values.activo === "on",
+        p_version: values.version || null,
+        p_persona_version: values.persona_version || null,
+      });
+    } else if (section === "asignaciones") {
+      result = await supabase.rpc("guardar_asignacion_academica", {
+        p_id: values.id || null,
+        p_docente: values.docente_id,
+        p_curso: values.curso_id,
+        p_asignatura: values.asignatura_id,
+        p_activo: values.activo === "on",
+        p_version: values.version || null,
+      });
+    } else if (section === "cursos") {
+      result = await supabase.rpc("guardar_curso_academico", {
+        p_id: values.id || null,
+        p_gestion: values.gestion_id,
+        p_grado: Number(values.grado_id),
+        p_paralelo: values.paralelo.toUpperCase(),
+        p_activo: values.activo === "on",
+        p_version: values.version || null,
+      });
+    } else if (section === "asignaturas") {
+      const data = {
+        nombre: values.nombre,
+        descripcion: values.descripcion || null,
+        activo: values.activo === "on",
+        updated_at: new Date().toISOString(),
+      };
+      if (values.id) {
+        // Control de cambios simultáneos: solo se guarda sobre la versión leída.
+        const updated = await supabase
+          .from("asignaturas")
+          .update(data)
+          .eq("id", values.id)
+          .eq("updated_at", values.version)
+          .select("id");
+        result = updated.error
+          ? { data: null, error: updated.error }
+          : updated.data?.length
+            ? { data: values.id, error: null }
+            : {
+                data: null,
+                error: {
+                  code: "P0001",
+                  message:
+                    "Otra persona modificó esta materia. Recarga la ficha antes de guardar.",
+                },
+              };
+      } else {
+        const inserted = await supabase
+          .from("asignaturas")
+          .insert(data)
+          .select("id")
+          .single();
+        result = inserted.error
+          ? { data: null, error: inserted.error }
+          : { data: inserted.data.id, error: null };
+      }
+    } else if (section === "vinculos") {
+      result = await supabase.rpc("vincular_tutor_academico", {
+        p_estudiante: values.estudiante_id,
+        p_tutor: values.tutor_id,
+        p_parentesco: values.parentesco,
+        p_autorizado: values.autorizado_consulta === "on",
+        p_principal: values.contacto_principal === "on",
+      });
+    } else {
+      result = await supabase.rpc("guardar_matricula_academica", {
+        p_id: values.id || null,
+        p_estudiante: values.estudiante_id,
+        p_curso: values.curso_id,
+        p_ingreso: values.fecha_ingreso,
+        p_salida: values.fecha_salida || null,
+        p_estado: values.estado,
+        p_version: values.version || null,
+      });
+    }
     if (result.error) return fail(errorMessage(result.error, section));
   } catch {
     return fail(
@@ -286,39 +311,4 @@ export async function findOptions(kind: OptionKind, query: string) {
         .join(" "),
     })),
   };
-}
-
-/** Activa o desactiva una ficha sin tocar el resto de sus datos. */
-export async function toggleRecordActive(
-  _previous: ManagementState,
-  form: FormData,
-): Promise<ManagementState> {
-  const { supabase, profile } = await requireProfile();
-  const section = String(form.get("section") || "");
-  const id = String(form.get("id") || "");
-  const next = form.get("activo") === "true";
-  if (!canManage(profile.rol))
-    return { error: "Solo Dirección y Secretaría pueden gestionar registros." };
-  if (!isManagementSection(section) || section === "matriculas")
-    return { error: "Esta sección no se activa ni se desactiva." };
-  const loaded = await loadRecord(section, id);
-  if (!loaded || !loaded.defaults.id)
-    return { error: "El registro ya no está disponible." };
-  const values = {
-    ...emptyValues(),
-    ...loaded.defaults,
-    activo: next ? "on" : "",
-  };
-  const invalid = validateManagement(section, values);
-  if (invalid) return { error: invalid };
-  try {
-    const result = await persist(supabase, section, values);
-    if (result.error) return { error: errorMessage(result.error, section) };
-  } catch {
-    return {
-      error: "No se pudo guardar. Comprueba la conexión e inténtalo de nuevo.",
-    };
-  }
-  revalidatePath("/panel", "layout");
-  return { success: next ? "Ficha reactivada." : "Ficha desactivada." };
 }

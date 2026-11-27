@@ -10,6 +10,7 @@ export default async function Personal({
   const params = await searchParams;
   return (
     <UserPage
+      directorOnly
       title="Personal administrativo"
       lead="Cuentas de Secretaría. Solo Dirección puede crearlas, editarlas o desactivarlas."
     >

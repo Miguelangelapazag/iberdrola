@@ -100,7 +100,14 @@ export function SaveCurrentReport({
 }
 
 /** Lista de informes guardados: abrir, renombrar y eliminar, con buscador y filtro. */
-export function SavedReportList({ reports }: { reports: SavedReport[] }) {
+export function SavedReportList({
+  reports,
+  mode = "consultar",
+}: {
+  reports: SavedReport[];
+  /** consultar: abrir · editar: renombrar o abrir para cambiar filtros · eliminar */
+  mode?: "consultar" | "editar" | "eliminar";
+}) {
   const [state, action, pending] = useActionState(
     saveReport,
     {} as SavedReportState,
@@ -182,45 +189,54 @@ export function SavedReportList({ reports }: { reports: SavedReport[] }) {
                 </>
               )}
             </div>
-            <Button asChild size="sm">
-              <Link href={`/panel/informes?${r.parametros}&guardado=${r.id}`}>
-                Abrir
-              </Link>
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              type="button"
-              onClick={() => setEditing(r.id)}
-            >
-              <Pencil size={14} /> Renombrar
-            </Button>
-            {confirming === r.id ? (
-              <form action={action} className="inline-flex gap-2">
-                <input type="hidden" name="op" value="eliminar" />
-                <input type="hidden" name="id" value={r.id} />
-                <Button size="sm" variant="destructive" disabled={pending}>
-                  <Trash2 size={14} /> Confirmar
-                </Button>
-                <Button
-                  size="sm"
-                  type="button"
-                  variant="ghost"
-                  onClick={() => setConfirming("")}
-                >
-                  Cancelar
-                </Button>
-              </form>
-            ) : (
+            {mode !== "eliminar" && (
+              <Button
+                asChild
+                size="sm"
+                variant={mode === "consultar" ? "default" : "outline"}
+              >
+                <Link href={`/panel/informes?${r.parametros}&guardado=${r.id}`}>
+                  {mode === "editar" ? "Cambiar filtros" : "Abrir"}
+                </Link>
+              </Button>
+            )}
+            {mode === "editar" && (
               <Button
                 size="sm"
                 variant="outline"
                 type="button"
-                onClick={() => setConfirming(r.id)}
+                onClick={() => setEditing(r.id)}
               >
-                <Trash2 size={14} /> Eliminar
+                <Pencil size={14} /> Renombrar
               </Button>
             )}
+            {mode === "eliminar" &&
+              (confirming === r.id ? (
+                <form action={action} className="inline-flex gap-2">
+                  <input type="hidden" name="op" value="eliminar" />
+                  <input type="hidden" name="id" value={r.id} />
+                  <Button size="sm" variant="destructive" disabled={pending}>
+                    <Trash2 size={14} /> Confirmar
+                  </Button>
+                  <Button
+                    size="sm"
+                    type="button"
+                    variant="ghost"
+                    onClick={() => setConfirming("")}
+                  >
+                    Cancelar
+                  </Button>
+                </form>
+              ) : (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  type="button"
+                  onClick={() => setConfirming(r.id)}
+                >
+                  <Trash2 size={14} /> Eliminar
+                </Button>
+              ))}
           </li>
         ))}
         {!shown.length && (

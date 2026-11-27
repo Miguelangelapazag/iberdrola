@@ -1,11 +1,10 @@
 import type { Role, Module } from "@iberdrola/shared";
-export type TableColumn = { key: string; label: string };
+/** `filter`: la consulta muestra un desplegable con los valores de esa columna. */
+export type TableColumn = { key: string; label: string; filter?: boolean };
 export type TableRow = {
   id: string;
   cells: Record<string, string | number | null>;
   tone?: "success" | "warning" | "danger";
-  /** Solo en las listas de gestión: permite activar o desactivar la ficha. */
-  active?: boolean;
 };
 export type Listing = {
   title: string;
@@ -57,7 +56,7 @@ export const labels = {
     columns: [
       { key: "name", label: "Estudiante" },
       { key: "rude", label: "RUDE" },
-      { key: "status", label: "Estado" },
+      { key: "status", label: "Estado", filter: true },
     ],
   },
   cursos: {
@@ -65,8 +64,8 @@ export const labels = {
     description: "Cursos y paralelos de la gestión seleccionada.",
     columns: [
       { key: "course", label: "Curso" },
-      { key: "grade", label: "Año de escolaridad" },
-      { key: "status", label: "Estado" },
+      { key: "grade", label: "Año de escolaridad", filter: true },
+      { key: "status", label: "Estado", filter: true },
     ],
   },
   calificaciones: {
@@ -75,10 +74,10 @@ export const labels = {
       "Notas trimestrales disponibles para tu rol. Los registros pendientes conservan su estado.",
     columns: [
       { key: "student", label: "Estudiante" },
-      { key: "subject", label: "Asignatura" },
-      { key: "term", label: "Trimestre" },
+      { key: "subject", label: "Asignatura", filter: true },
+      { key: "term", label: "Trimestre", filter: true },
       { key: "grade", label: "Nota final" },
-      { key: "status", label: "Situación" },
+      { key: "status", label: "Situación", filter: true },
     ],
   },
   asistencia: {
@@ -87,19 +86,19 @@ export const labels = {
       "Registros diarios publicados y borradores visibles para tu rol.",
     columns: [
       { key: "student", label: "Estudiante" },
-      { key: "date", label: "Fecha" },
-      { key: "state", label: "Marca" },
-      { key: "status", label: "Jornada" },
+      { key: "date", label: "Fecha", filter: true },
+      { key: "state", label: "Marca", filter: true },
+      { key: "status", label: "Jornada", filter: true },
     ],
   },
   horarios: {
     title: "Horarios",
     description: "Distribución de materias por curso, día y periodo.",
     columns: [
-      { key: "course", label: "Curso" },
-      { key: "day", label: "Día" },
+      { key: "course", label: "Curso", filter: true },
+      { key: "day", label: "Día", filter: true },
       { key: "period", label: "Periodo" },
-      { key: "subject", label: "Asignatura" },
+      { key: "subject", label: "Asignatura", filter: true },
       { key: "time", label: "Hora" },
     ],
   },
@@ -109,7 +108,7 @@ export const labels = {
     columns: [
       { key: "title", label: "Título" },
       { key: "date", label: "Fecha" },
-      { key: "status", label: "Estado" },
+      { key: "status", label: "Estado", filter: true },
     ],
   },
 } satisfies Record<Module, Omit<Listing, "rows" | "total">>;

@@ -11,8 +11,9 @@ export default async function Desactivar({
       title="Desactivar usuarios"
       lead="Un usuario desactivado no puede iniciar sesión. No se borra ningún dato y puedes reactivarlo cuando quieras."
     >
-      {({ selfId }) => (
+      {({ selfId, roles }) => (
         <UserDirectory
+          allowed={roles}
           mode="desactivar"
           search={parseSearch(params, "desactivar")}
           selfId={selfId}

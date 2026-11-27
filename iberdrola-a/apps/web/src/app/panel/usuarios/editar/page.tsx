@@ -22,7 +22,7 @@ export default async function Editar({
       title="Editar usuario"
       lead="Busca a la persona y actualiza sus datos, su rol o su correo."
     >
-      {async ({ selfId }) => {
+      {async ({ selfId, roles }) => {
         if (!id)
           return (
             <>
@@ -35,6 +35,7 @@ export default async function Editar({
                 </p>
               )}
               <UserDirectory
+                allowed={roles}
                 mode="editar"
                 search={parseSearch(params, "editar")}
                 selfId={selfId}
@@ -77,6 +78,7 @@ export default async function Editar({
                 key={user.version}
                 user={user}
                 emailsAvailable={emailsAvailable}
+                allowed={roles}
               />
             </Card>
           </div>

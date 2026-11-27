@@ -48,7 +48,7 @@ for (const file of readdirSync(dir)
   await db.exec(readFileSync(new URL(file, dir), "utf8"));
 
 // Datos ficticios: Dirección (1), docente asignado (3), docente de otro curso (4).
-for (const n of [1, 3, 4, 6]) {
+for (const n of [1, 3, 4, 6, 7, 8]) {
   await db.query("insert into auth.users values($1)", [uid(n)]);
   await db.query(
     "insert into public.personas(id,nombres,apellido_paterno) values($1,'Ficticio','Prueba')",
@@ -67,6 +67,7 @@ for (const [n, r] of [
   [1, "DIRECTOR"],
   [3, "DOCENTE"],
   [4, "DOCENTE"],
+  [7, "SECRETARIA"],
 ])
   await db.query(
     "insert into public.perfiles(id,persona_id,rol) values($1,$2,$3)",
@@ -264,6 +265,64 @@ await check(
     );
   },
 );
+await check(
+  "Secretaría ve y administra solo cuentas no administrativas",
+  async () => {
+    const visible = await role(7, () =>
+      db.query("select rol from public.perfiles order by rol"),
+    );
+    const roles = visible.rows.map((r) => r.rol);
+    assert.ok(roles.includes("DOCENTE"));
+    assert.ok(!roles.includes("DIRECTOR"), "no debe ver a Dirección");
+    const updated = await role(7, () =>
+      db.query(
+        "update public.perfiles set activo=false where id=$1 returning id",
+        [uid(4)],
+      ),
+    );
+    assert.equal(updated.rows.length, 1);
+    const director = await role(7, () =>
+      db.query(
+        "update public.perfiles set activo=false where id=$1 returning id",
+        [uid(1)],
+      ),
+    );
+    assert.equal(director.rows.length, 0, "no modifica a Dirección");
+    await role(7, () =>
+      rejects(() =>
+        db.query("update public.perfiles set rol='DIRECTOR' where id=$1", [
+          uid(4),
+        ]),
+      ),
+    );
+    await role(7, () =>
+      rejects(() =>
+        db.query(
+          "insert into public.perfiles(id,persona_id,rol) values($1,$2,'SECRETARIA')",
+          [uid(8), uid(108)],
+        ),
+      ),
+    );
+    await role(7, () =>
+      db.query(
+        "insert into public.perfiles(id,persona_id,rol) values($1,$2,'ESTUDIANTE')",
+        [uid(6), uid(106)],
+      ),
+    );
+    assert.equal(
+      await count("select count(*) n from public.perfiles where id=$1", [
+        uid(6),
+      ]),
+      1,
+    );
+  },
+);
+await check("Dirección conserva el acceso a todas las cuentas", async () => {
+  assert.equal(
+    await role(1, () => count("select count(*) n from public.perfiles")),
+    await count("select count(*) n from public.perfiles"),
+  );
+});
 await check("la migración se puede volver a ejecutar sin errores", async () => {
   await db.exec(
     readFileSync(new URL("202611270001_ampliacion_modulos.sql", dir), "utf8"),

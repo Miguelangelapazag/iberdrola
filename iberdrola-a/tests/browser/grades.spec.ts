@@ -94,7 +94,7 @@ async function setup(
   await page.goto(`${new URL(page.url()).pathname}?id=${a}`);
   await page.goto(`/panel/calificaciones/registro?asignacion=${a}`);
   await expect(
-    page.getByRole("heading", { name: "Registrar notas." }),
+    page.getByRole("heading", { name: "Registrar calificaciones." }),
   ).toBeVisible();
   for (const d of ["SER", "SABER", "HACER"]) {
     const details = page.locator("details");

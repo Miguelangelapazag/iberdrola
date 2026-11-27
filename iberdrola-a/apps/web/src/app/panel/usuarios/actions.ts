@@ -1,4 +1,5 @@
 "use server";
+import { managedBySecretary } from "@/lib/user-validation";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireProfile } from "@/lib/auth";
@@ -22,7 +23,7 @@ function dbMessage(error: { code?: string; message?: string }) {
   if (error.code === "23505")
     return "Ya existe una persona con ese CI o una cuenta con esos datos.";
   if (error.code === "42501")
-    return "Solo Dirección puede administrar usuarios.";
+    return "Tu cuenta no puede administrar ese usuario.";
   if (
     /^Crear (docente|tutor|estudiante) antes/.test(error.message || "") ||
     /^Otra persona/.test(error.message || "")
@@ -31,11 +32,17 @@ function dbMessage(error: { code?: string; message?: string }) {
   return "No se pudo guardar. Revisa los datos e inténtalo de nuevo.";
 }
 
-async function requireDirector() {
+/** Dirección administra todo; Secretaría, solo cuentas no administrativas. */
+async function requireAccountManager() {
   const ctx = await requireProfile();
-  if (ctx.profile.rol !== "DIRECTOR") return null;
+  if (ctx.profile.rol !== "DIRECTOR" && ctx.profile.rol !== "SECRETARIA")
+    return null;
   return ctx;
 }
+const secretaryCanManage = (rol: string | undefined) =>
+  (managedBySecretary as readonly string[]).includes(rol ?? "");
+const SECRETARY_LIMIT =
+  "Secretaría solo administra cuentas de estudiantes, docentes y familias.";
 
 const NO_KEY =
   "Falta configurar SUPABASE_SERVICE_ROLE_KEY en el servidor (ver docs/GESTION_USUARIOS.md).";
@@ -52,8 +59,10 @@ export async function createUser(
     string
   >;
   const fail = (error: string): UserFormState => ({ error, values, attempt });
-  const ctx = await requireDirector();
-  if (!ctx) return fail("Solo Dirección puede crear usuarios.");
+  const ctx = await requireAccountManager();
+  if (!ctx) return fail("Solo Dirección y Secretaría pueden crear usuarios.");
+  if (ctx.profile.rol === "SECRETARIA" && !secretaryCanManage(raw.rol))
+    return fail(SECRETARY_LIMIT);
   // Modo "ficha existente": la cuenta se vincula a una persona ya registrada.
   const existingId = String(form.get("persona_id") ?? "");
   const linkExisting = form.get("modo") === "existente";
@@ -208,8 +217,10 @@ export async function updateUser(
     string
   >;
   const fail = (error: string): UserFormState => ({ error, values, attempt });
-  const ctx = await requireDirector();
-  if (!ctx) return fail("Solo Dirección puede editar usuarios.");
+  const ctx = await requireAccountManager();
+  if (!ctx) return fail("Solo Dirección y Secretaría pueden editar usuarios.");
+  if (ctx.profile.rol === "SECRETARIA" && !secretaryCanManage(raw.rol))
+    return fail(SECRETARY_LIMIT);
   if (!uuidRe.test(id)) return fail("El usuario no es válido.");
   const invalid = validateUser(raw, { needsEmail: true });
   if (invalid) return fail(invalid);
@@ -221,6 +232,8 @@ export async function updateUser(
     .maybeSingle();
   if (current.error || !current.data)
     return fail("El usuario ya no existe. Vuelve a buscarlo.");
+  if (ctx.profile.rol === "SECRETARIA" && !secretaryCanManage(current.data.rol))
+    return fail(SECRETARY_LIMIT);
   if (version && current.data.updated_at !== version)
     return fail(
       "Otra persona modificó este usuario. Recarga la página para ver los cambios.",
@@ -296,10 +309,20 @@ export async function setUserActive(
 ): Promise<UserFormState> {
   const id = String(form.get("id") || "");
   const active = form.get("activo") === "true";
-  const ctx = await requireDirector();
-  if (!ctx) return { error: "Solo Dirección puede cambiar el estado." };
+  const ctx = await requireAccountManager();
+  if (!ctx)
+    return { error: "Solo Dirección y Secretaría pueden cambiar el estado." };
   if (!uuidRe.test(id)) return { error: "El usuario no es válido." };
   const { supabase, user } = ctx;
+  if (ctx.profile.rol === "SECRETARIA") {
+    const target = await supabase
+      .from("perfiles")
+      .select("rol")
+      .eq("id", id)
+      .maybeSingle();
+    if (!target.data || !secretaryCanManage(target.data.rol))
+      return { error: SECRETARY_LIMIT };
+  }
   if (!active) {
     if (id === user.id)
       return { error: "No puedes desactivar tu propia cuenta." };
