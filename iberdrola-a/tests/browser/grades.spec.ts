@@ -94,7 +94,7 @@ async function setup(
   await page.goto(`${new URL(page.url()).pathname}?id=${a}`);
   await page.goto(`/panel/calificaciones/registro?asignacion=${a}`);
   await expect(
-    page.getByRole("heading", { name: "Registro de calificaciones." }),
+    page.getByRole("heading", { name: "Registrar notas." }),
   ).toBeVisible();
   for (const d of ["SER", "SABER", "HACER"]) {
     const details = page.locator("details");
@@ -144,6 +144,7 @@ async function completeGrade(page: Page) {
 test("calificaciones: configura actividades, guarda parcial y publica con privacidad familiar", async ({
   page,
 }) => {
+  test.setTimeout(90_000); // recorrido largo: varias cuentas y publicaciones
   const url = await setup(page, "FA", "Familia calificaciones", true);
   await page
     .getByRole("button", { name: "Cerrar sesión", exact: true })

@@ -229,6 +229,8 @@ export async function loadPanel(): Promise<PanelModel> {
           term: `${terms.data?.find((t) => t.id === c.trimestre_id)?.numero || "—"}°`,
           grade: c.nota_final,
           status: c.situacion,
+          // No es una columna visible: identifica los borradores eliminables.
+          publication: c.estado,
         },
         tone: gradeTone(c.situacion),
       })),

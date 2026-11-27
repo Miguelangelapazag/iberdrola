@@ -54,8 +54,23 @@ export async function createUser(
   const fail = (error: string): UserFormState => ({ error, values, attempt });
   const ctx = await requireDirector();
   if (!ctx) return fail("Solo Dirección puede crear usuarios.");
-  const invalid = validateUser(raw, { needsEmail: true });
-  if (invalid) return fail(invalid);
+  // Modo "ficha existente": la cuenta se vincula a una persona ya registrada.
+  const existingId = String(form.get("persona_id") ?? "");
+  const linkExisting = form.get("modo") === "existente";
+  values.modo = linkExisting ? "existente" : "nueva";
+  values.persona_id = existingId;
+  if (linkExisting) {
+    if (!uuidRe.test(existingId))
+      return fail("Selecciona la ficha a la que se vinculará la cuenta.");
+    const invalidLink = validateUser(
+      { ...raw, nombres: "Ficha", apellido_paterno: "existente", telefono: "" },
+      { needsEmail: true },
+    );
+    if (invalidLink) return fail(invalidLink);
+  } else {
+    const invalid = validateUser(raw, { needsEmail: true });
+    if (invalid) return fail(invalid);
+  }
   const admin = createAdminClient();
   if (!admin) return fail(NO_KEY);
   const origin = siteOrigin();
@@ -67,7 +82,23 @@ export async function createUser(
   // ¿Existe ya una ficha con ese CI? Se reutiliza si no tiene cuenta.
   let personaId: string | null = null;
   let personaNueva = false;
-  if (raw.ci) {
+  if (linkExisting) {
+    const taken = await supabase
+      .from("perfiles")
+      .select("id")
+      .eq("persona_id", existingId)
+      .maybeSingle();
+    if (taken.error) return fail(dbMessage(taken.error));
+    if (taken.data) return fail("Esa ficha ya tiene una cuenta de usuario.");
+    const exists = await supabase
+      .from("personas")
+      .select("id")
+      .eq("id", existingId)
+      .maybeSingle();
+    if (exists.error || !exists.data)
+      return fail("La ficha seleccionada ya no está disponible.");
+    personaId = existingId;
+  } else if (raw.ci) {
     const found = await supabase
       .from("personas")
       .select("id")

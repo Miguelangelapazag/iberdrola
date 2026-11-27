@@ -6,7 +6,8 @@ import { school } from "@/lib/school";
 
 export const metadata: Metadata = {
   title: "Historia",
-  description: "Reseña histórica de la Unidad Educativa Iberdrola en Senkata, El Alto.",
+  description:
+    "Reseña histórica de la Unidad Educativa Iberdrola en Senkata, El Alto.",
 };
 
 export default function Historia() {
@@ -31,9 +32,9 @@ export default function Historia() {
             <div className="mt-7 border-l-2 border-[#6b9ac9] pl-5">
               <p className="text-xs leading-6 text-[#586b80]">
                 Referencia histórica del blog sobre Iberdrola B, no una
-                certificación de la fecha de creación independiente de
-                Iberdrola A. Los logros específicos de la sección B no se
-                atribuyen aquí a la sección A.
+                certificación de la fecha de creación independiente de Iberdrola
+                A. Los logros específicos de la sección B no se atribuyen aquí a
+                la sección A.
               </p>
               <a
                 href={school.historyUrl}

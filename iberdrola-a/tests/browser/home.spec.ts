@@ -35,7 +35,7 @@ test("portada: cada opción del menú abre su propia ventana con botón para vol
   expect(calls).toEqual([]);
 });
 
-test("login: menú público, sin botón de volver y sin deslizar la página", async ({
+test("login: menú público, sin botón de volver y el acceso ocupa la pantalla", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -50,10 +50,14 @@ test("login: menú público, sin botón de volver y sin deslizar la página", as
   await expect(
     page.getByRole("link", { name: "Volver a la página principal" }),
   ).toHaveCount(0);
+  // El acceso ocupa la pantalla completa; el pie de página queda debajo.
   const overflow = await page.evaluate(
-    () => document.documentElement.scrollHeight - window.innerHeight,
+    () =>
+      document.querySelector(".auth-screen")!.getBoundingClientRect().height -
+      window.innerHeight,
   );
-  expect(overflow).toBeLessThanOrEqual(0);
+  expect(overflow).toBeLessThanOrEqual(1);
+  await expect(page.getByRole("contentinfo")).toBeAttached();
 });
 
 test("portada móvil sin desbordamiento y con enlaces utilizables", async ({

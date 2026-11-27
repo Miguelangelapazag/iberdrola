@@ -881,6 +881,36 @@ export type Database = {
         Update: Partial<Database["public"]["Tables"]["personas"]["Insert"]>;
         Relationships: [];
       };
+      reportes_guardados: {
+        Row: {
+          id: string;
+          propietario_id: string;
+          nombre: string;
+          parametros: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          propietario_id: string;
+          nombre: string;
+          parametros: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<
+          Database["public"]["Tables"]["reportes_guardados"]["Insert"]
+        >;
+        Relationships: [
+          {
+            foreignKeyName: "reportes_guardados_propietario_id_fkey";
+            columns: ["propietario_id"];
+            isOneToOne: false;
+            referencedRelation: "perfiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       trimestres: {
         Row: {
           id: string;
@@ -1026,6 +1056,10 @@ export type Database = {
           p_matricula: string | null;
         };
         Returns: Json;
+      };
+      eliminar_registro_academico: {
+        Args: { p_tipo: string | null; p_id: string | null };
+        Returns: undefined;
       };
       gestionar_criterio_calificacion: {
         Args: {

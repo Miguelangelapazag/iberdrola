@@ -20,12 +20,18 @@ export async function UserPage({
   return (
     <PanelShell model={model}>
       <div className="mb-7">
-        <p className="mb-2 text-xs text-muted-foreground">Gestión de usuarios</p>
+        <p className="mb-2 text-xs text-muted-foreground">
+          Gestión de usuarios
+        </p>
         <PageTitle fallback={title} />
-        <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">{lead}</p>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
+          {lead}
+        </p>
       </div>
       {profile.rol !== "DIRECTOR" ? (
-        <Card className="p-6 text-sm">Solo Dirección puede administrar usuarios.</Card>
+        <Card className="p-6 text-sm">
+          Solo Dirección puede administrar usuarios.
+        </Card>
       ) : (
         await children({ selfId: user.id })
       )}

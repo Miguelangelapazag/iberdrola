@@ -5,7 +5,8 @@ import { PublicPage, PageHero } from "@/components/public-page";
 
 export const metadata: Metadata = {
   title: "Galería",
-  description: "Fotografías de la vida escolar en la Unidad Educativa Iberdrola A.",
+  description:
+    "Fotografías de la vida escolar en la Unidad Educativa Iberdrola A.",
 };
 
 const photos = [
@@ -66,9 +67,15 @@ export default function Galeria() {
                     <p className="mb-1.5 text-xs tracking-wider text-blue-100">
                       {number} / IBERDROLA A
                     </p>
-                    <h3 className="text-lg font-semibold sm:text-xl">{title}</h3>
+                    <h3 className="text-lg font-semibold sm:text-xl">
+                      {title}
+                    </h3>
                   </div>
-                  <ArrowUpRight size={22} aria-hidden="true" className="shrink-0" />
+                  <ArrowUpRight
+                    size={22}
+                    aria-hidden="true"
+                    className="shrink-0"
+                  />
                 </div>
               </a>
             ))}

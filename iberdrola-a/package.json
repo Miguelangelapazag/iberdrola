@@ -14,7 +14,7 @@
     "typecheck": "npm run typecheck --workspace @iberdrola/web",
     "lint": "npm run lint --workspace @iberdrola/web",
     "types:generate": "node scripts/generate-database-types.mjs",
-    "test:db": "node supabase/tests/regression.mjs && node supabase/tests/management.mjs && node supabase/tests/teachers.mjs && node supabase/tests/attendance.mjs && node supabase/tests/grades.mjs && node supabase/tests/schedules.mjs && node supabase/tests/notices.mjs && node supabase/tests/reports.mjs",
+    "test:db": "node supabase/tests/regression.mjs && node supabase/tests/management.mjs && node supabase/tests/teachers.mjs && node supabase/tests/attendance.mjs && node supabase/tests/grades.mjs && node supabase/tests/schedules.mjs && node supabase/tests/notices.mjs && node supabase/tests/reports.mjs && node supabase/tests/ampliacion.mjs",
     "test:web": "npm run test --workspace @iberdrola/web",
     "test": "npm run test:db && npm run test:web",
     "test:e2e": "playwright test",

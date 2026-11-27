@@ -40,20 +40,23 @@ async function emailMap() {
   return { map, available: true };
 }
 
-const toRow = (p: {
-  id: string;
-  rol: Role;
-  activo: boolean;
-  updated_at: string;
-  personas: {
-    nombres: string;
-    apellido_paterno: string;
-    apellido_materno: string;
-    ci: string | null;
-    telefono: string | null;
-    direccion: string | null;
-  } | null;
-}, email: string): UserRow => {
+const toRow = (
+  p: {
+    id: string;
+    rol: Role;
+    activo: boolean;
+    updated_at: string;
+    personas: {
+      nombres: string;
+      apellido_paterno: string;
+      apellido_materno: string;
+      ci: string | null;
+      telefono: string | null;
+      direccion: string | null;
+    } | null;
+  },
+  email: string,
+): UserRow => {
   const s = p.personas;
   return {
     id: p.id,
@@ -96,9 +99,7 @@ export async function searchUsers(search: UserSearch) {
           : true,
     )
     .filter(
-      (u) =>
-        !term ||
-        fold(`${u.fullName} ${u.email} ${u.ci}`).includes(term),
+      (u) => !term || fold(`${u.fullName} ${u.email} ${u.ci}`).includes(term),
     )
     .sort((a, b) => a.fullName.localeCompare(b.fullName, "es"));
   return { rows, emailsAvailable: available };
@@ -121,4 +122,47 @@ export async function loadUser(id: string) {
     email = r.data.user?.email ?? "";
   }
   return { user: toRow(data as never, email), emailsAvailable: !!admin };
+}
+
+/** Fichas (estudiante, docente o tutor) que todavía no tienen cuenta de acceso. */
+export type UnlinkedPerson = {
+  id: string;
+  label: string;
+  kinds: ("ESTUDIANTE" | "DOCENTE" | "PADRE")[];
+};
+const present = (value: unknown) =>
+  Array.isArray(value) ? value.length > 0 : Boolean(value);
+export async function loadUnlinkedPeople(): Promise<UnlinkedPerson[]> {
+  const { supabase, profile } = await requireProfile();
+  if (profile.rol !== "DIRECTOR") return [];
+  const { data, error } = await supabase
+    .from("personas")
+    .select(
+      "id,nombres,apellido_paterno,apellido_materno,ci,estudiantes(id),docentes(id),tutores(id),perfiles(id)",
+    )
+    .order("apellido_paterno")
+    .order("nombres")
+    .limit(1000);
+  if (error) return [];
+  return (data ?? [])
+    .filter((p) => !present(p.perfiles))
+    .map((p) => {
+      const kinds: UnlinkedPerson["kinds"] = [];
+      if (present(p.estudiantes)) kinds.push("ESTUDIANTE");
+      if (present(p.docentes)) kinds.push("DOCENTE");
+      if (present(p.tutores)) kinds.push("PADRE");
+      return {
+        id: p.id,
+        kinds,
+        label: [
+          p.apellido_paterno,
+          p.apellido_materno,
+          p.nombres,
+          p.ci ? `· CI ${p.ci}` : "",
+        ]
+          .filter(Boolean)
+          .join(" "),
+      };
+    })
+    .filter((p) => p.kinds.length > 0);
 }

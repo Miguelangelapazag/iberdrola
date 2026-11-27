@@ -18,7 +18,8 @@ export function parseSearch(
   params: Record<string, string | string[] | undefined>,
   mode: DirectoryMode,
 ): UserSearch {
-  const s = (v: string | string[] | undefined) => (typeof v === "string" ? v : "");
+  const s = (v: string | string[] | undefined) =>
+    typeof v === "string" ? v : "";
   const estado = s(params.estado);
   return {
     q: s(params.q).slice(0, 100),
@@ -32,48 +33,93 @@ export function parseSearch(
   };
 }
 
-const selectClass = "h-12 w-full rounded-lg border border-input bg-background px-3 text-sm";
+const selectClass =
+  "h-12 w-full rounded-lg border border-input bg-background px-3 text-sm";
 
 export async function UserDirectory({
   mode,
   search,
   selfId,
+  fixedRole,
+  path,
 }: {
   mode: DirectoryMode;
   search: UserSearch;
   selfId: string;
+  /** Lista fija de un rol (Personal administrativo, Accesos de familias). */
+  fixedRole?: string;
+  path?: string;
 }) {
-  const { rows, emailsAvailable } = await searchUsers(search);
+  const { rows, emailsAvailable } = await searchUsers(
+    fixedRole ? { ...search, rol: fixedRole } : search,
+  );
   return (
     <>
       <Card className="mb-6 p-5">
-        <form method="get" action={paths[mode]} className="grid items-end gap-3 md:grid-cols-[minmax(0,2fr)_1fr_1fr_auto]">
+        <form
+          method="get"
+          action={path ?? paths[mode]}
+          className={
+            fixedRole
+              ? "grid items-end gap-3 md:grid-cols-[minmax(0,2fr)_1fr_auto]"
+              : "grid items-end gap-3 md:grid-cols-[minmax(0,2fr)_1fr_1fr_auto]"
+          }
+        >
           <div>
-            <label htmlFor="q" className="mb-2 block text-sm font-medium">Buscar por nombre, CI o correo</label>
-            <Input id="q" name="q" defaultValue={search.q} placeholder="Ej.: María Quispe" maxLength={100} />
+            <label htmlFor="q" className="mb-2 block text-sm font-medium">
+              Buscar por nombre, CI o correo
+            </label>
+            <Input
+              id="q"
+              name="q"
+              defaultValue={search.q}
+              placeholder="Ej.: María Quispe"
+              maxLength={100}
+            />
           </div>
+          {!fixedRole && (
+            <div>
+              <label htmlFor="rol" className="mb-2 block text-sm font-medium">
+                Rol
+              </label>
+              <select
+                id="rol"
+                name="rol"
+                defaultValue={search.rol}
+                className={selectClass}
+              >
+                <option value="">Todos</option>
+                {roles.map((r) => (
+                  <option key={r} value={r}>
+                    {roleLabels[r]}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           <div>
-            <label htmlFor="rol" className="mb-2 block text-sm font-medium">Rol</label>
-            <select id="rol" name="rol" defaultValue={search.rol} className={selectClass}>
-              <option value="">Todos</option>
-              {roles.map((r) => (
-                <option key={r} value={r}>{roleLabels[r]}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="estado" className="mb-2 block text-sm font-medium">Estado</label>
-            <select id="estado" name="estado" defaultValue={search.estado} className={selectClass}>
+            <label htmlFor="estado" className="mb-2 block text-sm font-medium">
+              Estado
+            </label>
+            <select
+              id="estado"
+              name="estado"
+              defaultValue={search.estado}
+              className={selectClass}
+            >
               <option value="todos">Todos</option>
               <option value="activos">Activos</option>
               <option value="inactivos">Inactivos</option>
             </select>
           </div>
-          <Button><Search size={16} /> Buscar</Button>
+          <Button>
+            <Search size={16} /> Buscar
+          </Button>
         </form>
         {!emailsAvailable && (
           <p className="mt-3 text-xs text-amber-800">
-            Los correos no se muestran porque falta <code>SUPABASE_SERVICE_ROLE_KEY</code> en el servidor.
+            Los correos no se muestran porque falta{" "}
+            <code>SUPABASE_SERVICE_ROLE_KEY</code> en el servidor.
           </p>
         )}
       </Card>
@@ -96,12 +142,16 @@ export async function UserDirectory({
                 <td className="px-5 py-3">
                   <p className="font-medium">{u.fullName || "Sin nombre"}</p>
                   <p className="text-xs text-muted-foreground">
-                    {[u.email, u.ci && `CI ${u.ci}`].filter(Boolean).join(" · ")}
+                    {[u.email, u.ci && `CI ${u.ci}`]
+                      .filter(Boolean)
+                      .join(" · ")}
                   </p>
                 </td>
                 <td className="px-5 py-3">{roleLabels[u.rol]}</td>
                 <td className="px-5 py-3">
-                  <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${u.activo ? "bg-emerald-50 text-emerald-800" : "bg-slate-100 text-slate-600"}`}>
+                  <span
+                    className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${u.activo ? "bg-emerald-50 text-emerald-800" : "bg-slate-100 text-slate-600"}`}
+                  >
                     {u.activo ? "Activo" : "Inactivo"}
                   </span>
                 </td>
@@ -123,7 +173,10 @@ export async function UserDirectory({
             ))}
             {!rows.length && (
               <tr>
-                <td colSpan={4} className="px-5 py-10 text-center text-muted-foreground">
+                <td
+                  colSpan={4}
+                  className="px-5 py-10 text-center text-muted-foreground"
+                >
                   No hay usuarios con esos criterios.
                 </td>
               </tr>

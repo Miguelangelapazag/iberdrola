@@ -8,6 +8,12 @@ import { PanelShell } from "@/components/panel-shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ReportTable } from "@/components/report-table";
+import {
+  SaveCurrentReport,
+  SavedReportList,
+  type SavedReport,
+} from "@/components/saved-reports";
+import { displayDate } from "@/lib/data/model";
 const field =
   "mt-2 h-12 w-full rounded-lg border border-input bg-background px-3 text-sm";
 export default async function ReportsPage({
@@ -28,6 +34,43 @@ export default async function ReportsPage({
     .limit(501);
   const optionsError = !!terms.error || (terms.data?.length || 0) > 500;
   const result = params.has("curso") ? await loadReport(params) : null;
+  // Informes guardados de la cuenta (solo filtros, nunca datos).
+  const saved = await supabase
+    .from("reportes_guardados")
+    .select("id,nombre,parametros,updated_at")
+    .order("updated_at", { ascending: false })
+    .limit(200);
+  const savedAvailable = !saved.error;
+  const courseLabel = new Map(courses.map((c) => [c.id, c.label]));
+  const termLabel = new Map(
+    (terms.data || []).map((t) => [
+      t.id,
+      `Trimestre ${t.numero} · ${t.gestiones?.anio ?? ""}`,
+    ]),
+  );
+  const savedReports: SavedReport[] = (saved.data || []).map((r) => {
+    const p = new URLSearchParams(r.parametros);
+    const tipo = p.get("tipo") || "calificaciones";
+    return {
+      id: r.id,
+      nombre: r.nombre,
+      parametros: r.parametros,
+      fecha: displayDate(r.updated_at),
+      detalle: [
+        tipo === "asistencia" ? "Asistencia" : "Calificaciones",
+        courseLabel.get(p.get("curso") || "") || "Curso no disponible",
+        tipo === "asistencia"
+          ? `${p.get("desde")} a ${p.get("hasta")}`
+          : termLabel.get(p.get("trimestre") || "") || "",
+      ]
+        .filter(Boolean)
+        .join(" · "),
+    };
+  });
+  const openId = params.get("guardado") || "";
+  const openReport = savedReports.find((r) => r.id === openId);
+  const reportQuery = new URLSearchParams(params);
+  reportQuery.delete("guardado");
   return (
     <PanelShell model={model} current="informes">
       <div className="mb-7">
@@ -135,13 +178,27 @@ export default async function ReportsPage({
         <Card className="min-w-0 p-5">
           <div className="mb-6 flex flex-wrap gap-3">
             <Button asChild variant="outline">
-              <a href={`/panel/informes/csv?${params}`}>Descargar CSV</a>
+              <a href={`/panel/informes/csv?${reportQuery}`}>Descargar CSV</a>
             </Button>
             <Button asChild>
-              <Link href={`/panel/informes/imprimir?${params}`}>
+              <Link href={`/panel/informes/imprimir?${reportQuery}`}>
                 Preparar impresión / PDF
               </Link>
             </Button>
+          </div>
+          <div className="mb-6 rounded-xl border border-border bg-muted/40 p-4">
+            {savedAvailable ? (
+              <SaveCurrentReport
+                params={reportQuery.toString()}
+                openId={openReport?.id}
+                openName={openReport?.nombre}
+              />
+            ) : (
+              <p className="text-xs text-muted-foreground">
+                Para guardar informes, ejecuta en Supabase el archivo
+                supabase/migrations/202611270001_ampliacion_modulos.sql.
+              </p>
+            )}
           </div>
           <ReportTable report={result.report} />
           <p className="mt-5 text-xs leading-6 text-muted-foreground">
@@ -151,8 +208,14 @@ export default async function ReportsPage({
           </p>
         </Card>
       )}
+      {savedAvailable && (
+        <Card className="mt-6 p-5">
+          <h2 className="mb-4 text-lg font-semibold">Informes guardados</h2>
+          <SavedReportList reports={savedReports} />
+        </Card>
+      )}
       {!result && (
-        <Card className="p-8 text-sm text-muted-foreground">
+        <Card className="mt-6 p-8 text-sm text-muted-foreground">
           Selecciona los filtros para generar tu primer informe. La consulta no
           modifica calificaciones ni asistencia.
         </Card>

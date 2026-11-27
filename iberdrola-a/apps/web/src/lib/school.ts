@@ -21,7 +21,7 @@ export const school = {
   } as Record<string, string>,
 };
 export function socialLinks(): [string, string][] {
-  return Object.entries(school.social).filter(
-    ([, url]) => /^https:\/\//.test(url.trim()),
+  return Object.entries(school.social).filter(([, url]) =>
+    /^https:\/\//.test(url.trim()),
   ) as [string, string][];
 }

@@ -28,7 +28,10 @@ export function AuthShell({ children }: { children: ReactNode }) {
     <div className="school-home auth-page text-[#102e57]">
       <div className="auth-screen">
         <PublicHeader current="/login" />
-        <div className="auth-layout grid lg:grid-cols-[1.02fr_1fr]">
+        <main
+          id="contenido"
+          className="auth-layout grid lg:grid-cols-[1.02fr_1fr]"
+        >
           <aside className="auth-art relative flex flex-col overflow-hidden text-white">
             <div className="auth-logo-box">
               <Brand />
@@ -61,7 +64,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
           <section className="flex items-center justify-center">
             <div className="auth-card w-full">{children}</div>
           </section>
-        </div>
+        </main>
       </div>
       <PublicFooter />
     </div>

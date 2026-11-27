@@ -94,7 +94,7 @@ async function setup(
   await page.goto(`${new URL(page.url()).pathname}?id=${a}`);
   await page.goto(`/panel/calificaciones/registro?asignacion=${a}`);
   await expect(
-    page.getByRole("heading", { name: "Registro de calificaciones." }),
+    page.getByRole("heading", { name: "Registrar notas." }),
   ).toBeVisible();
   for (const d of ["SER", "SABER", "HACER"]) {
     const details = page.locator("details");
@@ -197,9 +197,7 @@ test("informe publicado, CSV completo, impresión y acceso familiar", async ({
   });
   await page.emulateMedia({ media: "screen" });
   await page.getByRole("link", { name: "Volver al informe" }).click();
-  await expect(
-    page.getByRole("heading", { name: "Informes académicos." }),
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Informes." })).toBeVisible();
   const url = page.url();
   await page.setViewportSize({ width: 390, height: 844 });
   await page.screenshot({

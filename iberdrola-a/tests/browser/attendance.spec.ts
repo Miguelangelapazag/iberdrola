@@ -80,7 +80,7 @@ async function student(
 async function sheet(page: Page, id: string) {
   await page.goto(`/panel/asistencia/registro?curso=${id}&fecha=${date}`);
   await expect(
-    page.getByRole("heading", { name: "Registro de asistencia." }),
+    page.getByRole("heading", { name: "Pasar lista." }),
   ).toBeVisible();
 }
 async function draft(page: Page) {
