@@ -15,6 +15,10 @@
 | Consultar asignaturas | Administrar Asignaturas | Todos los roles: docente sus materias, familia las del curso, administración todas |
 | Editar asistencia | Control de Asistencia | Jornadas registradas con filtros (curso, mes, estado) y botón para reabrirlas |
 | Editar calificaciones | Gestión de Calificaciones | Planillas por materia y trimestre con filtros y botón para reabrirlas |
+| Consultar docentes | Gestión de Docentes | Plantel con especialidad, materias, periodos/semana y estado de la cuenta |
+| Carga académica | Gestión de Docentes | Materias y cursos por docente (el docente ve la suya) |
+| Horario del docente | Gestión de Docentes | Semana de clases de un docente en todos sus cursos |
+| Cuentas de docentes | Gestión de Docentes | Accesos de los docentes al sistema |
 | Secretaría administra cuentas | Gestión de Usuarios | Crea, edita y desactiva cuentas de estudiantes, docentes y familias; nunca de Dirección o Secretaría |
 
 ## Paso obligatorio en Supabase (una sola vez)
@@ -34,4 +38,4 @@ Sin este paso todo lo demás funciona; los informes guardados y la eliminación 
 
 - `npm run test:db`: 158 pruebas de base (incluye `supabase/tests/ampliacion.mjs`).
 - `npm run test:web`: 37 pruebas unitarias.
-- `npm run test:e2e`: 46 pruebas de navegador con datos ficticios.
+- `npm run test:e2e`: 46 pruebas de navegador (más 2 que usan los datos de las anteriores) con datos ficticios.

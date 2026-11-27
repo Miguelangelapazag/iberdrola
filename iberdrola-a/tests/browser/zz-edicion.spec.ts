@@ -43,3 +43,42 @@ test("edición: las planillas registradas se listan, filtran y reabren", async (
     await expect(page).toHaveURL(target);
   }
 });
+
+test("docentes: carga académica y horario muestran las clases asignadas", async ({
+  page,
+}) => {
+  await login(page);
+  await page.goto("/panel/docentes");
+  await expect(
+    page.getByRole("heading", { name: "Consultar docentes." }),
+  ).toBeVisible();
+  await page.goto("/panel/docentes/carga");
+  const rows = page.locator("tbody tr");
+  test.skip(
+    (await rows.count()) === 0,
+    "Ejecutar junto con las pruebas que asignan materias.",
+  );
+  await page.goto("/panel/docentes/horario");
+  const select = page.getByLabel("Docente");
+  const options = await select
+    .locator("option")
+    .evaluateAll((o) =>
+      o.map((x) => (x as HTMLOptionElement).value).filter(Boolean),
+    );
+  let found = false;
+  for (const value of options) {
+    await select.selectOption(value);
+    await page.getByRole("button", { name: "Ver horario" }).click();
+    await page.waitForURL(/docente=/);
+    if (
+      (await page.getByText("periodos por semana").textContent())?.match(
+        /^[1-9]/,
+      )
+    ) {
+      found = true;
+      await expect(page.locator("tbody td div").first()).toBeVisible();
+      break;
+    }
+  }
+  expect(found, "algún docente debe tener clases en el horario").toBe(true);
+});

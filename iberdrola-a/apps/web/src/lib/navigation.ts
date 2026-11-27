@@ -120,9 +120,29 @@ export const navGroups: NavGroup[] = [
     icon: "docentes",
     items: [
       {
+        label: "Consultar docentes",
+        href: "/panel/docentes",
+        manage: true,
+      },
+      {
         label: "Fichas de docentes",
         href: "/panel/gestion/docentes",
         manage: true,
+      },
+      {
+        label: "Carga académica",
+        href: "/panel/docentes/carga",
+        roles: ["DIRECTOR", "SECRETARIA", "DOCENTE"],
+      },
+      {
+        label: "Horario del docente",
+        href: "/panel/docentes/horario",
+        roles: ["DIRECTOR", "SECRETARIA", "DOCENTE"],
+      },
+      {
+        label: "Cuentas de docentes",
+        href: "/panel/usuarios/docentes",
+        roles: ["DIRECTOR", "SECRETARIA"],
       },
     ],
   },

@@ -115,3 +115,53 @@ test("ampliación: docente edita sus planillas y consulta sus materias", async (
     page.getByRole("link", { name: "Gestionar asignaturas", exact: true }),
   ).toHaveCount(0);
 });
+
+test("gestión de docentes: cinco opciones para Dirección y dos para el docente", async ({
+  page,
+}) => {
+  await login(page);
+  for (const [path, title] of [
+    ["/panel/docentes", "Consultar docentes."],
+    ["/panel/gestion/docentes", "Fichas de docentes."],
+    ["/panel/docentes/carga", "Carga académica."],
+    ["/panel/docentes/horario", "Horario del docente."],
+    ["/panel/usuarios/docentes", "Cuentas de docentes."],
+  ]) {
+    await page.goto(path);
+    await expect(page.getByRole("heading", { name: title })).toBeVisible();
+  }
+  await page.goto("/panel/docentes");
+  const nav = page.getByRole("navigation", { name: "Navegación principal" });
+  for (const name of [
+    "Consultar docentes",
+    "Fichas de docentes",
+    "Carga académica",
+    "Horario del docente",
+    "Cuentas de docentes",
+  ])
+    await expect(nav.getByRole("link", { name, exact: true })).toBeVisible();
+  await page
+    .getByRole("button", { name: "Cerrar sesión", exact: true })
+    .click();
+  await login(page, "docente@example.invalid");
+  await page.goto("/panel/docentes/carga");
+  await expect(
+    page.getByRole("heading", { name: "Carga académica." }),
+  ).toBeVisible();
+  await expect(
+    nav.getByRole("link", { name: "Horario del docente", exact: true }),
+  ).toBeVisible();
+  await expect(
+    nav.getByRole("link", { name: "Consultar docentes", exact: true }),
+  ).toHaveCount(0);
+  await page.goto("/panel/docentes/horario");
+  await expect(
+    page.getByRole("heading", { name: "Horario del docente." }),
+  ).toBeVisible();
+  await page.goto("/panel/docentes");
+  await expect(
+    page.getByText(
+      "Solo Dirección y Secretaría pueden consultar el plantel docente.",
+    ),
+  ).toBeVisible();
+});

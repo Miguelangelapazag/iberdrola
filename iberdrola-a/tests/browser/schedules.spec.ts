@@ -71,18 +71,30 @@ async function configure(page: Page, n: number, start: string, end: string) {
   ).toBeVisible();
 }
 async function block(page: Page, a: string, day: string, n: number) {
-  await page.getByLabel("Materia y docente", { exact: true }).selectOption(a);
-  await page.getByLabel("Día de clase", { exact: true }).selectOption(day);
-  const option = page
-    .locator("#schedule-period option")
-    .filter({ hasText: `Periodo ${n} ·` });
-  await page
-    .getByLabel("Periodo de clase", { exact: true })
-    .selectOption((await option.getAttribute("value")) || "");
+  // Tras guardar un periodo la página se recarga y reinicia el formulario:
+  // se elige todo y se comprueba que siga elegido un momento después.
+  const subject = page.getByLabel("Materia y docente", { exact: true });
+  const weekday = page.getByLabel("Día de clase", { exact: true });
+  const period = page.getByLabel("Periodo de clase", { exact: true });
+  await expect(async () => {
+    await page.waitForLoadState("networkidle");
+    const value =
+      (await page
+        .locator("#schedule-period option")
+        .filter({ hasText: `Periodo ${n} ·` })
+        .getAttribute("value")) || "";
+    await subject.selectOption(a);
+    await weekday.selectOption(day);
+    await period.selectOption(value);
+    await page.waitForTimeout(1500);
+    await expect(subject).toHaveValue(a, { timeout: 500 });
+    await expect(period).toHaveValue(value, { timeout: 500 });
+  }).toPass({ timeout: 30000 });
 }
 test("horarios: Secretaría configura periodos, evita cruces, edita y retira bloques", async ({
   page,
 }) => {
+  test.setTimeout(90_000); // varios guardados con recarga de página
   await login(page, "secretaria@example.invalid");
   const { c, a } = await setup(page, "HA");
   await configure(page, 1, "14:00", "14:40");
