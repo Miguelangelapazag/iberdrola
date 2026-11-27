@@ -70,16 +70,6 @@ export const navGroups: NavGroup[] = [
         href: "/panel/usuarios/desactivar",
         roles: ["DIRECTOR"],
       },
-      {
-        label: "Personal administrativo",
-        href: "/panel/usuarios/personal",
-        roles: ["DIRECTOR"],
-      },
-      {
-        label: "Accesos de familias",
-        href: "/panel/usuarios/familias",
-        roles: ["DIRECTOR"],
-      },
     ],
   },
   {
@@ -95,7 +85,7 @@ export const navGroups: NavGroup[] = [
         roleLabels: { PADRE: "Mis hijos", ESTUDIANTE: "Mi ficha" },
       },
       {
-        label: "Fichas de estudiantes",
+        label: "Registro de estudiantes",
         href: "/panel/gestion/estudiantes",
         manage: true,
       },
@@ -120,7 +110,7 @@ export const navGroups: NavGroup[] = [
     icon: "docentes",
     items: [
       {
-        label: "Fichas de docentes",
+        label: "Gestión de docentes",
         href: "/panel/gestion/docentes",
         manage: true,
       },
@@ -132,11 +122,7 @@ export const navGroups: NavGroup[] = [
     label: "Administrar Asignaturas",
     icon: "asignaturas",
     items: [
-      {
-        label: "Asignaturas",
-        href: "/panel/gestion/asignaturas",
-        manage: true,
-      },
+      { label: "Asignaturas", href: "/panel/asignaturas" },
       {
         label: "Asignación de materias",
         href: "/panel/gestion/asignaciones",
@@ -179,11 +165,6 @@ export const navGroups: NavGroup[] = [
         href: "/panel/asistencia/registro",
         roles: ["DIRECTOR", "DOCENTE"],
       },
-      {
-        label: "Eliminar borradores",
-        href: "/panel/asistencia/borradores",
-        roles: ["DIRECTOR", "SECRETARIA", "DOCENTE"],
-      },
     ],
   },
   {
@@ -201,11 +182,6 @@ export const navGroups: NavGroup[] = [
         label: "Registrar notas",
         href: "/panel/calificaciones/registro",
         roles: ["DIRECTOR", "DOCENTE"],
-      },
-      {
-        label: "Eliminar borradores",
-        href: "/panel/calificaciones/borradores",
-        roles: ["DIRECTOR", "SECRETARIA", "DOCENTE"],
       },
     ],
   },
