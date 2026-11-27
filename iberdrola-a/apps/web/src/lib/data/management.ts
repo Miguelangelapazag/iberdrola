@@ -99,7 +99,7 @@ export async function loadManagement(
     if (term) request = request.or(personSearch, { referencedTable: "personas" });
     if (active !== null) request = request.eq("activo", active);
     if (section === "estudiantes") {
-      if (filters.genero) request = request.eq("genero", filters.genero);
+      if (filters.genero) request = request.filter("genero", "eq", filters.genero);
       if (filters.curso || filters.gestion || filters.grado) {
         const courses = filters.curso
           ? [filters.curso]
