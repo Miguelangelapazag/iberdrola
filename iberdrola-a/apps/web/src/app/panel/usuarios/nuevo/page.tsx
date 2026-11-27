@@ -3,7 +3,14 @@ import { CreateUserForm } from "@/components/user-forms";
 import { Card } from "@/components/ui/card";
 import { getAdminConfig, getAdminStatus } from "@/lib/env";
 import { loadUnlinkedPeople } from "@/lib/data/users";
-export default async function Nuevo() {
+export default async function Nuevo({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
+  const initialPerson =
+    typeof params.persona === "string" ? params.persona : "";
   const people = await loadUnlinkedPeople();
   return (
     <UserPage
@@ -17,6 +24,7 @@ export default async function Nuevo() {
             keyStatus={getAdminStatus()}
             people={people}
             allowed={roles}
+            initialPerson={initialPerson}
           />
         </Card>
       )}

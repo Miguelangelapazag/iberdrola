@@ -160,11 +160,14 @@ export function CreateUserForm({
   keyStatus = "missing",
   people = [],
   allowed = roles,
+  initialPerson = "",
 }: {
   keyReady: boolean;
   keyStatus?: "ok" | "missing" | "invalid";
   people?: UnlinkedPerson[];
   allowed?: readonly Role[];
+  /** Ficha preseleccionada (botón «Crear acceso» de las listas de cuentas). */
+  initialPerson?: string;
 }) {
   const [state, action, pending] = useActionState(
     createUser,
@@ -174,10 +177,13 @@ export function CreateUserForm({
     modo?: string;
     persona_id?: string;
   };
+  const preset = people.some((p) => p.id === initialPerson)
+    ? initialPerson
+    : "";
   const [mode, setMode] = useState(
-    v.modo === "existente" ? "existente" : "nueva",
+    v.modo === "existente" || (!v.modo && preset) ? "existente" : "nueva",
   );
-  const [personId, setPersonId] = useState(v.persona_id ?? "");
+  const [personId, setPersonId] = useState(v.persona_id ?? preset);
   const person = people.find((p) => p.id === personId);
   return (
     <form

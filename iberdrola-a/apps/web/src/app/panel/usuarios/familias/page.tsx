@@ -2,6 +2,7 @@ import Link from "next/link";
 import { UserPage } from "@/components/user-page";
 import { UserDirectory, parseSearch } from "@/components/user-directory";
 import { Button } from "@/components/ui/button";
+import { UnlinkedPeople } from "@/components/unlinked-people";
 export default async function Familias({
   searchParams,
 }: {
@@ -30,6 +31,11 @@ export default async function Familias({
             selfId={selfId}
             fixedRole="PADRE"
             path="/panel/usuarios/familias"
+          />
+          <UnlinkedPeople
+            kind="PADRE"
+            title="Tutores sin cuenta"
+            lead="Tienen ficha de tutor pero todavía no pueden entrar al sistema. «Crear acceso» envía el enlace de verificación a su correo."
           />
         </>
       )}

@@ -165,3 +165,27 @@ test("gestión de docentes: cinco opciones para Dirección y dos para el docente
     ),
   ).toBeVisible();
 });
+
+test("cuentas de docentes: lista las fichas sin cuenta y prepara su acceso", async ({
+  page,
+}) => {
+  await login(page);
+  await page.goto("/panel/gestion/docentes?nuevo=1");
+  await page.getByLabel("Nombres *", { exact: true }).fill("Sincuenta");
+  await page.getByLabel("Apellido paterno", { exact: true }).fill("Prueba");
+  await page.getByLabel("CI", { exact: true }).fill("88001122");
+  await page.getByRole("button", { name: "Registrar", exact: true }).click();
+  await expect(
+    page.getByRole("status").filter({ hasText: "Registro guardado" }),
+  ).toBeVisible();
+  await page.goto("/panel/usuarios/docentes");
+  const row = page.getByRole("listitem").filter({ hasText: "Sincuenta" });
+  await expect(row).toContainText("Sin cuenta");
+  await row.getByRole("link", { name: "Crear acceso" }).click();
+  await expect(page).toHaveURL(/\/panel\/usuarios\/nuevo\?persona=/);
+  await expect(page.getByLabel("Vincular a una ficha existente")).toBeChecked();
+  await expect(page.getByLabel("Ficha registrada sin cuenta *")).toHaveValue(
+    /.+/,
+  );
+  await expect(page.getByLabel("Rol *")).toHaveValue("DOCENTE");
+});
