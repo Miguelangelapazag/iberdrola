@@ -38,6 +38,7 @@ export const isManagementSection = (
 export const canManage = (role: Role) =>
   role === "DIRECTOR" || role === "SECRETARIA";
 export type ManagementState = {
+  success?: string;
   error?: string;
   values?: Record<string, string>;
   attempt?: number;
@@ -97,6 +98,8 @@ const fields = [
   "docente_id",
   "asignatura_id",
 ];
+export const emptyValues = (): Record<string, string> =>
+  Object.fromEntries(fields.map((key) => [key, ""]));
 export function formValues(form: FormData) {
   return Object.fromEntries(
     fields.map((key) => [
@@ -191,4 +194,61 @@ export function validateManagement(
       return "Una matrícula activa debe conservar la salida vacía.";
   }
   return null;
+}
+
+/** Modos de trabajo de cada sección, iguales a los de Gestión de usuarios. */
+export const managementModes = ["buscar", "editar", "desactivar"] as const;
+export type ManagementMode = (typeof managementModes)[number];
+export const modeLabels: Record<ManagementMode | "crear", string> = {
+  buscar: "Buscar",
+  crear: "Crear",
+  editar: "Editar",
+  desactivar: "Desactivar",
+};
+export type ManagementFilters = {
+  q: string;
+  estado: string;
+  curso: string;
+  docente: string;
+  gestion: string;
+  grado: string;
+  materia: string;
+  genero: string;
+};
+type RawQuery = Record<string, string | string[] | undefined>;
+const text = (v: string | string[] | undefined) => (typeof v === "string" ? v : "");
+/** Lee y sanea los filtros de la dirección; un valor inválido se ignora. */
+export function parseFilters(
+  query: RawQuery,
+  section: ManagementSection,
+  mode: ManagementMode,
+): ManagementFilters {
+  const uuid = (v: string) => (uuidPattern.test(v) ? v : "");
+  const estados =
+    section === "matriculas"
+      ? ["ACTIVA", "RETIRADA", "FINALIZADA"]
+      : ["activos", "inactivos"];
+  const estado = text(query.estado);
+  return {
+    q: text(query.q).slice(0, 100),
+    estado: estados.includes(estado)
+      ? estado
+      : mode === "desactivar" && section !== "matriculas"
+        ? "activos"
+        : "",
+    curso: uuid(text(query.curso)),
+    docente: uuid(text(query.docente)),
+    gestion: uuid(text(query.gestion)),
+    grado: /^[1-6]$/.test(text(query.grado)) ? text(query.grado) : "",
+    materia: uuid(text(query.materia)),
+    genero: ["M", "F", "NO_ESPECIFICADO"].includes(text(query.genero))
+      ? text(query.genero)
+      : "",
+  };
+}
+/** Conserva los filtros en los enlaces de paginación y de regreso. */
+export function filtersToParams(f: ManagementFilters) {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(f)) if (value) params.set(key, value);
+  return params;
 }

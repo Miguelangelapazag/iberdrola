@@ -15,16 +15,39 @@ export function RecordsTable({
 }) {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
+  const [picked, setPicked] = useState<Record<string, string>>({});
+  // Filtros desplegables: el estado y hasta dos columnas con pocos valores distintos.
+  const selects = useMemo(() => {
+    const out: { key: string; label: string; values: string[] }[] = [];
+    for (const col of listing.columns.slice(1)) {
+      const found = new Set<string>();
+      for (const r of listing.rows) {
+        const v = r.cells[col.key];
+        if (v !== null && v !== undefined && v !== "") found.add(String(v));
+      }
+      const values = Array.from(found).sort((a, b) =>
+        a.localeCompare(b, "es"),
+      );
+      if (values.length > 1 && values.length <= 12 && out.length < 3)
+        out.push({ key: col.key, label: col.label, values });
+    }
+    return out;
+  }, [listing.columns, listing.rows]);
+  const active = Object.values(picked).some(Boolean) || search !== "";
   const filtered = useMemo(
     () =>
-      listing.rows.filter((row) =>
-        Object.values(row.cells).some((value) =>
-          String(value ?? "")
-            .toLocaleLowerCase("es")
-            .includes(search.toLocaleLowerCase("es")),
-        ),
+      listing.rows.filter(
+        (row) =>
+          Object.entries(picked).every(
+            ([key, value]) => !value || String(row.cells[key] ?? "") === value,
+          ) &&
+          Object.values(row.cells).some((value) =>
+            String(value ?? "")
+              .toLocaleLowerCase("es")
+              .includes(search.toLocaleLowerCase("es")),
+          ),
       ),
-    [listing.rows, search],
+    [listing.rows, search, picked],
   );
   const size = compact ? 5 : 10;
   const pages = Math.max(1, Math.ceil(filtered.length / size));
@@ -50,7 +73,39 @@ export function RecordsTable({
               className="h-11 pl-9"
             />
           </div>
-          <span className="text-xs text-muted-foreground">
+          {selects.map((f) => (
+            <select
+              key={f.key}
+              aria-label={`Filtrar por ${f.label}`}
+              value={picked[f.key] ?? ""}
+              onChange={(e) => {
+                setPicked((p) => ({ ...p, [f.key]: e.target.value }));
+                setPage(0);
+              }}
+              className="h-11 rounded-lg border border-input bg-background px-3 text-sm"
+            >
+              <option value="">{f.label}: todos</option>
+              {f.values.map((v) => (
+                <option key={v} value={v}>
+                  {v}
+                </option>
+              ))}
+            </select>
+          ))}
+          {active && (
+            <button
+              type="button"
+              className="text-xs font-medium text-primary"
+              onClick={() => {
+                setSearch("");
+                setPicked({});
+                setPage(0);
+              }}
+            >
+              Limpiar filtros
+            </button>
+          )}
+          <span className="ml-auto text-xs text-muted-foreground">
             {listing.total} registros disponibles
           </span>
         </div>
@@ -150,13 +205,13 @@ export function RecordsTable({
         <div className="flex min-h-48 flex-col items-center justify-center px-6 py-10 text-center">
           <FolderOpen className="mb-3 text-muted-foreground/60" size={28} />
           <p className="text-sm font-semibold">
-            {search
+            {active
               ? "No encontramos coincidencias"
               : "Aún no hay registros disponibles"}
           </p>
           <p className="mt-2 max-w-sm text-xs leading-5 text-muted-foreground">
-            {search
-              ? "Prueba con otro nombre o dato."
+            {active
+              ? "Prueba con otro nombre, dato o filtro."
               : "La información aparecerá cuando se registre y esté disponible para tu rol."}
           </p>
         </div>

@@ -85,7 +85,7 @@ export const navGroups: NavGroup[] = [
         roleLabels: { PADRE: "Mis hijos", ESTUDIANTE: "Mi ficha" },
       },
       {
-        label: "Fichas de estudiantes",
+        label: "Registro de estudiantes",
         href: "/panel/gestion/estudiantes",
         manage: true,
       },
@@ -110,7 +110,7 @@ export const navGroups: NavGroup[] = [
     icon: "docentes",
     items: [
       {
-        label: "Fichas de docentes",
+        label: "Gestión de docentes",
         href: "/panel/gestion/docentes",
         manage: true,
       },
@@ -122,6 +122,7 @@ export const navGroups: NavGroup[] = [
     label: "Administrar Asignaturas",
     icon: "asignaturas",
     items: [
+      { label: "Asignaturas", href: "/panel/asignaturas" },
       {
         label: "Asignación de materias",
         href: "/panel/gestion/asignaciones",

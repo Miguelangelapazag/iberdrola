@@ -4,6 +4,8 @@ export type TableRow = {
   id: string;
   cells: Record<string, string | number | null>;
   tone?: "success" | "warning" | "danger";
+  /** Solo en las listas de gestión: permite activar o desactivar la ficha. */
+  active?: boolean;
 };
 export type Listing = {
   title: string;
